@@ -1,0 +1,100 @@
+
+
+ <div class="layui-form-item">
+     <div id="user-menu-select-transfer"></div>
+  </div>
+  
+  
+  
+<div class="layui-form" lay-filter="user-menu-select-transfer" style="padding: 20px 30px 0 0;">
+ 
+  <div class="layui-form-item" style="display: none">
+    <label class="layui-form-label">部门</label>
+     <div class="layui-input-block">
+ 		<input type="text" name="menu_id" placeholder="请输入"   autocomplete="off" class="layui-input"> 
+ 		<input type="text" name="menu_name" placeholder="请输入"   autocomplete="off" class="layui-input"> 
+    </div>
+  </div>
+   
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline"> 
+      <input type="button" lay-submit lay-filter="user-menu-select-transfer-submit" lay-demotransferactive="getData" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+
+<script type="text/html" template lay-done="layui.data.sendParams(d.params)">
+
+</script>
+ 
+
+
+
+
+<script>
+ 
+layui.use(['admin', 'transfer', 'form'], function(){
+  var $ = layui.$
+  ,admin = layui.admin
+  ,transfer = layui.transfer
+  ,form = layui.form
+  ,util = layui.util;  
+  
+  layui.data.sendParams = function (params) {
+		   
+	  admin.req({
+		      url: '/inet/services/user/menu' //模拟接口
+	        , type: 'get'
+	        , contentType: 'application/json;charset=UTF-8' 
+	        , done: function (res) {
+	    
+        		var s ="" 
+            	if(params.menu_id != null && params.menu_id != '')	
+	        	    s = params.menu_id.split(",").map(Number);
+	         
+        		console.log(s)
+	        	  //基础效果
+	        	  transfer.render({
+	        	    elem: '#user-menu-select-transfer'
+	       	        ,id: 'user-menu-select-transfer' //定义唯一索引
+	       	    	,parseData: function(res){ 
+	      	    	        return {
+	      	    	          "value": res.id //数据值
+	      	    	          ,"title": res.name //数据标题  
+	      	    	        }
+	      	    	      }
+	        	    ,value: s
+	        	    ,title: ['角色列表', '已选择']
+	        	    ,data: res.data
+	        	  }) 
+	        }
+	      });
+	   
+  }
+  
+  util.event('lay-demoTransferActive', {
+      getData: function(othis){
+        var data = transfer.getData('user-menu-select-transfer'); //获取右侧数据
+        
+        var a = [], b = [];
+        
+        for (var i = 0, l = data.length; i < l; i++) {
+        	  a[i] = data[i].value ;
+        	  b[i] = data[i].title ;
+        }
+  
+         
+        form.val("user-menu-select-transfer",  {
+        	id: a
+        	,name: b
+        });  
+         
+      } 
+    });
+ 
+  
+  
+});
+</script>

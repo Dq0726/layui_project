@@ -1,0 +1,80 @@
+<div class="layui-form" lay-filter="system-notice-form" style="padding: 20px 30px 0 0">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">公告名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="noticeId"
+            placeholder="请输入"
+            style="display: none"
+            value="{{ d.params.noticeId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+          <input
+            type="text"
+            name="noticeTitle"
+            placeholder="请输入"
+            lay-verify="required"
+            value="{{ d.params.noticeTitle || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">公告类型</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="noticeType"
+            placeholder="请输入"
+            lay-verify="required"
+            value="{{ d.params.noticeType || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="checkbox" name="status" lay-filter="system-notice-form-status" lay-skin="switch" lay-text="ON|OFF" {{d.params.status == 0 ? 'checked' : ''
+        }} >
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea type="text" name="remark" autocomplete="off" class="layui-textarea">{{ d.params.remark || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="system-notice-form-submit" lay-submit lay-filter="system-notice-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      form = layui.form;
+  });
+</script>

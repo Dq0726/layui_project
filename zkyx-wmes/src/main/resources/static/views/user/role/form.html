@@ -1,0 +1,175 @@
+<div class="layui-form" lay-filter="user-role-form" style="padding: 20px 30px 0 0;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">角色</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+  		  <input type="text" name="id" placeholder="请输入"  style="display: none" value="{{ d.params.id || '' }}"  autocomplete="off" class="layui-input">
+ 		  <input type="text" name="name" placeholder="请输入"  lay-verify="required"  value="{{ d.params.name || '' }}"  autocomplete="off" class="layui-input">
+        </script>
+    </div>
+  </div>
+
+
+
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">权限</label>
+
+    <div class="layui-input-block">
+      <script type="text/html" template lay-done="layui.data.Done(d)">
+        	<div   id="permisXmselect" class="xm-select-demo"></div> 
+  		 </script>
+    </div>
+
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">标识</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="text" name="code" value="{{ d.params.code || '' }}"  placeholder="标识"  autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+
+
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		<input type="checkbox" name="status"  lay-filter="user-role-form-status" lay-skin="switch" lay-text="ON|OFF" {{d.params.status == 1 ? 'checked' : '' }} >  
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">排序</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="text" name="sort" value="{{ d.params.sort || '' }}"  placeholder="排序"  autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">具体描述</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea type="text" name="descr" autocomplete="off" class="layui-textarea">{{ d.params.descr || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+
+      <input type="button" id="user-role-form-submit" lay-submit lay-filter="user-role-form-submit" value="确认"
+        class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+  layui.data.Done = function (d) {
+
+
+    layui.use(['admin', 'form', 'xmSelect'], function () {
+      var $ = layui.$
+        , admin = layui.admin
+        , view = layui.view
+        , form = layui.form
+        , xmSelect = layui.xmSelect;
+
+
+/*       $("#user-role-form-submit").click(function () {
+        arr = permis.getTreeValue(false, true);
+
+        var change_type_arr = [];
+
+        $.each(arr, function (index, item) {
+          change_type_arr.push(item.id)
+        });
+        change_type_str = change_type_arr.join(',');
+        form.render('select');
+        $('#permis').val(change_type_str)
+
+
+      }); */
+
+
+ 
+      admin.req({
+        url: '/inet/services/user/menu' //模拟接口
+        , type: 'get'
+        , contentType: 'application/json;charset=UTF-8'
+        , done: function (res) {
+
+        	   var v;
+        	      if(d.params.permis){
+        	    	  v = d.params.permis.split(",")
+        	      }
+        	      
+        	      
+          permis = xmSelect.render({
+            el: '#permisXmselect',
+            name: 'permis',
+            data: res.data,
+            height: '350px',
+            initValue:  v,
+            tree: {
+              //是否严格遵守父子模式
+              strict: false,
+              show: true
+            },
+            prop: {
+              name: "name",
+              value: "code",
+              children: "list"
+            },
+            on: function (data) {
+              //arr:  当前多选已选中的数据
+              var arr = data.arr;
+              //change, 此次选择变化的数据,数组
+              var change = data.change;
+              //isAdd, 此次操作是新增还是删除
+              var isAdd = data.isAdd;
+
+
+              //可以return一个数组, 代表想选中的数据
+              //return []
+            },
+            done: function (data) {
+
+            }
+          });
+       //   $('#permis').val(d.params.permis)
+       //   permis.setValue(d.params.permis.split(","))
+
+
+          //  $(".permis").val(selectArr);
+
+        }
+      });
+
+    });
+
+
+  }
+
+
+
+  layui.use(['admin', 'form', 'xmSelect'], function () {
+    var $ = layui.$
+      , admin = layui.admin
+      , view = layui.view
+      , form = layui.form
+      , xmSelect = layui.xmSelect;
+
+
+
+  });
+</script>

@@ -1,0 +1,190 @@
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>生产管理</cite></a>
+    <a><cite>备料任务</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card" style="padding-top: 10px">
+    <div class="layui-card-body">
+	<!--    search start -->
+	<div class="keySearch-cont" style="margin-bottom: 10px;">
+	    <div class="layui-inline">
+	        <input class="layui-input" name="keySearch-input" id="keySearch-input" autocomplete="off"
+	        placeholder="请输入关键字">
+	    </div>
+	    <button class="layui-btn" data-type="keySearch" lay-on="keySearch">搜索</button>
+	</div>
+	<!--    search end -->
+      <table
+        id="zkmes-productionmgmt-prematerials-table"
+        lay-filter="zkmes-productionmgmt-prematerials-table"
+      ></table>
+      <script type="text/html" id="zkmes-planschedulingmgmt-prematerials-toolbar-head">
+        <div class="layui-btn-container"> 
+          <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+        </div>
+      </script>
+      <script type="text/html" id="zkmes-productionmgmt-prematerials-toolbar-row">
+ 		<a class="layui-btn layui-btn-xs layui-bg-blue" lay-event="review"
+          ><i class="layui-icon layui-icon-edit"></i>生成领料单</a
+        > 
+        <a class="layui-btn layui-btn-xs" lay-event="review"
+          ><i class="layui-icon layui-icon-edit"></i>查看</a
+        >
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  layui.use(["admin", "table"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      element = layui.element,
+      util = layui.util,
+      form = layui.form;
+ 
+    var prefix = "zkmes/productionmgmt/prematerials";
+
+    table.render({
+      elem: "#zkmes-productionmgmt-prematerials-table",
+      url: prefix + "/list",
+      toolbar: "#zkmes-planschedulingmgmt-prematerials-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-210",
+      cols: [
+        [
+          { field: "productiontaskId", title: "任务编号" },
+          { field: "productiontaskName", title: "任务名称" },
+          { field: "productionplanId", title: "生产单号" },
+          { field: "productionplanName", title: "生产单名称" },
+          { field: "productId", title: "产品编号" },
+          { field: "productName", title: "产品名称" },
+          { field: "productionQty", title: "订单数量" },
+          { field: "schedulingQty", title: "排产数量" }, 
+          {
+              field: "outboundorderStatus",
+              title: "状态",
+              templet: function (res) {
+                var html = '-'; 
+                
+                var outboundorderId = res.outboundorderId;
+                
+                
+                
+                if(outboundorderId == null){
+                	html = '<span class="layui-badge layui-bg-green">待生成领料单</span>';
+                }else{
+                	var outboundorderStatus = res.outboundorderStatus;
+   
+                	if(outboundorderStatus == 0){
+                		html = '<span class="layui-badge layui-bg-green">待仓库确认</span>';
+                	}else if(outboundorderStatus == 1){
+                		html = '<span class="layui-badge layui-bg-green">待领料</span>';
+                	}
+                } 
+
+                return html;
+              },
+            },
+          {
+            title: "操作",
+            width: 200,
+            align: "center",
+            fixed: "right",
+            toolbar: "#zkmes-productionmgmt-prematerials-toolbar-row",
+          },
+        ],
+      ],
+    });
+    // 头部工具栏点击事件
+    table.on("toolbar(zkmes-productionmgmt-prematerials-table)", function (obj) {
+      switch (obj.event) {
+        case "add":
+            layer.msg("新增");
+          break;
+        case "edit":
+            admin.popup({
+                title: "备料任务信息",
+                area: "1500px",
+                offset: "100px",
+                id: "popup-zkmes-productionmgmt-prematerials-edit",
+                success: function (layero, index) {
+                  view(this.id)
+                    .render("zkmes/productionmgmt/prematerials/form", data)
+                    .done(function () {
+                      form.render(null, "zkmes-productionmgmt-prematerials-form");
+
+                      //提交
+                      form.on("submit(zkmes-productionmgmt-prematerials-form-submit)", function (data) {
+                      	
+                      	 layui.table.reload("zkmes-productionmgmt-prematerials-table"); //重载表格
+                           layer.close(index); //执行关闭
+                      });
+                    });
+                },
+              });
+            break;
+        case "delete":
+          layer.msg("删除");
+          layer.confirm("确定删除？", function (index) {
+              admin.req({
+                url: prefix + "/" + data.purchaseorderId,
+                type: "delete",
+                contentType: "application/json;charset=UTF-8",
+                done: function (res) {
+                  layer.msg("删除成功");
+                  layui.table.reload("zkmes-productionmgmt-prematerials-table"); //重载表格
+                  layer.close(index); //执行关闭
+                },
+              });
+            });
+          break;
+        case "review":
+            admin.popup({
+                title: "备料任务--生成领料单",
+                area: "1500px",
+                offset: "100px",
+                id: "popup-zkmes-productionmgmt-prematerials-review",
+                success: function (layero, index) {
+                  view(this.id)
+                    .render("zkmes/productionmgmt/prematerials/review-form", data)
+                    .done(function () {
+                      form.render(null, "zkmes-productionmgmt-prematerials-review-form"); 
+                      //提交
+                      form.on("submit(zkmes-productionmgmt-prematerials-review-form-submit)", function (data) { 
+                        layui.table.reload("zkmes-productionmgmt-prematerials-table"); //重载表格
+                        layer.close(index); //执行关闭 
+                      });
+                    });
+                },
+              });
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+        case "refresh":
+            layui.table.reloadData("zkmes-productionmgmt-prematerials-table"); //重载表格
+            layer.msg('刷新成功');
+            break;
+      }
+    });
+  });
+</script>

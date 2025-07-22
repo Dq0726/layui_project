@@ -1,0 +1,125 @@
+<div class="layui-form" lay-filter="zkmes-productmgmt-product-uom-form" style="padding: 10px 30px 0 0">
+   
+<!--    传值给父start -->
+   <div class="layui-form-item layui-hide">
+    <div class="layui-inline">
+      <label class="layui-form-label">单位编号</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  name="uomId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">单位名称</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  name="uomName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div> 
+  </div>
+ 
+ <!--    传值给父end -->
+ 
+ 
+ <!--    search start -->
+   <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">单位编号</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  id="uomId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">单位名称</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  id="uomName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>     
+     <div class="layui-inline zkmes-productmgmt-product-uom-form-search">
+      <div class="layui-input-inline"> 
+          <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+    </div> 
+  </div>
+ 
+ <!--    search end -->
+ 
+ 
+  
+  <div class="layui-form-item">
+    <table id="zkmes-productmgmt-product-uom-form-table" lay-filter="zkmes-productmgmt-product-uom-form-table"></table>
+    <script type="text/html" id="zkmes-productmgmt-product-uom-form-toolbar-row">
+    </script>
+  </div>
+
+ <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-productmgmt-product-uom-form-submit" lay-submit lay-filter="zkmes-productmgmt-product-uom-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+<script>    
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+ 	    reload: function(){ 
+ 	      var uomId = $('#uomId'); 
+ 	     //执行重载
+	      table.reloadData('zkmes-productmgmt-product-uom-form-table', {
+	        page: {
+	          curr: 1 //重新从第 1 页开始
+	        }
+	        ,where: { 
+	        	  uomId: uomId.val() 
+	        }
+	      }); 
+ 	    } 
+ 	  };
+    	  
+    	  
+   	$('.zkmes-productmgmt-product-uom-form-search .layui-btn').on('click', function(){
+       var type = $(this).data('type');
+       active[type] ? active[type].call(this) : '';
+    });
+     
+    var prefix = "zkmes/bconfig/uom";
+
+    table.render({
+      elem: "#zkmes-productmgmt-product-uom-form-table",
+      url: prefix + "/list",  
+      page: true,
+      height: "full-350",
+      cols: [[
+    	  { field: 'uomId', title: 'ID' }  
+          , { field: 'uomName', title: '单位名称' } 
+          , { field: 'status', title: '启用状态', templet: function (res) {  
+          	var html = res.status == 0 ? '<span class="layui-badge layui-bg-blue">启用</span>' : '<span class="layui-badge layui-bg-orange">停用</span>'; 
+              return html;
+            }
+          }   
+          , { field: 'remark', title: '备注' }  
+          , { field: 'createTime', title: '创建时间' }
+        ],
+      ],
+    });
+     
+  //触发行双击事件
+    table.on('rowDouble(zkmes-productmgmt-product-uom-form-table)', function(obj){
+    	 // console.log(obj.tr) //得到当前行元素对象
+    	 // console.log(obj.data) //得到当前行数据
+    	   
+    	  var submit  = $("#zkmes-productmgmt-product-uom-form-submit")  
+    	  var data = form.val('zkmes-productmgmt-product-uom-form', JSON.parse(JSON.stringify(obj.data)));
+    	   
+    	  form.render();
+ 
+    	  submit.trigger('click');
+    });
+      
+  });
+</script>

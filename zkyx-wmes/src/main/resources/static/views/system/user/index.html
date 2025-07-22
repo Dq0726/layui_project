@@ -1,0 +1,289 @@
+<title>后台管理员</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>系统管理</cite></a>
+    <a><cite>用户管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row" style="background-color: #fff">
+    <div class="layui-col-xs2"> 
+       <div class="layui-card-header">部门</div>
+        <div class="layui-card-body">
+          <div id="ID-tree-demo-showLine"></div>
+        </div> 
+    </div>
+    <div class="layui-col-xs10">
+      <div class="layui-card" >
+        <div class="layui-card-body">
+          <table id="system-user-table" lay-filter="system-user-table" style="width:100%"></table>
+
+          <script type="text/html" id="system-user-toolbar-head">
+            <div class="layui-btn-container">
+              <button class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+              <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+            </div>
+          </script>
+
+          <script type="text/html" id="system-user-toolbar-row">
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+            {{# if(d.role == '超级管理员'){ }}
+            <a class="layui-btn layui-btn-disabled layui-btn-xs"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            {{# } else { }}
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            {{# } }}
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "user", "table",'common'], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form
+      , common = layui.common,
+      tree = layui.tree;
+    
+    // 调用 common.js 模块 getPopupSize 函数，用 ES6 解构赋值获取返回的两个参数
+    const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+    
+    var prefix = "system/user";
+
+    calleArr = function (array) {
+      for (i in array) {
+        var data = array[i];
+        data["spread"] = true;
+        if (data.children) {
+          calleArr(data.children); //自己调用自己
+        } else {
+        }
+      }
+    };
+
+    admin.req({
+      url: "system/dept/tree",
+      type: "get",
+      contentType: "application/json;charset=UTF-8",
+      done: function (res) {
+        var array = res.data;
+
+        calleArr(array);
+    
+        // 渲染
+        tree.render({
+          elem: "#ID-tree-demo-showLine",
+          data: res.data,
+          onlyIconControl: true,
+          customName: {
+            // 自定义 data 字段名 --- 2.8.14+
+            id: "id",
+            title: "label",
+            children: "children",
+          },
+          click: function (obj) {
+            table.reload("system-user-table", {
+              page: {
+                curr: 1, // 重新从第 1 页开始
+              },
+              where: {
+                deptId: obj.data.id, // 搜索的字段
+              },
+            });
+          },
+          showLine: false, // 是否开启连接线
+        });
+      },
+    });
+
+    //管理员管理
+    table.render({
+      elem: "#system-user-table",
+      url: prefix + "/list",
+      page: true,
+      toolbar: "#system-user-toolbar-head",
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-200",
+      cols: [
+        [
+          { type: "numbers" },
+          { field: "userId", title: "用户ID" },
+          { field: "userName", title: "用户名" },
+          { field: "nickName", title: "昵称" },
+          { field: "phonenumber", title: "手机" },
+          { field: "email", title: "邮箱" },
+          /*,{field: 'roles', title: '角色', templet: function (res) { 
+              var v = []; 
+              if (res && res.roles) { 
+                  for(var i = 0, l = res.roles.length; i < l; i++){
+                      v[i]  = res.roles[i].name
+                  }  
+              }  
+              return v;
+             },
+           }
+          ,{field: 'orgs', title: '部门', templet: function (res) { 
+              var v = []; 
+              if (res && res.orgs) { 
+                  for(var i = 0, l = res.orgs.length; i < l; i++){
+                      v[i]  = res.orgs[i].name
+                  }  
+              }  
+              return v;
+             },
+           }*/
+          { field: "createTime", title: "创建时间", sort: true },
+          { title: "操作", width: 150, align: "center", fixed: "right", toolbar: "#system-user-toolbar-row" },
+        ],
+      ] 
+    });
+
+    //工具条
+    table.on("tool(system-user-table)", function (obj) {
+      var data = obj.data;
+      if (obj.event === "del") {
+        layer.prompt(
+          {
+            formType: 1,
+            title: "敏感操作，请验证口令",
+          },
+          function (value, index) {
+            layer.close(index);
+            layer.confirm("确定删除此管理员？", function (index) {
+              admin.req({
+                url: prefix + "/" + data.userId, //实际使用请改成服务端真实接口
+                type: "delete",
+                contentType: "application/json;charset=UTF-8",
+                done: function (res) {
+                  layer.msg("删除成功");
+                  layui.table.reload("system-user-table"); //重载表格
+                  layer.close(index); //执行关闭
+                },
+              });
+            });
+          }
+        );
+      } else if (obj.event === "edit") {
+        admin.popup({
+          title: "编辑用户"
+          ,area: popupWidthHeight
+          ,offset: popupOffsetWidthHeight
+          ,id: "popup-system-user-edit",
+          success: function (layero, index) {
+            view(this.id)
+              .render("system/user/form", data)
+              .done(function () {
+                form.render(null, "system-user-form");
+
+                //提交
+                form.on("submit(system-user-form-submit)", function (data) {
+                  var field = data.field; //获取提交的字段 
+                  field.status = field.status ? 0 : 1;
+                   
+                  field.postIds = field.postIds.split(",");
+                  field.roleIds = field.roleIds.split(",");
+ 
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格
+                  admin.req({
+                    url: prefix,
+                    type: "put",
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(field),
+                    done: function (res) {
+                      layer.msg("用户修改成功");
+                      layui.table.reload("system-user-table"); //重载表格
+                      layer.close(index); //执行关闭
+                    },
+                  });
+                });
+              });
+          },
+        });
+      }
+    });
+
+    // 头部工具栏点击事件
+    table.on("toolbar(system-user-table)", function (obj) {
+      switch (obj.event) {
+        case "add":
+          admin.popup({
+            title: "添加新用户"
+            ,area: popupWidthHeight
+            ,offset: popupOffsetWidthHeight
+            ,id: "popup-system-user-add",
+            success: function (layero, index) {
+              view(this.id)
+                .render("system/user/form")
+                .done(function () {
+                  form.render(null, "system-user-form");
+                  //提交
+                  form.on("submit(system-user-form-submit)", function (data) {
+                    var field = data.field; //获取提交的字段
+                    field.status = field.status ? 0 : 1;
+                    
+                    field.postIds = field.postIds.split(",");
+                    field.roleIds = field.roleIds.split(",");
+                      
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    admin.req({
+                      url: "/inet/services/user", //实际使用请改成服务端真实接口
+                      type: "post",
+                      contentType: "application/json;charset=UTF-8",
+                      data: JSON.stringify(field),
+                      done: function (res) {
+                        layer.msg("新增成功");
+                        layui.table.reload("system-user-table"); //重载表格
+                        layer.close(index); //执行关闭
+                      },
+                    });
+                  });
+                });
+            },
+          });
+          break;
+        case "delete":
+          layer.msg("删除");
+          break;
+        case "update":
+          layer.msg("编辑");
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+        case "refresh":
+            layui.table.reloadData("system-user-table"); //重载表格
+            layer.msg('刷新成功');
+            break;
+      }
+    });
+    
+  
+    form.render(null, "layadmin-user-formlist");
+
+    //搜索
+    form.on("submit(LAY-user-back-search)", function (data) {
+      var field = data.field;
+
+      //执行重载
+      table.reload("system-user-table", {
+        where: field,
+      });
+    });
+  });
+</script>

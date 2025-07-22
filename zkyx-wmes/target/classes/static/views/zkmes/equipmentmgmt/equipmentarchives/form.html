@@ -1,0 +1,525 @@
+<div
+  class="layui-form"
+  lay-filter="zkmes-equipmentmgmt-equipmentarchives-form"
+  style="padding: 10px 30px 0 0"
+>
+  <div class="layui-form-item">
+    <!-- 设备编码 equipmentarchivesId-->
+    <div class="layui-inline">
+      <label class="layui-form-label"
+        >设备ID<span class="required">*</span></label
+      >
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+
+          <input
+            type="text"
+            id="equipmentarchivesId"
+            name="equipmentarchivesId"
+            value="{{ d.params.equipmentarchivesId || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            lay-verify="required"
+            class="layui-input"
+			{{# if( d.params.equipmentarchivesId != null && d.params.equipmentarchivesId != ''){ }} 
+				{{="disabled"}}
+			{{# } }} 
+
+          />
+
+        </script>
+      </div>
+    </div>
+    <!-- 设备名称 equipmentName-->
+    <div class="layui-inline">
+      <label class="layui-form-label"
+        >设备名称<span class="required">*</span></label
+      >
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="equipmentarchivesName"
+            value="{{ d.params.equipmentarchivesName || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            lay-verify="required"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 设备编码 equipmentSn-->
+    <div class="layui-inline">
+      <label class="layui-form-label">设备序列号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="equipmentSn"
+            value="{{ d.params.equipmentSn || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <!-- 设备类型 equipmenttype-->
+    <div class="layui-inline">
+      <label class="layui-form-label">设备类型</label>
+      <div class="layui-input-inline">
+        <div id="equipmenttypeXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+    <!-- 型号 modelId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">型号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="model"
+            value="{{ d.params.model || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 规格 sepcId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">规格</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="spec"
+            value="{{ d.params.spec || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <!-- 设备状态 equipmentstatus-->
+    <div class="layui-inline">
+      <label class="layui-form-label">设备状态</label>
+      <div class="layui-input-inline">
+        <select
+          lay-filter="equipmentstatus"
+          id="equipmentstatus"
+          name="equipmentstatusId"
+        ></select>
+      </div>
+    </div>
+    <!-- 采集方式 acwId-->
+    <div class="layui-inline" id="acwDiv">
+      <label class="layui-form-label">采集方式</label>
+      <div class="layui-input-inline">
+        <select lay-filter="acw" id="acw" name="acwId" disabled>
+          <option value="1">手动</option>
+          <option value="2">自动</option>
+        </select>
+      </div>
+    </div>
+    <!-- 在线状态 onlinestatus-->
+    <div class="layui-inline" id="onlinestatusDiv">
+      <label class="layui-form-label">在线状态</label>
+      <div class="layui-input-inline">
+        <select
+          lay-filter="onlinestatus"
+          id="onlinestatus"
+          name="onlinestatusId"
+          disabled
+        >
+          <option value="1">在线</option>
+          <option value="2">离线</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-tab layui-tab-brief">
+      <ul class="layui-tab-title">
+        <li class="layui-this">设备信息</li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+          <div class="layui-form-item">
+            <!-- 使用车间 workshop-->
+            <div class="layui-inline">
+              <label class="layui-form-label">使用车间</label>
+              <div class="layui-input-inline">
+                <div id="workshopXmselect" class="xm-select-demo"></div>
+              </div>
+            </div>
+            <!-- 安装地点 location-->
+            <div class="layui-inline">
+              <label class="layui-form-label">使用工作站</label>
+              <div class="layui-input-inline">
+                <div id="workstationXmselect" class="xm-select-demo"></div>
+              </div>
+            </div>
+            <!-- 设备负责人 personInCharge-->
+            <div class="layui-inline">
+              <label class="layui-form-label">设备负责人</label>
+              <div class="layui-input-inline">
+                <script type="text/html" template>
+                  <input
+                    type="text"
+                    name="rp"
+                    value="{{ d.params.rp || '' }}"
+                    placeholder="请输入"
+                    autocomplete="off"
+                    class="layui-input"
+                  />
+                </script>
+              </div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <!-- 设备负责人联系方式 contacts-->
+            <div class="layui-inline">
+              <label class="layui-form-label">联系方式</label>
+              <div class="layui-input-inline">
+                <script type="text/html" template>
+                  <input
+                    type="text"
+                    name="telephone"
+                    value="{{ d.params.telephone || '' }}"
+                    placeholder="请输入"
+                    autocomplete="off"
+                    class="layui-input"
+                  />
+                </script>
+              </div>
+            </div>
+            <!-- 生产厂商 manufacturer-->
+            <div class="layui-inline">
+              <label class="layui-form-label">生产厂商</label>
+              <div class="layui-input-inline">
+                <script type="text/html" template>
+                  <input
+                    type="text"
+                    name="manufacturer"
+                    value="{{ d.params.manufacturer || '' }}"
+                    placeholder="请输入"
+                    autocomplete="off"
+                    class="layui-input"
+                  />
+                </script>
+              </div>
+            </div>
+            <!-- 购买日期 purchasingDate-->
+            <div class="layui-inline">
+              <label class="layui-form-label">购买日期</label>
+              <div class="layui-input-inline">
+                <input
+                  type="text"
+                  id="ID-laydate-purchasedate"
+                  placeholder="请输入"
+                  name="purchasedate"
+                  autocomplete="off"
+                  class="layui-input"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <!-- 启用日期 activationDate-->
+            <div class="layui-inline">
+              <label class="layui-form-label">启用日期</label>
+              <div class="layui-input-inline">
+                <input
+                  type="text"
+                  id="ID-laydate-activationdate"
+                  placeholder="请输入"
+                  name="activationdate"
+                  autocomplete="off"
+                  class="layui-input"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline">
+        <input
+          type="button"
+          id="zkmes-equipmentmgmt-equipmentarchives-form-submit"
+          lay-submit
+          lay-filter="zkmes-equipmentmgmt-equipmentarchives-form-submit"
+          value="确认"
+          class="layui-btn"
+        />
+      </div>
+    </div>
+  </div>
+
+  <script
+    type="text/html"
+    template
+    lay-done="layui.data.sendZkmesInvmgmtequipmentarchivesEditFormParams(d.params)"
+  ></script>
+
+  <script>
+    layui.data.sendZkmesInvmgmtequipmentarchivesEditFormParams = function (
+      params
+    ) {
+      layui.use(["admin", "form", "xmSelect"], function () {
+        var $ = layui.$,
+          admin = layui.admin,
+          view = layui.view,
+          table = layui.table,
+          form = layui.form,
+          laydate = layui.laydate,
+          util = layui.util,
+          xmSelect = layui.xmSelect;
+
+        /* 购买日期 */
+        laydate.render({
+          elem: "#ID-laydate-purchasedate",
+          type: "date",
+          value: params.purchasedate,
+          isInitValue: true,
+          fullPanel: true,
+        });
+        /* 启用日期 */
+        laydate.render({
+          elem: "#ID-laydate-activationdate",
+          type: "date",
+          value: params.activationdate,
+          isInitValue: true,
+          fullPanel: true,
+        });
+
+        /* 设备类型 */
+        var equipmenttypeIds = params.equipmenttypeId;
+        if (equipmenttypeIds) {
+          equipmenttypeIds = equipmenttypeIds.split(",");
+        }
+        admin.req({
+          url: "/zkmes/equipmentmgmt/equipmenttype/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) {
+            equipmenttypeXmselect = xmSelect.render({
+              el: "#equipmenttypeXmselect",
+              name: "equipmenttypeId",
+              data: res.data,
+              radio: true,
+              initValue: equipmenttypeIds,
+              prop: {
+                name: "equipmenttypeName",
+                value: "equipmenttypeId",
+              },
+            });
+          },
+        });
+
+        admin.req({
+          url: "/zkmes/equipmentmgmt/equipmentstatus/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          async: false,
+          done: function (res) {
+            if (res && res.msg === "操作成功") {
+              var optionsHtml = "";
+              res.data.forEach(function (res) {
+                optionsHtml +=
+                  '<option value="' +
+                  res.equipmentstatusId +
+                  '">' +
+                  res.equipmentstatusName +
+                  "</option>";
+              });
+              $("#equipmentstatus").html(optionsHtml); // 将选项渲染到 select 中
+              layui.form.render("select"); // 重新渲染 select 以应用新的选项
+            } else {
+              layer.msg("数据加载失败"); // 数据加载失败时的提示信息
+            }
+          },
+        });
+
+        /* 设备状态 */
+        var equipmentstatusId = params.equipmentstatusId;
+        var acwId = params.acwId;
+        var onlinestatusId = params.onlinestatusId;
+
+        $("#equipmentstatus").val(equipmentstatusId);
+        $("#acw").val(acwId);
+        $("#onlinestatus").val(onlinestatusId);
+
+        $("#acw").attr("disabled", "disabled");
+        $("#onlinestatus").attr("disabled", "disabled");
+
+        //设备状态：正常1，其他2、3
+        if (equipmentstatusId == 1) {
+          // alert(123);
+          $("#acw").removeAttr("disabled");
+
+          //采集方式： 1手动 2自动
+          if (acwId == 1) {
+            $("#onlinestatus").removeAttr("disabled");
+          } else {
+            /*   $("#acwId").attr(equipmentstatusId);
+            $("#onlinestatus").attr(equipmentstatusId);
+            */
+          }
+        } else {
+          $("#acwDiv").hide();
+          $("#onlinestatusDiv").hide();
+        }
+
+        form.on("select(equipmentstatus)", function (data) {
+          var elem = data.elem; // 获得 select 原始 DOM 对象
+          var value = data.value; // 获得被选中的值
+          var othis = data.othis; // 获得 select 元素被替换后的 jQuery 对象
+          if (value != 1) {
+            $("#acw").attr("disabled", "disabled");
+            $("#onlinestatus").attr("disabled", "disabled");
+            $("#acwDiv").hide();
+            $("#onlinestatusDiv").hide();
+          } else {
+            $("#acw").removeAttr("disabled");
+            $("#onlinestatus").removeAttr("disabled");
+            $("#acwDiv").show();
+            $("#onlinestatusDiv").show();
+          }
+          layui.form.render("select"); // 重新渲染select，确保禁用状态生效
+        });
+        form.on("select(acw)", function (data) {
+          var elem = data.elem; // 获得 select 原始 DOM 对象
+          var value = data.value; // 获得被选中的值
+          var othis = data.othis; // 获得 select 元素被替换后的 jQuery 对象
+          //1手动 2自动
+          if (value == 1) {
+            $("#onlinestatus").removeAttr("disabled");
+            layui.form.render("select"); // 重新渲染select，确保启用状态生效
+          } else if (value == 2) {
+            $("#onlinestatus").attr("disabled", "disabled");
+            layui.form.render("select"); // 重新渲染select，确保禁用状态生效
+          }
+        });
+
+        /* 在线状态 */
+        form.on("select(onlinestatus)", function (data) {
+          var elem = data.elem; // 获得 select 原始 DOM 对象
+          var value = data.value; // 获得被选中的值
+          var othis = data.othis; // 获得 select 元素被替换后的 jQuery 对象
+        });
+
+        /* 使用车间 */
+        var workshopIds = params.workshopId;
+        if (workshopIds) {
+          workshopIds = workshopIds.split(",");
+
+          /* 使用工作站 */
+          var workstationIds = params.workstationId;
+          if (workstationIds) {
+            workstationIds = workstationIds.split(",");
+          }
+          admin.req({
+            url:
+              "zkmes/workshopmgmt/workstation/list1?workshopId=" +
+              params.workshopId,
+            type: "get",
+            contentType: "application/json;charset=UTF-8",
+            done: function (res) {
+              workstationXmselect = xmSelect.render({
+                el: "#workstationXmselect",
+                name: "workstationId",
+                data: res.data,
+                radio: true,
+                initValue: workstationIds,
+                prop: {
+                  name: "workstationName",
+                  value: "workstationId",
+                },
+              });
+            },
+          });
+        } else {
+          workstationXmselect = xmSelect.render({
+            el: "#workstationXmselect",
+            name: "workstationId",
+            radio: true,
+            disabled: true,
+            tips: "待选择车间",
+            prop: {
+              name: "workstationName",
+              value: "workstationId",
+            },
+          });
+        }
+
+        admin.req({
+          url: "zkmes/workshopmgmt/workshop/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) {
+            workshopXmselect = xmSelect.render({
+              el: "#workshopXmselect",
+              name: "workshopId",
+              data: res.data,
+              clickClose: true,
+              radio: true,
+              initValue: workshopIds,
+              prop: {
+                name: "workshopName",
+                value: "workshopId",
+              },
+              on: function (data) {
+                var arr = data.arr;
+                if (arr.length > 0) {
+                  admin.req({
+                    url:
+                      "zkmes/workshopmgmt/workstation/list1?workshopId=" +
+                      arr[0].workshopId,
+                    type: "get",
+                    contentType: "application/json;charset=UTF-8",
+                    done: function (res) {
+                      workstationXmselect = xmSelect.render({
+                        el: "#workstationXmselect",
+                        name: "workstationId",
+                        data: res.data,
+                        clickClose: true,
+                        radio: true,
+                        initValue: workstationIds,
+                        prop: {
+                          name: "workstationName",
+                          value: "workstationId",
+                        },
+                      });
+                    },
+                  });
+                }
+              },
+            });
+          },
+        });
+
+        form.render(null);
+      });
+    };
+
+    layui.use(["admin", "form"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        laydate = layui.laydate,
+        form = layui.form;
+    });
+  </script>
+</div>

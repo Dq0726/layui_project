@@ -1,0 +1,463 @@
+<div
+  class="layui-form"
+  lay-filter="zkmes-planschedulingmgmt-productionplan-edit-form"
+  style="padding: 10px 30px 0 0"
+>
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">计划订单</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="productionplanId"
+            name="productionplanId"
+            placeholder="请输入"
+            value="{{ d.params.productionplanId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">订单名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productionplanName"
+            placeholder="请输入"
+            value="{{ d.params.productionplanName || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <script type="text/html" template>
+      {{# if(d.params.source == 1){ }}
+
+      <div class="layui-inline">
+        <label class="layui-form-label">客户名称</label>
+        <div class="layui-input-inline">
+          <div style="display: flex">
+            <input
+              type="text"
+              lay-affix="search"
+              lay-filter="searchCustomer"
+              lay-verify="required"
+              readonly
+              placeholder="请选择"
+              value="{{ d.params.customerName || '' }}"
+              name="customerName"
+              lay-options="{split: true}"
+              class="layui-input"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-inline">
+        <label class="layui-form-label">客户订单号</label>
+        <div class="layui-input-inline">
+          <input
+            type="text"
+            name="customerorderId"
+            lay-verify="required"
+            placeholder="请输入"
+            value="{{ d.params.customerorderId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </div>
+      </div>
+
+      {{# } }}
+    </script>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">产品编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            lay-affix="search"
+            lay-filter="searchProduct"
+            lay-verify="required"
+            readonly
+            placeholder="请选择"
+            value="{{ d.params.productId || '' }}"
+            name="productId"
+            lay-options="{split: true}"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">产品名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productName"
+            placeholder="请输入"
+            value="{{ d.params.productName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">规格</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="specName"
+            placeholder="请输入"
+            value="{{ d.params.specName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">型号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="modelName"
+            placeholder="请输入"
+            value="{{ d.params.modelName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">批次号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="batchno"
+            placeholder="请输入"
+            value="{{ d.params.batchno || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">计划数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productionQty"
+            placeholder="请输入"
+            value="{{ d.params.productionQty || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">预计生产日期</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="ID-laydate-epd"
+          placeholder="请输入"
+          name="epd"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">预计结束日期</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="ID-laydate-eed"
+          placeholder="请输入"
+          name="eed"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input
+          type="text"
+          name="remark"
+          placeholder="请输入"
+          value="{{ d.params.remark || '' }}"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+        <fieldset class="layui-elem-field layui-field-title">
+            <legend>Bom清单</legend>
+        </fieldset>
+    <table
+      id="zkmes-planschedulingmgmt-productionplan-edit-form-table"
+      lay-filter="zkmes-planschedulingmgmt-productionplan-edit-form-table"
+    ></table>
+    <script
+      type="text/html"
+      id="zkmes-planschedulingmgmt-productionplan-edit-form-toolbar-head"
+    >
+    </script>
+        <script type="text/html" id="zkmes-productmgmt-product-edit-form-toolbar-row">
+    </script>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-planschedulingmgmt-productionplan-edit-form-submit"
+        lay-submit
+        lay-filter="zkmes-planschedulingmgmt-productionplan-edit-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script
+  type="text/html"
+  template
+  lay-done="layui.data.sendZkmesInvmgmtProductionplanEditFormParams(d.params)"
+></script>
+<script>
+  layui.data.sendZkmesInvmgmtProductionplanEditFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect", "util"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        xmSelect = layui.xmSelect,
+        util = layui.util;
+
+      laydate.render({
+        elem: "#ID-laydate-epd",
+        value: params.epd,
+        isInitValue: true,
+        type: "datetime",
+        fullPanel: true,
+      });
+
+      laydate.render({
+        elem: "#ID-laydate-eed",
+        value: params.eed,
+        isInitValue: true,
+        type: "datetime",
+        fullPanel: true,
+      });
+
+      //customer选择客户
+      form.on("input-affix(searchCustomer)", function (data) {
+        admin.popup({
+          title: "选择客户",
+          area: "1500px",
+          offset: "110px",
+          id: "popup-zkmes-planschedulingmgmt-productionplan-edit-form-customer",
+          success: function (layero, index) {
+            view(this.id)
+              .render("zkmes/planschedulingmgmt/productionplan/customer-form")
+              .done(function () {
+                form.render(
+                  null,
+                  "zkmes-planschedulingmgmt-productionplan-customer-form"
+                );
+                //提交
+                form.on(
+                  "submit(zkmes-planschedulingmgmt-productionplan-customer-form-submit)",
+                  function (data) {
+                    var field = data.field; //获取提交的字段
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    form.val(
+                      "zkmes-planschedulingmgmt-productionplan-edit-form",
+                      field
+                    );
+                    layer.close(index); //执行关闭
+                  }
+                );
+              });
+          },
+        });
+      });
+
+      // 输入框点缀事件 - 搜索示例
+      form.on("input-affix(searchProduct)", function (data) {
+        admin.popup({
+          title: "选择产品",
+          area: "1500px",
+          offset: "100px",
+          id: "popup-zkmes-planschedulingmgmt-productionplan-product",
+          success: function (layero, index) {
+            view(this.id)
+              .render("zkmes/planschedulingmgmt/productionplan/product-form")
+              .done(function () {
+                form.render(
+                  null,
+                  "zkmes-planschedulingmgmt-productionplan-product-form"
+                );
+                //提交
+                form.on(
+                  "submit(zkmes-planschedulingmgmt-productionplan-product-form-submit)",
+                  function (data) {
+                    var field = data.field; //获取提交的字段
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    form.val(
+                      "zkmes-planschedulingmgmt-productionplan-edit-form",
+                      field
+                    );
+                    layer.close(index); //执行关闭
+                  }
+                );
+              });
+          },
+        });
+      });
+
+      //执行重载
+      table.reloadData("zkmes-planschedulingmgmt-productionplan-edit-form-table", {
+        url: "zkmes/productmgmt/bom/list",
+        where: {
+          superId: params.productId,
+        },
+      });
+    });
+  };
+
+  layui.use(["admin", "form", "common"], function () {
+    var $ = layui.$,
+      util = layui.util,
+      admin = layui.admin,
+      common = layui.common,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    var prefix = "zkmes/productmgmt/bom";
+
+    table.render({
+      elem: "#zkmes-planschedulingmgmt-productionplan-edit-form-table",
+      data: [],
+      toolbar: "#zkmes-planschedulingmgmt-productionplan-edit-form-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-550",
+      cols: [
+        [
+          {type: 'numbers', title: '序号'},
+          { field: "productId", title: "BOM物料编号" },
+          { field: "productName", title: "BOM物料名称" },
+          { field: "specName", title: "BOM物料规格" },
+          { field: "modelName", title: "BOM物料型号" },
+          { field: "uomName", title: "BOM物料单位" },
+          { field: "ratio", title: "BOM物料使用比例" },
+          { field: "createTime", title: "创建时间" },
+        ],
+      ],
+    });
+
+    // 单元格编辑后的事件
+    table.on(
+      "edit(zkmes-planschedulingmgmt-productionplan-edit-form-table)",
+      function (obj) {
+        var field = obj.field; // 得到修改的字段
+        var value = obj.value; // 得到修改后的值
+        var oldValue = obj.oldValue; // 得到修改前的值 -- v2.8.0 新增
+        var data = obj.data; // 得到所在行所有键值
+        var col = obj.getCol(); // 得到当前列的表头配置属性 -- v2.8.0 新增
+
+        // 值的校验
+        if (value.replace(/\s/g, "") === "") {
+          layer.tips("值不能为空", this, { tips: 1 });
+          return obj.reedit(); // 重新编辑 -- v2.8.0 新增
+        }
+        // 编辑后续操作，如提交更新请求，以完成真实的数据更新
+        // …
+        // var amount = util.escape(value) * util.escape(data.number)
+
+        var j = {
+          invmgmtId: data.invmgmtId,
+          number: data.number,
+          unitPrice: data.unitPrice,
+          amount: parseFloat(
+            parseFloat(data.unitPrice) * parseFloat(data.number)
+          ).toFixed(2),
+        };
+
+        //提交 Ajax 成功后，关闭当前弹层并重载表格
+        admin.req({
+          url: prefix,
+          type: "put",
+          contentType: "application/json;charset=UTF-8",
+          data: JSON.stringify(j),
+          done: function (res) {
+            //  layer.msg("修改成功");
+            layui.table.reloadData(
+              "zkmes-planschedulingmgmt-productionplan-edit-form-table"
+            ); //重载表格
+            layer.close(index); //执行关闭
+          },
+        });
+
+        // 显示 - 仅用于演示
+        // layer.msg('[ID: '+ data.purchaseorderId +'] ' + field + ' 字段更改值为：'+ util.escape(value));
+      }
+    );
+  });
+</script>

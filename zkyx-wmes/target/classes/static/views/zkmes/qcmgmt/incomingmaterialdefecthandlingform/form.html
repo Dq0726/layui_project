@@ -1,0 +1,401 @@
+<div class="layui-form" lay-filter="zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+  <!-- 选择物料 selectmaterials-->
+    <div class="layui-inline">
+      <label class="layui-form-label">选择物料</label>
+     <div class="layui-input-inline">
+        <div style="display: flex">
+          <script type="text/html" template>
+            <input
+              type="text"
+              id="selectmaterials"
+              name="selectmaterials"
+              placeholder="请输入"
+              value=""
+              autocomplete="off"
+              class="layui-input"
+            />
+            <button type="button" class="layui-btn" lay-on="comp">选择数据</button>
+          </script>
+        </div>
+      </div>
+    </div>
+    <!-- 来料检验单编号 incominginspectionformnumber-->
+     <div class="layui-inline">
+      <label class="layui-form-label">来料检验单编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="incominginspectionformnumber"
+            name="incominginspectionformnumber"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 物料名称 materialname-->
+     <div class="layui-inline">
+      <label class="layui-form-label">物料名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="materialname"
+            name="materialname"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 物料编码 materialcode-->
+     <div class="layui-inline">
+      <label class="layui-form-label">物料编码</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="materialcode"
+            name="materialcode"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <!-- 规格型号 modelName-->
+     <div class="layui-inline">
+      <label class="layui-form-label">规格型号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="modelName"
+            name="modelName"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+     <!-- 单位 unit-->
+    <div class="layui-inline">
+      <label class="layui-form-label">单位</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="unit"
+            name="unit"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+      <!-- 检验数量 inspectionquantity-->
+    <div class="layui-inline">
+      <label class="layui-form-label">检验数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="inspectionquantity"
+            name="inspectionquantity"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 不良数量 defectnumber-->
+    <div class="layui-inline">
+      <label class="layui-form-label">不良数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="defectnumber"
+            name="defectnumber"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <!-- 供应商 supplier-->
+    <div class="layui-inline">
+      <label class="layui-form-label">供应商</label>
+      <div class="layui-input-inline">
+        <div id="supplierXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+      <!-- 检验员 inspector-->
+    <div class="layui-inline">
+      <label class="layui-form-label">检验员</label>
+      <div class="layui-input-inline">
+        <div id="inspectorXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+  <!-- 检验日期 inspectiondate-->
+    <div class="layui-inline">
+      <label class="layui-form-label">检验日期</label>
+    <div class="layui-input-inline">
+      <input type="text" id="ID-laydate-inspectiondate" placeholder="请输入"
+        name="inspectiondate" autocomplete="off" class="layui-input" />
+    </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <table
+      id="zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table"
+      lay-filter="zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table"
+    ></table>
+    <script type="text/html" id="zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-toolbar-head">
+      <div class="layui-btn-container"> 
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+      </div>
+    </script>
+  </div>
+  <div class="layui-form-item">
+
+  <!-- 不良品处理人 defectiveproducthandler-->
+    <div class="layui-inline">
+      <label class="layui-form-label">不良品处理人</label>
+      <div class="layui-input-inline">
+        <div id="defectiveproducthandlerXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+  <!-- 处理日期 processdate-->
+    <div class="layui-inline">
+      <label class="layui-form-label">处理日期</label>
+    <div class="layui-input-inline">
+      <input type="text" id="ID-laydate-processdate" placeholder="请输入"
+        name="processdate" autocomplete="off" class="layui-input" />
+    </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-submit"
+        lay-submit
+        lay-filter="zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesInvmgmtPurchaseorderEditFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesInvmgmtPurchaseorderEditFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+ 
+      
+      var prefix = "zkmes/qualitymgmt/incomingmaterialdefecthandlingform/product";
+
+      table.render({
+        elem: "#zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table",
+        url: prefix + "/list", 
+        totalRow: true, // 开启合计行
+        where: {
+            inboundorderId: params.inboundorderId,
+        }, 
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-520",
+        cols: [
+          [
+            { field: "reasonsDefectiveProducts", title: "不良品原因", width:200},
+            { field: "badDescription", title: "不良描述", align:'center'},
+            { field: "defectsNumber", title: "不良数量", width:200},
+            { field: "handlingMethod", title: "不良品处理", width:200},
+          ],
+        ],
+      });
+
+     
+      //工具条
+      table.on("tool(zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table)", function (obj) {
+        var data = obj.data;
+        if (obj.event === "del") {
+          layer.confirm("确定删除？", function (index) {
+            admin.req({
+              url: prefix + "/" + data.incomingmaterialdefecthandlingformproductId,
+              type: "delete",
+              contentType: "application/json;charset=UTF-8",
+              done: function (res) {
+                layer.msg("删除成功");
+                layui.table.reload("zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table"); //重载表格
+                layer.close(index); //执行关闭
+              },
+            });
+          }); 
+        }
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table)", function (obj) {
+        switch (obj.event) { 
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+            layui.table.reloadData("zkmes-qualitymgmt-incomingmaterialdefecthandlingform-form-table"); //重载表格
+            break;
+        }
+      });
+      /* 供应商 */
+      var supplierIds = params.supplierId + "";
+      if (supplierIds) {
+    	  supplierIds = supplierIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	  supplierXmselect = xmSelect.render({
+              el: "#supplierXmselect",
+              name: "supplierId",
+              data: res.data,
+              radio: true,
+              initValue: supplierIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+      /* 检验员 */
+      var inspectorIds = params.inspectorId + "";
+      if (inspectorIds) {
+    	  inspectorIds = inspectorIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	  inspectorXmselect = xmSelect.render({
+              el: "#inspectorXmselect",
+              name: "inspectorId",
+              data: res.data,
+              radio: true,
+              initValue: inspectorIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+      /* 不良品处理人 */
+      var defectiveproducthandlerIds = params.defectiveproducthandlerId + "";
+      if (defectiveproducthandlerIds) {
+    	  defectiveproducthandlerIds = defectiveproducthandlerIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	  defectiveproducthandlerXmselect = xmSelect.render({
+              el: "#defectiveproducthandlerXmselect",
+              name: "defectiveproducthandlerId",
+              data: res.data,
+              radio: true,
+              initValue: defectiveproducthandlerIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+      form.render(null);
+    });
+  };
+
+
+  layui.use(["admin", "form"], function () {
+	    var $ = layui.$,
+	      admin = layui.admin,
+	      view = layui.view,
+	      table = layui.table,
+	      laydate = layui.laydate,
+	      form = layui.form;
+
+	    /* 检验日期 */
+	    laydate.render({
+	      elem: "#ID-laydate-inspectiondate",
+	      type: "date",
+	      fullPanel: true,
+	    });
+	    /* 处理日期 */
+	    laydate.render({
+	      elem: "#ID-laydate-processdate",
+	      type: "date",
+	      fullPanel: true,
+	    });
+	  });
+
+
+
+
+</script>

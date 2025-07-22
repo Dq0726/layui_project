@@ -1,0 +1,227 @@
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>设备管理</cite></a>
+    <a><cite>设备档案</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <!--    search start -->
+      <div class="keySearch-cont" style="margin-bottom: 10px;">
+        <div class="layui-inline">
+          <input class="layui-input" name="keySearch-input" id="keySearch-input" autocomplete="off"
+            placeholder="请输入关键字">
+        </div>
+        <button class="layui-btn" data-type="keySearch" lay-on="keySearch">搜索</button>
+      </div>
+      <!--    search end -->
+      <table id="zkmes-equipmentmgmt-equipmentarchives-table" lay-filter="zkmes-equipmentmgmt-equipmentarchives-table"></table>
+
+      <script type="text/html" id="zkmes-equipmentmgmt-equipmentarchives-toolbar-head">
+        <div class="layui-btn-container"> 
+          <button class="layui-btn layui-btn-sm" lay-event="add">增加</button>
+          <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+        </div>
+      </script>
+      <script type="text/html" id="zkmes-equipmentmgmt-equipmentarchives-toolbar-row">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"
+          ><i class="layui-icon layui-icon-edit"></i>编辑</a
+        > 
+ 		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "table",'common', 'util'], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      common = layui.common,
+      util = layui.util, 
+      form = layui.form;
+
+    var prefix = "zkmes/equipmentmgmt/equipmentarchives";
+    
+    // 调用 common.js 模块 getPopupSize 函数，用 ES6 解构赋值获取返回的两个参数
+    const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+    table.render({
+      elem: "#zkmes-equipmentmgmt-equipmentarchives-table",
+      url: prefix + "/list",
+      toolbar: "#zkmes-equipmentmgmt-equipmentarchives-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-200",
+      cols: [
+        [
+          { field: "equipmentarchivesId", title: "设备编码" },
+          { field: "equipmentarchivesName", title: "设备名称" },
+          { field: "equipmentSn", title: "设备序列号" },
+          { field: "equipmenttypeName", title: "设备类型" }, 
+          { field: "model", title: "型号" },
+          { field: "spec", title: "规格" },
+          { field: "onlinestatusId", title: "在线状态", templet: function (res) {
+        	//非正常返回离线状态
+        	  if(res.equipmentstatusId != 1){
+        		  var html = '<span class="layui-badge layui-bg-orange">离线</span>';   
+        		  return html;
+        	  }
+        	  
+        	//判断手动还是自动
+        	  if(res.acwId == 1){
+        		  //手动则返回输入的状态
+    			var html = res.onlinestatusId == 1 ? '<span class="layui-badge layui-bg-blue">在线</span>' : '<span class="layui-badge layui-bg-orange">离线</span>'; 
+              	return html;
+        	  }else if(res.acwId == 2) {
+        		//通过判断当前设备接收的最后时间小于10分钟，返回在线状态，否返回离线状态
+        	  }else  {
+        		  var html = '<span class="layui-badge layui-bg-orange">未知</span>';   
+        		  return html;
+        	  }
+          } },
+          { field: "equipmentstatusName", title: "设备状态" }, 
+          { field: "createTime", title: "创建时间" },
+          {
+            title: "操作",
+            width: 160,
+            align: "center",
+            fixed: "right",
+            toolbar: "#zkmes-equipmentmgmt-equipmentarchives-toolbar-row",
+          },
+        ],
+      ],
+    });
+
+    //工具条
+    table.on("tool(zkmes-equipmentmgmt-equipmentarchives-table)", function (obj) {
+      var data = obj.data;
+      if (obj.event === "del") {
+        layer.confirm("确定删除？", function (index) {
+          admin.req({
+            url: prefix + "/" + data.equipmentarchivesId,
+            type: "delete",
+            contentType: "application/json;charset=UTF-8",
+            done: function (res) {
+              layer.msg("删除成功");
+              layui.table.reload("zkmes-equipmentmgmt-equipmentarchives-table"); //重载表格
+              layer.close(index); //执行关闭
+            },
+          });
+        });
+      } else if (obj.event === "edit") {
+        admin.popup({
+          title: "设备档案编辑",
+          area: popupWidthHeight,
+          offset: popupOffsetWidthHeight,
+          id: "popup-zkmes-equipmentmgmt-equipmentarchives-edit",
+          success: function (layero, index) {
+            view(this.id)
+              .render("zkmes/equipmentmgmt/equipmentarchives/form", data)
+              .done(function () {
+            	  console.log(data,'找数据');
+                form.render(null, "zkmes-equipmentmgmt-equipmentarchives-form");
+
+                //提交
+                form.on("submit(zkmes-equipmentmgmt-equipmentarchives-form-submit)", function (data) {
+
+                	  var field = data.field; //获取提交的字段
+                      //提交 Ajax 成功后，关闭当前弹层并重载表格
+                      admin.req({
+                        url: prefix ,
+                        type: "put",
+                        contentType: "application/json;charset=UTF-8",
+                        data: JSON.stringify(field),
+                        done: function (res) {
+                          layer.msg("新增成功");
+                          layui.table.reload("zkmes-equipmentmgmt-equipmentarchives-table"); //重载表格
+                          layer.close(index); //执行关闭
+                        },
+                      });
+                });
+              });
+          },
+        });
+      }
+    });
+
+    // 头部工具栏点击事件
+    table.on("toolbar(zkmes-equipmentmgmt-equipmentarchives-table)", function (obj) {
+      switch (obj.event) {
+        case "add":
+          admin.popup({
+            title: "添加设备档案信息",
+            area: popupWidthHeight,
+            offset: popupOffsetWidthHeight,
+            id: "popup-zkmes-equipmentmgmt-equipmentarchives-add",
+            success: function (layero, index) {
+              view(this.id)
+                .render("zkmes/equipmentmgmt/equipmentarchives/form")
+                .done(function () {
+                  form.render(null, "zkmes-equipmentmgmt-equipmentarchives-form");
+                  //提交
+                  form.on("submit(zkmes-equipmentmgmt-equipmentarchives-form-submit)", function (data) {
+                    var field = data.field; //获取提交的字段
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    admin.req({
+                      url: prefix ,
+                      type: "post",
+                      contentType: "application/json;charset=UTF-8",
+                      data: JSON.stringify(field),
+                      done: function (res) {
+                        layer.msg("新增成功");
+                        layui.table.reload("zkmes-equipmentmgmt-equipmentarchives-table"); //重载表格
+                        layer.close(index); //执行关闭
+                      },
+                    });
+                  });
+                });
+            },
+          });
+          break;
+        case "delete":
+          layer.msg("删除");
+          break;
+        case "update":
+          layer.msg("编辑");
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+        case "refresh":
+       	  layui.table.reloadData("zkmes-equipmentmgmt-equipmentarchives-table"); //重载表格
+          layer.msg('刷新成功');
+       	  break;
+      }
+    });
+    util.on("lay-on", {
+        // 关键字搜索功能
+    	keySearch: function () {
+          var keySearchValue = $('#keySearch-input').val();
+          // 重载表格，传递搜索参数
+          table.reload('zkmes-equipmentmgmt-equipmentarchives-table', {
+            page: {
+              curr: 1 // 从第一页开始
+            },
+            where: {
+              searchValue: keySearchValue // 传递关键字参数到后端
+            }
+          });
+        },
+      });
+ 
+  });
+</script>

@@ -1,0 +1,332 @@
+<div class="layui-form" lay-filter="zkmes-planschedulingmgmt-productionplan-review-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">计划订单号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            name="productionplanId"
+            value="{{ d.params.productionplanId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">订单名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.productionplanName || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <script type="text/html" template>
+      {{# if(d.params.source == 0){ }}
+
+      <div class="layui-inline">
+        <label class="layui-form-label">客户名称</label>
+        <div class="layui-input-inline">
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.customerName || '' }}"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </div>
+      </div>
+
+      <div class="layui-inline">
+        <label class="layui-form-label">客户订单号</label>
+        <div class="layui-input-inline">
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.customerorderId || '' }}"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </div>
+      </div>
+
+      {{# } }}
+    </script>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">产品编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.productId || '' }}"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">产品名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.productName || '' }}"
+            readonly
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">规格型号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.specName || '' }}"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">计划数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.productionQty || '' }}"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">批次号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.batchno || '' }}"
+            autocomplete="off"
+            readonly
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">预计生产日期</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.epd || '' }}"
+            readonly
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">预计结束日期</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder="请输入"
+            value="{{ d.params.eed || '' }}"
+            readonly
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input
+          type="text"
+          placeholder="请输入"
+          value="{{ d.params.remark || '' }}"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <table
+      id="zkmes-planschedulingmgmt-productionplan-review-form-table"
+      lay-filter="zkmes-planschedulingmgmt-productionplan-review-form-table"
+    ></table>
+    <script type="text/html" id="zkmes-planschedulingmgmt-productionplan-review-form-toolbar-head">
+      <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+      </div>
+    </script>
+  </div>
+
+  <div class="layui-hide">
+    <input type="text" name="status" class="layui-input" />
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-block">
+      <input type="button" id="pass" lay-active="pass" value="通过" class="layui-btn layui-bg-blue" />
+      <input type="button" id="nopass" lay-active="nopass" value="拒绝" class="layui-btn layui-bg-red" />
+
+      <input
+        type="button"
+        id="zkmes-planschedulingmgmt-productionplan-review-form-submit"
+        lay-submit
+        lay-filter="zkmes-planschedulingmgmt-productionplan-review-form-submit"
+        value="关闭"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesInvmgmtProductionplanEditFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesInvmgmtProductionplanEditFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        xmSelect = layui.xmSelect;
+
+      if (params.status == 1) {
+        $("#pass").hide();
+        $("#nopass").hide();
+      }
+
+      var prefix = "zkmes/productmgmt/bom";
+
+      table.render({
+        elem: "#zkmes-planschedulingmgmt-productionplan-review-form-table",
+        url: prefix + "/list",
+        toolbar: "#zkmes-planschedulingmgmt-productionplan-review-form-toolbar-head",
+        where: {
+          superId: params.productId,
+        },
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-550",
+        cols: [
+          [
+            { field: "productId", title: "BOM物料编号" },
+            { field: "productName", title: "BOM物料名称" },
+            { field: "modelName", title: "型号" },
+            { field: "specName", title: "规格" },
+            { field: "uomName", title: "单位" },
+            { field: "ratio", title: "使用比例" },
+          ],
+        ],
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-planschedulingmgmt-productionplan-review-form-table)", function (obj) {
+        switch (obj.event) {
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+            layui.table.reloadData("zkmes-planschedulingmgmt-productionplan-review-form-table"); //重载表格
+            break;
+        }
+      });
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      util = layui.util,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    //处理属性 为 lay-active 的所有元素事件
+    util.event("lay-active", {
+      pass: function (othis) {
+        form.val("zkmes-planschedulingmgmt-productionplan-review-form", { status: 1 });
+
+        var submit = $("#zkmes-planschedulingmgmt-productionplan-review-form-submit");
+        submit.trigger("click");
+      },
+      nopass: function (othis) {
+        form.val("zkmes-planschedulingmgmt-productionplan-review-form", { status: 2 });
+
+        var submit = $("#zkmes-planschedulingmgmt-productionplan-review-form-submit");
+        submit.trigger("click");
+      },
+    });
+  });
+</script>

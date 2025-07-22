@@ -1,0 +1,225 @@
+<title>组织管理</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>系统管理</cite></a>
+    <a><cite>部门管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <table id="system-dept-table" lay-filter="system-dept-table"></table>
+
+      <script type="text/html" id="system-dept-toolbar-head">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-sm" lay-event="addroot">新增</button>
+          <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+        </div>
+      </script>
+
+      <script type="text/html" id="system-dept-toolbar-row">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="addsub"
+          ><i class="layui-icon layui-icon-addition"></i>添加</a
+        >
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"
+          ><i class="layui-icon layui-icon-edit"></i>编辑</a
+        >
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"
+          ><i class="layui-icon layui-icon-delete"></i>删除</a
+        >
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin",'common'], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      form = layui.form,
+      common = layui.common,
+      treeTable = layui.treeTable;
+
+    // 调用 common.js 模块 getPopupSize 函数，用 ES6 解构赋值获取返回的两个参数
+    const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+
+    var prefix = "system/dept";
+
+    //组织管理
+    var insTb = treeTable.render({
+      elem: "#system-dept-table",
+      url: prefix + "/list",
+      toolbar: "#system-dept-toolbar-head",
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-200",
+      tree: {
+        customName: {
+          id: "deptId", //父ID
+          pid: "parentId", //子ID
+          name: "deptName",
+        },
+        data: {
+          isSimpleData: true,
+        },
+        view: {
+          expandAllDefault: true,
+        },
+      },
+      cols: [
+        [
+          { field: "deptName", title: "组织名" },
+          { field: "orderNum", title: "排序" },
+          { field: "status", title: "状态" },
+          { field: "createTime", title: "创建时间" },
+          { title: "操作", width: 225, align: "center", fixed: "right", toolbar: "#system-dept-toolbar-row" },
+        ],
+      ] 
+    });
+
+    //工具条
+    treeTable.on("tool(system-dept-table)", function (obj) {
+      var data = obj.data;
+      if (obj.event === "del") {
+        layer.confirm("确定删除？", function (index) {
+          admin.req({
+            url: prefix + "/" + data.deptId,
+            type: "delete",
+            contentType: "application/json;charset=UTF-8",
+            done: function (res) {
+              layer.msg("删除成功");
+              layui.treeTable.reload("system-dept-table"); //重载表格
+              layer.close(index); //执行关闭
+            },
+          });
+        });
+      } else if (obj.event === "addsub") {
+        admin.popup({
+          title: "添加部门",
+          area: popupWidthHeight,
+          offset: popupOffsetWidthHeight,
+          id: "popup-system-dept-addsub",
+          success: function (layero, index) {
+            view(this.id)
+              .render("system/dept/add-form", data)
+              .done(function () {
+                form.render(null, "system-dept-add-form");
+
+                //提交
+                form.on("submit(system-dept-add-form-submit)", function (data) {
+                  var field = data.field; //获取提交的字段
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格
+                  //提交修改
+                  admin.req({
+                    url: prefix,
+                    type: "post",
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(field),
+                    done: function (res) {
+                      layer.msg("新增成功");
+                      layui.treeTable.reload("system-dept-table"); //重载表格
+                      layer.close(index); //执行关闭
+                    },
+                  });
+                });
+              });
+          },
+        });
+      } else if (obj.event === "edit") {
+        admin.popup({
+          title: "编辑组织",
+          area: popupWidthHeight,
+          offset: popupOffsetWidthHeight,
+          id: "popup-system-dept-edit",
+          success: function (layero, index) {
+            view(this.id)
+              .render("system/dept/edit-form", data)
+              .done(function () {
+                form.render(null, "system-dept-edit-form");
+
+                //提交
+                form.on("submit(system-dept-edit-form-submit)", function (data) {
+                  var field = data.field; //获取提交的字段
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格
+                  //提交修改
+                  admin.req({
+                    url: prefix,
+                    type: "put",
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(field),
+                    done: function (res) {
+                      layer.msg("修改成功");
+                      layui.treeTable.reload("system-dept-table"); //重载表格
+                      layer.close(index); //执行关闭
+                    },
+                  });
+                });
+              });
+          },
+        });
+      }
+    });
+
+    // 头部工具栏点击事件
+    treeTable.on("toolbar(system-dept-table)", function (obj) {
+      switch (obj.event) {
+        case "addroot":
+          admin.popup({
+            title: "添加新部门",
+            area: popupWidthHeight,
+            offset: popupOffsetWidthHeight,
+            id: "popup-system-dept-addroot",
+            success: function (layero, index) {
+              view(this.id)
+                .render("system/dept/add-form")
+                .done(function () {
+                  form.render(null, "system-dept-add-form");
+                  //提交
+                  form.on("submit(system-dept-add-form-submit)", function (data) {
+                    var field = data.field; //获取提交的字段
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    admin.req({
+                      url: prefix + "/addroot",
+                      type: "post",
+                      contentType: "application/json;charset=UTF-8",
+                      data: JSON.stringify(field),
+                      done: function (res) {
+                        layer.msg("新增成功");
+                        layui.treeTable.reload("system-dept-table"); //重载表格
+                        layer.close(index); //执行关闭
+                      },
+                    });
+                  });
+                });
+            },
+          });
+          break;
+        case "delete":
+          layer.msg("删除");
+          break;
+        case "update":
+          layer.msg("编辑");
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+        case "refresh":
+          layui.table.reloadData("system-dept-table"); //重载表格
+          layer.msg('刷新成功');
+          break;
+      }
+    });
+  });
+</script>

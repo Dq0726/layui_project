@@ -1,0 +1,316 @@
+<div class="layui-form" lay-filter="zkmes-invmgmt-outboundorder-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">出库单号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="outboundorderId"
+            name="outboundorderId"
+            placeholder="请输入"
+            value="{{ d.params.outboundorderId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+            readonly
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">出库时间</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="mrdate"
+            placeholder="请输入"
+            value="{{ d.params.mrdate || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input" 
+          />
+        </script>
+      </div>
+    </div>
+    
+      <div class="layui-inline">
+      <label class="layui-form-label">预计出库时间</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            placeholder="请输入"
+            value="{{ d.params.begintime || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            readonly
+          />
+        </script>
+      </div>
+    </div>
+  
+     
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">总价(元)</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="totalPrice"
+            placeholder="请输入"
+            value="{{ d.params.totalPrice || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+            readonly
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">是否含税</label>
+      <div class="layui-input-inline">
+        <input type="radio" name="tax" value="0" title="是" disabled />
+        <input type="radio" name="tax" value="1" title="否" disabled />
+      </div>
+    </div> 
+    
+     <div class="layui-inline">
+      <label class="layui-form-label">制表人</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            placeholder="请输入"
+            value="{{ d.params.createBy || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            readonly
+          />
+        </script>
+      </div>
+    </div>
+    
+    
+     <div class="layui-inline">
+      <label class="layui-form-label">领料人</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="totalPrice"
+            placeholder="请输入"
+            value="{{ d.params.totalPrice || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+            readonly
+          />
+        </script>
+      </div>
+    </div>
+    
+  </div>
+  
+  
+   <div class="layui-form-item"> 
+
+    <div class="layui-inline">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="remark"
+            placeholder="请输入"
+            value="{{ d.params.remark || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div> 
+  </div>
+
+  <div class="layui-form-item">
+    <table id="zkmes-invmgmt-outboundorder-form-table" lay-filter="zkmes-invmgmt-outboundorder-form-table"></table>
+    <script type="text/html" id="zkmes-invmgmt-outboundorder-form-toolbar-head">
+      <div class="layui-btn-container"> 
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+      </div>
+    </script>
+ 
+    <script type="text/html" id="zkmes-invmgmt-outboundorder-form-toolbar-row">
+  	  <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="out">列表</a>  
+    </script>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-block">
+     <script type="text/html" template> 
+        <input type="button" lay-active="pass" value="审核通过" class="layui-btn layui-bg-blue" /> 
+      </script> 
+       <input
+        type="button"
+        class="layui-btn layui-hide"
+        id="zkmes-invmgmt-outboundorder-form-submit"
+        lay-submit
+        lay-filter="zkmes-invmgmt-outboundorder-form-submit"  
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesInvmgmtOutboundorderFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesInvmgmtOutboundorderFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        xmSelect = layui.xmSelect;
+ 
+      var prefix = "zkmes/invmgmt/outboundorder/product";
+
+      table.render({
+        elem: "#zkmes-invmgmt-outboundorder-form-table",
+        url: prefix + "/list", 
+        where: {
+        	outboundorderId: params.outboundorderId,
+        },
+        toolbar: "#zkmes-invmgmt-outboundorder-form-toolbar-head",
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-450",
+        cols: [
+          [
+            { field: "productId", title: "物料编号" },
+            { field: "productName", title: "名称" },
+            { field: "modelName", title: "型号" },
+            { field: "specName", title: "规格" },
+            { field: "uomName", title: "单位" }, 
+            {
+              field: "outboundQty",
+              title: "数量",
+              edit: function (d) {
+                if (d.status == 0) {
+                  return "text"; // 编辑模式
+                }
+              },
+            },
+            { field: "invQty", title: "库存数量"   },  
+            { field: "unitPrice", title: "单价"   },
+            { field: "amount", title: "金额" },  
+            { field: "createTime", title: "创建时间" },
+            {
+                field: "status",
+                title: "状态",
+                width: 180,
+                templet: function (res) {
+                  var html = "-";
+                  if (res.status == 0) {
+                    html = '<span class="layui-badge layui-bg-blue">待确认出库产品</span>';
+                  } else if (res.status == 1 ) {
+                    html = '<span class="layui-badge layui-bg-green">已确认出库产品，待出库</span>';
+                  } 
+                  return html;
+                }
+             },
+            {
+              title: "操作",
+              align: "center",
+              fixed: "right",
+              toolbar: "#zkmes-invmgmt-outboundorder-form-toolbar-row",
+            }
+          ]
+        ]
+      });
+
+      
+
+      //工具条
+      table.on("tool(zkmes-invmgmt-outboundorder-form-table)", function (obj) {
+        var data = obj.data;
+        if (obj.event === "out") {
+        	admin.popup({
+                title: '出库列表'
+               , area: '1500px'
+                , offset: '50px'
+                , id: 'popup-zkmes-invmgmt-outboundorder-out'
+                , success: function (layero, index) {
+                  view(this.id).render('zkmes/invmgmt/outboundorder/out/form', data).done(function () {
+                    form.render(null, 'zkmes-invmgmt-outboundorder-out-form');
+
+                    //提交
+                    form.on('submit(zkmes-invmgmt-outboundorder-out-form-submit)', function (data) {
+                          layui.table.reload('zkmes-invmgmt-outboundorder-form-table'); //重载表格
+                          layer.close(index); //执行关闭 
+                    });
+                  });
+                }
+              });
+        }  
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-invmgmt-outboundorder-form-table)", function (obj) {
+        switch (obj.event) { 
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+            layui.table.reloadData("zkmes-invmgmt-outboundorder-form-table"); //重载表格
+            break;
+        }
+      });
+       
+ 
+
+      if (params.tax == null) {
+        $("input[name=tax][value=0]").attr("checked", true);
+      } else {
+        $("input[name=tax][value=0]").attr("checked", params.tax == 0 ? true : false);
+        $("input[name=tax][value=1]").attr("checked", params.tax == 1 ? true : false);
+      }
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form", "common"], function () {
+    var $ = layui.$,
+      util = layui.util,
+      admin = layui.admin,
+      common = layui.common,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+  
+  });
+</script>

@@ -1,0 +1,141 @@
+<div class="layui-form" lay-filter="zkmes-invmgmt-inbatch-form" style="padding: 10px 30px 0 0">
+   
+  
+ <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">物料编码</label>
+      <div class="layui-input-inline"> 
+          <input type="text" id="productId" name="productId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div> 
+    
+    <div class="layui-inline">
+      <label class="layui-form-label">物料名称</label>
+      <div class="layui-input-inline"> 
+          <input type="text" id="productName" name="productName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div> 
+    
+    <div class="layui-inline">
+      <label class="layui-form-label">型号</label>
+      <div class="layui-input-inline"> 
+          <input type="text" id="modelId" name="modelId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div> 
+    
+     <div class="layui-inline">
+      <label class="layui-form-label">规格</label>
+      <div class="layui-input-inline"> 
+          <input type="text" id="specId" name="specId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>  
+  </div>
+  
+  
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">供应商</label>
+      <div class="layui-input-inline"> 
+          <input type="text" id="supplierName" name="supplierName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div> 
+    
+    <div class="layui-inline">
+      <label class="layui-form-label">分类</label>
+      <div class="layui-input-inline"> 
+          <input type="text" id="classifyName" name="classifyName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div> 
+    
+   <div class="layui-inline zkmes-invmgmt-inbatch-form-search">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-inline"> 
+          <button class="layui-btn " data-type="reload">搜索</button>
+      </div>
+    </div> 
+  </div>
+   
+  <div class="layui-form-item">
+    <table id="zkmes-invmgmt-inbatch-form-table" lay-filter="zkmes-invmgmt-inbatch-form-table"></table>
+  
+  </div>
+
+  <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-invmgmt-inbatch-form-submit" lay-submit lay-filter="zkmes-invmgmt-inbatch-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+  
+<script>
+    
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+ 	    reload: function(){ 
+ 	      var productId = $('#productId'); 
+ 	     //执行重载
+	      table.reloadData('zkmes-invmgmt-inbatch-form-table', {
+	        page: {
+	          curr: 1 //重新从第 1 页开始
+	        }
+	        ,where: { 
+	        	  productId: productId.val() 
+	        }
+	      }); 
+ 	    } 
+ 	  };
+    	  
+    	  
+   	$('.zkmes-invmgmt-inbatch-form-search .layui-btn').on('click', function(){
+       var type = $(this).data('type');
+       active[type] ? active[type].call(this) : '';
+    });
+     
+    var prefix = "zkmes/productmgmt/product";
+
+    table.render({
+      elem: "#zkmes-invmgmt-inbatch-form-table",
+      url: prefix + "/list",   
+      page: true, 
+      height: "full-350",
+      cols: [
+        [
+     	  { field: 'productId', title: '物料编码' }  
+           , { field: 'productName', title: '物料名称' }   
+           , { field: 'modelName', title: '型号' }  
+           , { field: 'specName', title: '规格' }  
+           , { field: 'uomName', title: '计量单位' }  
+           , { field: 'supplierName', title: '供应商' } 
+           , { field: 'classifyName', title: '分类' }  
+           ,{ title: "操作", width: 160, align: "center", fixed: "right", toolbar: "#zkmes-invmgmt-inbatch-form-toolbar-row" },
+        ],
+      ],
+    });
+    
+    
+  //触发行双击事件
+    table.on('rowDouble(zkmes-invmgmt-inbatch-form-table)', function(obj){
+    	 // console.log(obj.tr) //得到当前行元素对象
+    	 // console.log(obj.data) //得到当前行数据
+    	   
+    	  var submit  = $("#zkmes-invmgmt-inbatch-form-submit")  
+    	  var data = form.val('zkmes-invmgmt-inbatch-form', JSON.parse(JSON.stringify(obj.data)));
+    	   
+    	  form.render();
+    	  
+    	  //alert(JSON.stringify(data));
+    	  
+    	  submit.trigger('click');
+    });
+     
+    
+  });
+</script>

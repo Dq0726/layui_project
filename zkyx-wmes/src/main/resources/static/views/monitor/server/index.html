@@ -1,0 +1,244 @@
+<title>服务监控</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>系统监控</cite></a>
+    <a><cite>服务监控</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
+      <div class="layui-card">
+        <div class="layui-card-header">CPU</div>
+        <div class="layui-card-body">
+          <table class="layui-table" lay-skin="line">
+            <thead>
+              <tr>
+                <th>属性</th>
+                <th>值</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>核心数</td>
+                <td id="cpu_cpuNum">-</td>
+              </tr>
+              <tr>
+                <td>用户使用率</td>
+                <td id="cpu_used">-</td>
+              </tr>
+              <tr>
+                <td>系统使用率</td>
+                <td id="cpu_sys">-</td>
+              </tr>
+              <tr>
+                <td>当前空闲率</td>
+                <td id="cpu_free">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="layui-col-md6">
+      <div class="layui-card">
+        <div class="layui-card-header">内存</div>
+        <div class="layui-card-body">
+          <table class="layui-table" lay-skin="line">
+            <thead>
+              <tr>
+                <th>属性</th>
+                <th>内存</th>
+                <th>JVM</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>总内存</td>
+                <td id="mem_total">-</td>
+                <td id="jvm_total">-</td>
+              </tr>
+              <tr>
+                <td>已用内存</td>
+                <td id="mem_used">-</td>
+                <td id="jvm_used">-</td>
+              </tr>
+              <tr>
+                <td>剩余内存</td>
+                <td id="mem_free">-</td>
+                <td id="jvm_free">-</td>
+              </tr>
+              <tr>
+                <td>使用率</td>
+                <td id="mem_usage">-</td>
+                <td id="jvm_usage">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+   <div class="layui-row layui-col-space10"> 
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header">服务器信息</div>
+        <div class="layui-card-body">
+          <table class="layui-table" lay-skin="line">
+            <thead>
+              <tr>
+                <th>服务器名称</th> 
+                <th>操作系统</th>
+                <th>系统架构</th>
+                <th>服务器IP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr> 
+                <td id="sys_computerName">-</td>
+                <td id="sys_osName">-</td>
+                <td id="sys_osArch">-</td>
+                <td id="sys_computerIp">-</td>
+              </tr> 
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> 
+    </div> 
+     
+    
+    <div class="layui-row layui-col-space10"> 
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header">Java虚拟机信息</div>
+        <div class="layui-card-body">
+          <table class="layui-table" lay-skin="line"> 
+            <tbody>
+              <tr> 
+                <td>Java名称</td>
+                <td id="jvm_name">-</td>
+                <td >Java版本</td>
+                <td id="jvm_version">-</td>
+              </tr> 
+              <tr> 
+                <td>启动时间</td>
+                <td id="jvm_startTime">-</td>
+                <td>运行时长</td>
+                <td id="jvm_runTime">-</td>
+              </tr> 
+               <tr> 
+                <td>安装路径</td>
+                <td colspan="3" id="jvm_home" >-</td> 
+              </tr> 
+              <tr> 
+                <td>项目路径</td>
+                <td colspan="3" id="sys_userDir" >-</td> 
+              </tr> 
+              <tr> 
+                <td width="300">运行参数</td>
+                <td colspan="3" id="jvm_inputArgs" >-</td> 
+              </tr> 
+            </tbody>
+          </table>
+        </div>
+         </div>
+      </div>
+    </div> 
+    
+    
+      <div class="layui-row layui-col-space10"> 
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header">磁盘状态</div>
+        <div class="layui-card-body"> 
+          <table id="monitor-server-disk-table" lay-filter="monitor-server-disk-table"  lay-skin="line"></table> 
+        </div>
+         </div>
+      </div>
+    </div> 
+    
+
+ 
+  
+  
+</div>
+
+<script>
+  layui.use(["admin", "table"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    var prefix = "monitor/server";
+
+    admin.req({
+      url: prefix,
+      type: "get",
+      contentType: "application/json;charset=UTF-8",
+      done: function (res) {
+        var cpu = res.data.cpu;
+        var mem = res.data.mem;
+        var jvm = res.data.jvm;
+        var sys = res.data.sys;
+        var sysFiles = res.data.sysFiles;
+        
+
+        $("#cpu_cpuNum").text(cpu.cpuNum);
+        $("#cpu_used").text(cpu.used);
+        $("#cpu_sys").text(cpu.sys);
+        $("#cpu_free").text(cpu.free);
+
+        $("#mem_total").text(mem.total);
+        $("#mem_used").text(mem.used);
+        $("#mem_free").text(mem.free);
+        $("#mem_usage").text(mem.usage);
+        
+        $("#jvm_total").text(jvm.total);
+        $("#jvm_used").text(jvm.used);
+        $("#jvm_free").text(jvm.free);
+        $("#jvm_usage").text(jvm.usage);
+         
+        $("#sys_computerName").text(sys.computerName);
+        $("#sys_osName").text(sys.osName);
+        $("#sys_osArch").text(sys.osArch);
+        $("#sys_computerIp").text(sys.computerIp);
+        
+        $("#jvm_name").text(jvm.name);
+        $("#jvm_version").text(jvm.version);
+        $("#jvm_startTime").text(jvm.startTime);
+        $("#jvm_runTime").text(jvm.runTime);
+        
+        $("#jvm_home").text(jvm.home);
+        $("#sys_userDir").text(sys.userDir);
+        $("#jvm_inputArgs").text(jvm.inputArgs);
+        
+        
+        table.render({
+            elem: '#monitor-server-disk-table' 
+            , data: sysFiles 
+            , cols: [[ 
+          	  { field: 'dirName', title: '盘符路径' } 
+              , { field: 'sysTypeName', title: '文件系统' } 
+              , { field: 'typeName', title: '盘符类型' } 
+              , { field: 'total', title: '总大小' } 
+              , { field: 'free', title: '可用大小' } 
+              , { field: 'used', title: '已用大小' }  
+              , { field: 'usage', title: '已用百分比' }  
+            ]] 
+          });
+  
+        
+        
+      },
+    });
+
+ 
+  });
+</script>

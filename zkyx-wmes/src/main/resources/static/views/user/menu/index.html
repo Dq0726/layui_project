@@ -1,0 +1,208 @@
+<title>菜单管理</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>用户</cite></a>
+    <a><cite>菜单管理</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <table id="user-menu-table" lay-filter="user-menu-table"></table>
+
+      <script type="text/html" id="user-menu-toolbar-head">
+	    <div class="layui-btn-container"> 
+		  <button class="layui-btn layui-btn-sm" lay-event="addroot">新增菜单</button> 
+		  <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+	    </div>
+	  </script>
+
+      <script type="text/html" id="user-menu-toolbar-row">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="addsub"><i class="layui-icon layui-icon-addition"></i>添加</a>
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(['admin'], function () {
+    var $ = layui.$
+      , admin = layui.admin
+      , view = layui.view
+      , form = layui.form
+      , treeTable = layui.treeTable;
+
+
+    //菜单管理
+    var insTb = treeTable.render({
+      elem: '#user-menu-table'
+      , url: '/inet/services/menu/list' //模拟接口
+      , toolbar: '#user-menu-toolbar-head'
+      , defaultToolbar: ['filter', 'print', 'exports', {
+        title: '提示',
+        layEvent: 'LAYTABLE_TIPS',
+        icon: 'layui-icon-tips'
+      }]
+      , height: 'full-200'
+      , tree: {
+        customName: {
+          id: 'id'//父ID
+          , pid: 'pid'//子ID   
+        }
+        , data: {
+          isSimpleData: true
+          , rootPid: '3'
+        }
+        , view: {  
+        	showIcon: false
+        	,expandAllDefault: true
+        }
+      } 
+      , cols: [[
+        { type: 'numbers' }
+        , { field: 'name', title: '菜单名称', templet: function (res) { 
+            return '<div class="layui-inline layui-table-tree-nodeIcon"><i class="layui-icon  ' + res.icon + ' "></i></div>' + res.name;
+        	}
+        }
+        , { field: 'type', title: '类型' }
+        , { field: 'code', title: '标识' }
+        , { field: 'icon', title: '图标' }
+        , { field: 'url', title: 'URL地址' }
+        , { field: 'sort', title: '排序' }
+        , { title: '操作', width: 225, align: 'center', fixed: 'right', toolbar: '#user-menu-toolbar-row' }
+      ]]
+      , style: 'margin-top:0;'
+    });
+
+    //工具条
+    treeTable.on('tool(user-menu-table)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.confirm('确定删除此菜单？', function (index) {
+          admin.req({
+            url: '/inet/services/menu/' + data.id//实际使用请改成服务端真实接口
+            , type: 'delete'
+            , contentType: 'application/json;charset=UTF-8'
+            , done: function (res) {
+              layer.msg("删除成功");
+              layui.treeTable.reload('user-menu-table'); //重载表格
+              layer.close(index); //执行关闭 
+            }
+          });
+        });
+      } else if (obj.event === 'addsub') {
+        admin.popup({
+          title: '添加新菜单'
+          , area: ['750px', '620px']
+          , id: 'popup-user-menu-addsub'
+          , success: function (layero, index) {
+            view(this.id).render('user/menu/add-form', data).done(function () {
+              form.render(null, 'user-menu-add-form');
+
+              //提交
+              form.on('submit(user-menu-add-form-submit)', function (data) {
+                var field = data.field; //获取提交的字段  
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                //提交修改 
+                admin.req({
+                  url: '/inet/services/menu' //实际使用请改成服务端真实接口
+                  , type: 'post'
+                  , contentType: 'application/json;charset=UTF-8'
+                  , data: JSON.stringify(field)
+                  , done: function (res) {
+                    layer.msg("新增成功");
+                    layui.treeTable.reload('user-menu-table'); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+                });
+              });
+            });
+          }
+        });
+      } else if (obj.event === 'edit') {
+        admin.popup({
+          title: '编辑菜单'
+          , area: ['750px', '620px']
+          , id: 'popup-user-dept-edit'
+          , success: function (layero, index) {
+            view(this.id).render('user/menu/edit-form', data).done(function () {
+              form.render(null, 'user-menu-edit-form');
+
+              //提交
+              form.on('submit(user-menu-edit-form-submit)', function (data) {
+                var field = data.field; //获取提交的字段  
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                //提交修改 
+                admin.req({
+                  url: '/inet/services/menu' //实际使用请改成服务端真实接口
+                  , type: 'put'
+                  , contentType: 'application/json;charset=UTF-8'
+                  , data: JSON.stringify(field)
+                  , done: function (res) {
+                    layer.msg("修改成功");
+                    layui.treeTable.reload('user-menu-table'); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+                });
+              });
+            });
+          }
+        });
+      }
+    });
+
+
+    // 头部工具栏点击事件
+    treeTable.on('toolbar(user-menu-table)', function (obj) {
+      switch (obj.event) {
+        case 'addroot':
+          admin.popup({
+            title: '添加新菜单'
+            , area: ['750px', '620px']
+            , id: 'popup-user-menu-addroot'
+            , success: function (layero, index) {
+              view(this.id).render('user/menu/add-form').done(function () {
+                form.render(null, 'user-menu-add-form');
+                //提交
+                form.on('submit(user-menu-add-form-submit)', function (data) {
+
+                  var field = data.field; //获取提交的字段 
+
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格
+                  admin.req({
+                    url: '/inet/services/menu' //实际使用请改成服务端真实接口
+                    , type: 'post'
+                    , contentType: 'application/json;charset=UTF-8'
+                    , data: JSON.stringify(field)
+                    , done: function (res) {
+                      layer.msg("新增成功");
+                      layui.treeTable.reload('user-menu-table'); //重载表格
+                      layer.close(index); //执行关闭 
+                    }
+                  });
+                });
+              });
+            }
+          });
+          break;
+        case 'delete':
+          layer.msg('删除');
+          break;
+        case 'update':
+          layer.msg('编辑');
+          break;
+        case 'LAYTABLE_TIPS':
+          layer.msg('提示');
+          break;
+      }
+    });
+
+
+
+  });
+</script>

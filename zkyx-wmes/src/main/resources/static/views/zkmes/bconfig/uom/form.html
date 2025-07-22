@@ -1,0 +1,77 @@
+<div class="layui-form" lay-filter="zkmes-bconfig-uom-form" style="padding: 20px 30px 0 0">
+    <script type="text/html" template>
+      <div class="layui-form-item">
+        <label class="layui-form-label">单位编号</label>
+        <div class="layui-input-block">
+          <input type="text" name="uomId" placeholder="编号自动生成" value="{{ d.params.uomId || '' }}" autocomplete="off"
+            class="layui-input" disabled />
+        </div>
+      </div>
+    </script>
+  <div class="layui-form-item">
+      <label class="layui-form-label">单位名称<span class="required">*</span></label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="uomName"
+            placeholder="请输入"
+            value="{{ d.params.uomName || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">启用状态</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="checkbox" name="status" lay-filter="zkmes-bconfig-uom-form-status" lay-skin="switch"
+        lay-text="ON|OFF" {{d.params.status == 0 ? 'checked' : '' }} >
+      </script>
+    </div>
+  </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea type="text" name="remark" autocomplete="off" class="layui-textarea">{{ d.params.remark || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-bconfig-uom-form-submit"
+        lay-submit
+        lay-filter="zkmes-bconfig-uom-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+<script type="text/html" template lay-done="zkmesBconfigUomFormParamsDone"> </script>
+
+<script>
+zkmesBconfigUomFormParamsDone = function (params) {
+    layui.use(["admin", "form"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        form = layui.form;
+    });
+  }
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      form = layui.form;
+  });
+</script>

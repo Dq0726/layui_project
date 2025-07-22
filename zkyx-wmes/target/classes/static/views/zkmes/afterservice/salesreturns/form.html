@@ -1,0 +1,402 @@
+<div class="layui-form" lay-filter="zkmes-salesmgmt-salesorder-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+ <!-- 销售订单名称 salesordername-->
+    <div class="layui-inline">
+      <label class="layui-form-label">销售订单名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="salesordername"
+            name="salesordername"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+     <!-- 销售订单编号 salesordernumber-->
+    <div class="layui-inline">
+      <label class="layui-form-label">销售订单编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="salesordernumber"
+            name="salesordernumber"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 客户名称 customername-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="customername"
+            name="customername"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 客户编码 customercode-->
+        <div class="layui-inline">
+      <label class="layui-form-label">客户编码</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="customercode"
+            name="customercode"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+          <!-- 客户联系人姓名 customercontactname-->
+     <div class="layui-inline">
+      <label class="layui-form-label">客户联系人姓名</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="customercontactname"
+            name="customercontactname"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+     <!-- 客户联系人电话 customercontactphonenumber-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户联系人电话</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="customercontactphonenumber"
+            name="customercontactphonenumber"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+ <!-- 销售退货单编号 salesreturnordernumber-->
+    <div class="layui-inline">
+      <label class="layui-form-label">销售退货单编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="salesreturnordernumber"
+            name="salesreturnordernumber"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+     <!-- 销售负责人 headofsales-->
+    <div class="layui-inline">
+      <label class="layui-form-label">销售负责人</label>
+      <div class="layui-input-inline">
+        <div id="headofsalesXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>      
+  </div>
+   <div class="layui-form-item">
+ <!-- 退货申请日期 returnapplicationdate-->
+    <div class="layui-inline">
+      <label class="layui-form-label">退货申请日期</label>
+    <div class="layui-input-inline">
+      <input type="text" id="ID-laydate-returnapplicationdate" placeholder="请输入"
+        name="returnapplicationdate" autocomplete="off" class="layui-input" />
+    </div>
+    </div>
+ 
+  <!-- 备注 -->
+     <div class="layui-inline">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="remark"
+            placeholder="请输入"
+            value="{{ d.params.remark || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+   
+   </div>
+  <div class="layui-form-item">
+    <table
+      id="zkmes-salesmgmt-salesorder-form-table"
+      lay-filter="zkmes-salesmgmt-salesorder-form-table"
+    ></table>
+    <script type="text/html" id="zkmes-salesmgmt-salesorder-form-toolbar-head">
+      <div class="layui-btn-container"> 
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+      </div>
+    </script>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-salesmgmt-salesorder-form-submit"
+        lay-submit
+        lay-filter="zkmes-salesmgmt-salesorder-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesInvmgmtPurchaseorderEditFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesInvmgmtPurchaseorderEditFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+ 
+      
+      var prefix = "zkmes/salesmgmt/salesorder/product";
+
+      table.render({
+        elem: "#zkmes-salesmgmt-salesorder-form-table",
+        url: prefix + "/list", 
+        totalRow: true, // 开启合计行
+        where: {
+            inboundorderId: params.inboundorderId,
+        }, 
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-450",
+        cols: [
+          [
+            { field: "productName", title: "产品名称" ,width: 100},
+            { field: "productId", title: "产品编号", totalRow: "合计：" ,width: 100},
+            { field: "modelName", title: "规格型号" ,width: 100},
+            { field: "salesQuantity", title: "销售数量" ,width: 100},
+            { field: "unit", title: "单位" ,width: 100},
+            { field: "chooseBatch", title: "选择批次" ,width: 100}, 
+            { field: "productBatchNumber", title: "产品批次号" ,width: 100}, 
+            { field: "outOfStockReturnableQuantity", title: "已出库-可退货数量"  ,width: 160}, 
+            { field: "inOfStockReturnableQuantity", title: "未出库-可退货数量" ,width: 160}, 
+            { field: "inOfStockReturnQuantity", title: "未出库-退货数量"  ,width: 160}, 
+            { field: "thisTimeReturnQuantity", title: "本次退货总数" ,width: 160},
+            { field: "actualSellingPrice", title: "实际售价（含税）/元"  ,width: 160},
+            { field: "outOfStockProductTotalPrice", title: "已出库-产品售价总价（含税）/元"  ,width: 240},
+            { field: "ProductPriceTotal", title: "产品售价合计（含税）/元"  ,width: 230},
+            { field: "createTime", title: "创建时间" ,width: 100} 
+          ],
+        ],
+      });
+
+     
+      //工具条
+      table.on("tool(zkmes-salesmgmt-salesorder-form-table)", function (obj) {
+        var data = obj.data;
+        if (obj.event === "del") {
+          layer.confirm("确定删除？", function (index) {
+            admin.req({
+              url: prefix + "/" + data.salesorderproductId,
+              type: "delete",
+              contentType: "application/json;charset=UTF-8",
+              done: function (res) {
+                layer.msg("删除成功");
+                layui.table.reload("zkmes-salesmgmt-salesorder-form-table"); //重载表格
+                layer.close(index); //执行关闭
+              },
+            });
+          }); 
+        }
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-salesmgmt-salesorder-form-table)", function (obj) {
+        switch (obj.event) { 
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+            layui.table.reloadData("zkmes-salesmgmt-salesorder-form-table"); //重载表格
+            break;
+        }
+      });
+       
+      laydate.render({
+        elem: "#ID-laydate-inbounddate",
+        value: params.inbounddate,
+        isInitValue: true,
+        type: "date",
+        fullPanel: true,
+        done: function (value, date, endDate) { 
+        },
+      });
+
+ 
+      var supplierIds = params.supplierId + "";
+      if (supplierIds) {
+        supplierIds = supplierIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/suppliermgmt/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) { 
+          salesorderSupplierXmselect = xmSelect.render({
+            el: "#salesorderSupplierXmselect",
+            name: "supplierId",
+            data: res.data,
+            radio: true,
+            initValue: supplierIds,
+            prop: {
+              name: "supplierName",
+              value: "supplierId",
+            },
+          });
+        },
+      });
+      /* 销售负责人 */
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	   headofsalesXmselect = xmSelect.render({
+              el: "#headofsalesXmselect",
+              name: "supplierId",
+              data: res.data,
+              radio: true,
+              initValue: supplierIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+      var warehouseIds = params.warehouseId + "";
+      if (warehouseIds) {
+        warehouseIds = warehouseIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/warehousemgmt/warehouse/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) { 
+          salesorderWarehouseXmselect = xmSelect.render({
+            el: "#salesorderWarehouseXmselect",
+            name: "warehouseId",
+            data: res.data,
+            radio: true,
+            initValue: warehouseIds,
+            prop: {
+              name: "warehouseName",
+              value: "warehouseId",
+            },
+          });
+        },
+      });
+
+      $("input[name=tax][value=0]").attr("checked", params.tax == 0 ? true : false);
+      $("input[name=tax][value=1]").attr("checked", params.tax == 1 ? true : false);
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form", "common"], function () {
+    var $ = layui.$,
+      util = layui.util,
+      admin = layui.admin,
+      common = layui.common,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+   
+  });
+
+  layui.use(["admin", "form"], function () {
+	    var $ = layui.$,
+	      admin = layui.admin,
+	      view = layui.view,
+	      table = layui.table,
+	      laydate = layui.laydate,
+	      form = layui.form;
+
+	    /* 退货申请日期 */
+	    laydate.render({
+	      elem: "#ID-laydate-returnapplicationdate",
+	      type: "date",
+	      fullPanel: true,
+	    });
+	  });
+
+</script>

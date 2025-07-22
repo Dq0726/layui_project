@@ -1,0 +1,59 @@
+<div class="layui-form" lay-filter="system-dict-form" style="padding: 20px 30px 0 0;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">字符名称</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+  		  <input type="text" name="dictId" placeholder="请输入"  style="display: none" value="{{ d.params.dictId || '' }}"  autocomplete="off" class="layui-input">
+ 		  <input type="text" name="dictName" placeholder="请输入"  lay-verify="required"  value="{{ d.params.dictName || '' }}"  autocomplete="off" class="layui-input">
+        </script>
+    </div>
+  </div>
+ 
+ 
+  <div class="layui-form-item">
+    <label class="layui-form-label">字符类型</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+         <input type="text" name="dictType" placeholder="请输入"  lay-verify="required"  value="{{ d.params.dictType || '' }}"  autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+   
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label">状态</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+		<input type="checkbox" name="status"  lay-filter="system-dict-form-status" lay-skin="switch" lay-text="ON|OFF" {{d.params.status == 0 ? 'checked' : '' }} >  
+      </script>
+    </div>
+  </div>
+ 
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea type="text" name="remark" autocomplete="off" class="layui-textarea">{{ d.params.remark || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+
+      <input type="button" id="system-dict-form-submit" lay-submit lay-filter="system-dict-form-submit" value="确认"
+        class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+ 
+  layui.use(['admin', 'form' ], function () {
+    var $ = layui.$
+      , admin = layui.admin
+      , view = layui.view
+      , form = layui.form 
+ 
+  });
+</script>

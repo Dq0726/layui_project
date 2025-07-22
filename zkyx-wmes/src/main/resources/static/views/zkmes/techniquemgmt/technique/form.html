@@ -1,0 +1,299 @@
+<div class="layui-form" lay-filter="zkmes-techniquemgmt-technique-form">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">工艺编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="techniqueId"
+            name="techniqueId"
+            placeholder="请输入"
+            value="{{ d.params.techniqueId || '' }}"
+	 					{{# if(d.params.techniqueId != null && d.params.techniqueId != ''){ }} 
+							{{= "disabled" }}
+				 		{{# } }} 
+            autocomplete="off"
+            class="layui-input" 
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">工艺名称<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="techniqueName"
+            placeholder="请输入"
+            value="{{ d.params.techniqueName || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-inline">
+        <input
+          type="radio"
+          name="status"
+          value="0"
+          lay-filter="zkmes-techniquemgmt-technique-status-radio-filter"
+          title="正常"
+          checked
+        />
+        <input
+          type="radio"
+          name="status"
+          value="1"
+          lay-filter="zkmes-techniquemgmt-technique-status-radio-filter"
+          title="停用"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">工艺说明</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+          <input
+            type="text"
+            name="describe"
+            value="{{ d.params.describe || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          /> 		
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea rows="2" type="text" name="remark" autocomplete="off" class="layui-textarea">{{ d.params.remark || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+   <fieldset class="layui-elem-field layui-field-title">
+      <legend>工艺版本列表</legend>
+    </fieldset>
+    <table id="zkmes-techniquemgmt-technique-form-table" lay-filter="zkmes-techniquemgmt-technique-form-table"></table>
+  </div>
+
+  <script type="text/html" id="zkmes-techniquemgmt-technique-form-toolbar-head">
+    <div class="layui-btn-container">
+      <button class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+      <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+    </div>
+  </script>
+
+  <script type="text/html" id="zkmes-techniquemgmt-technique-form-toolbar-row">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"
+      ><i class="layui-icon layui-icon-edit"></i>编辑</a
+    >
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"
+      ><i class="layui-icon layui-icon-delete"></i>删除</a
+    >
+  </script>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-techniquemgmt-technique-form-submit"
+        lay-submit
+        lay-filter="zkmes-techniquemgmt-technique-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="techniquemgmtTechniqueParamsDone(d.params)"></script>
+
+<script>
+  techniquemgmtTechniqueParamsDone = function (params) {
+    layui.use(["admin", "common", "form"], function () {
+    	 var $ = layui.$,
+       admin = layui.admin,
+       view = layui.view,
+       form = layui.form,
+       table = layui.table, 
+       common = layui.common, 
+       util = layui.util;
+
+      if (params.techniqueId == null || params.techniqueId == "") return;
+
+      // 调用 common.js模块getPopupSize 函数，用ES6解构赋值获取返回的四个参数
+      const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+
+      var prefix = "zkmes/techniquemgmt/technique/version";
+
+      table.render({
+        elem: "#zkmes-techniquemgmt-technique-form-table",
+        url: prefix + "/list",
+        where: {
+        	techniqueId: params.techniqueId,
+        },
+        toolbar: "#zkmes-techniquemgmt-technique-form-toolbar-head",
+        page: true,
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-450",
+        cols: [
+          [
+            { type: "numbers", title: "序号" } 
+            , { field: "versionId", title: "版本ID" }
+            , { field: "version", title: "版本号" }  
+            , { field: 'describe', title: '说明' }
+            , {
+              field: 'status', title: '启用状态', templet: function (res) {
+                var html = res.status == 0 ? '<span class="layui-badge layui-bg-blue">启用</span>' : '<span class="layui-badge layui-bg-orange">停用</span>';
+                return html;
+              }
+            }, 
+            {
+              title: "操作",
+              width: 180,
+              align: "center",
+              fixed: "right",
+              toolbar: "#zkmes-techniquemgmt-technique-form-toolbar-row",
+            },
+          ],
+        ],
+      });
+
+      //工具条
+      table.on("tool(zkmes-techniquemgmt-technique-form-table)", function (obj) {
+        var data = obj.data;
+        if (obj.event === "del") {
+          layer.confirm("确定删除？", function (index) {
+            admin.req({
+              url: prefix + "/" + data.techniquegroupId,
+              type: "delete",
+              contentType: "application/json;charset=UTF-8",
+              done: function (res) {
+                layer.msg("删除成功");
+                layui.table.reload("zkmes-techniquemgmt-technique-form-table"); //重载表格
+                layer.close(index); //执行关闭
+              },
+            });
+          });
+        } else if (obj.event === "edit") {
+          admin.popup({
+            title: "修改工艺版本",
+            area: popupWidthHeight,
+            offset: popupOffsetWidthHeight,
+            id: "popup-zkmes-techniquemgmt-technique-form-edit",
+            success: function (layero, index) {
+              view(this.id)
+                .render("zkmes/techniquemgmt/technique/version-form", data)
+                .done(function () {
+                  form.render(null, "zkmes-techniquemgmt-technique-version-form");
+                  //提交
+                  form.on("submit(zkmes-techniquemgmt-technique-version-form-submit)", function (data) {
+                    var field = data.field; //获取提交的字段
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    admin.req({
+                      url: prefix,
+                      type: "put",
+                      contentType: "application/json;charset=UTF-8",
+                      data: JSON.stringify(field),
+                      done: function (res) {
+                        layer.msg("修改成功");
+                        layui.table.reload("zkmes-techniquemgmt-technique-form-table"); //重载表格
+                        layer.close(index); //执行关闭
+                      },
+                    });
+                  });
+                });
+            },
+          });
+        }
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-techniquemgmt-technique-form-table)", function (obj) {
+        switch (obj.event) {
+          case "add":
+            admin.popup({
+              title: "添加工艺版本",
+              area: popupWidthHeight,
+              offset: popupOffsetWidthHeight,
+              id: "popup-zkmes-techniquemgmt-technique-form-add",
+              success: function (layero, index) {
+                view(this.id)
+                  .render("zkmes/techniquemgmt/technique/version-form")
+                  .done(function () {
+                    form.render(null, "zkmes-techniquemgmt-technique-version-form");
+                    //提交
+                    form.on("submit(zkmes-techniquemgmt-technique-version-form-submit)", function (data) {
+                      var field = data.field; //获取提交的字段
+                      field.techniqueId = $("#techniqueId").val();
+                      //提交 Ajax 成功后，关闭当前弹层并重载表格
+                      admin.req({
+                        url: prefix,
+                        type: "post",
+                        contentType: "application/json;charset=UTF-8",
+                        data: JSON.stringify(field),
+                        done: function (res) {
+                          layer.msg("新增成功");
+                          layui.table.reload("zkmes-techniquemgmt-technique-form-table"); //重载表格
+                          layer.close(index); //执行关闭
+                        },
+                      });
+                    });
+                  });
+              },
+            });
+            break;
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+              layui.table.reloadData("zkmes-techniquemgmt-technique-form-table"); //重载表格
+              layer.msg('刷新成功');
+              break;
+        }
+      });
+
+      if (params.status != null) {
+        $("input[name=status][value=0]").attr("checked", params.status == 0 ? true : false);
+        $("input[name=status][value=1]").attr("checked", params.status == 1 ? true : false);
+      }
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+  });
+</script>

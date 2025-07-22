@@ -1,0 +1,186 @@
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>系统管理</cite></a>
+    <a><cite>日志管理</cite></a>
+    <a><cite>操作日志</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <table id="monitor-operlog-table" lay-filter="monitor-operlog-table"></table>
+
+      <script type="text/html" id="monitor-operlog-toolbar-head">
+	    <div class="layui-btn-container"> 
+		  <button class="layui-btn layui-btn-sm" lay-event="add">新增</button> 
+		  <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+	    </div>
+	  </script>
+
+      <script type="text/html" id="monitor-operlog-toolbar-row">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(['admin', 'table', 'common'], function () {
+    var $ = layui.$
+      , admin = layui.admin
+      , view = layui.view
+      , table = layui.table
+      , common = layui.common
+      , form = layui.form;
+
+    var prefix = "monitor/operlog";
+    // 调用 common.js 模块 getPopupSize 函数，用 ES6 解构赋值获取返回的两个参数
+    const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+
+    table.render({
+      elem: '#monitor-operlog-table'
+      , url: prefix + '/list'
+      , page: true
+      , toolbar: '#monitor-operlog-toolbar-head'
+      , defaultToolbar: ['filter', 'print', 'exports', {
+        title: '提示',
+        layEvent: 'LAYTABLE_TIPS',
+        icon: 'layui-icon-tips'
+      }]
+      , height: 'full-200'
+      , cols: [[
+        { field: 'operId', title: '日志编号' }
+        , { field: 'title', title: '系统模块' }
+        , { field: 'operatorType', title: '操作类型' }
+        , { field: 'operName', title: '操作人员' }
+        , { field: 'operIp', title: '操作地址' }
+        , { field: 'operLocation', title: '操作地点' }
+        , {
+          field: 'status', title: '状态', templet: function (res) {
+
+            var checked = res.status == 0 ? "checked" : "";
+            var html = '<input type="checkbox" name="status"  lay-filter="monitor-operlog-table-status" lay-skin="switch" lay-text="正常|停用" ' + checked + '>';
+            return html;
+          }
+        }
+        , { field: 'operTime', title: '操作时间' }
+        , { field: 'costTime', title: '消耗时间(毫秒)' }
+        , { title: '操作', width: 160, align: 'center', fixed: 'right', toolbar: '#monitor-operlog-toolbar-row' }
+      ]]
+    });
+
+    //工具条
+    table.on('tool(monitor-operlog-table)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.confirm('确定删除？', function (index) {
+          admin.req({
+            url: prefix + "/" + data.operlogId
+            , type: 'delete'
+            , contentType: 'application/json;charset=UTF-8'
+            , done: function (res) {
+              layer.msg("删除成功");
+              layui.table.reload('monitor-operlog-table'); //重载表格
+              layer.close(index); //执行关闭 
+            }
+          });
+        });
+      } else if (obj.event === 'edit') {
+        admin.popup({
+          title: '修改操作日志信息'
+          ,area: popupWidthHeight
+          ,offset: popupOffsetWidthHeight
+          , id: 'popup-monitor-operlog-edit'
+          , success: function (layero, index) {
+            view(this.id).render('monitor/operlog/form', data).done(function () {
+              form.render(null, 'monitor-operlog-form');
+
+              //提交
+              form.on('submit(monitor-operlog-form-submit)', function (data) {
+                var field = data.field; //获取提交的字段
+                field.status = field.status ? 0 : 1;
+
+                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                admin.req({
+                  url: prefix
+                  , type: 'put'
+                  , contentType: 'application/json;charset=UTF-8'
+                  , data: JSON.stringify(field)
+                  , done: function (res) {
+                    layer.msg("修改成功");
+                    layui.table.reload('monitor-operlog-table'); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+                });
+              });
+            });
+          }
+        });
+      }
+    });
+
+    // 头部工具栏点击事件
+    table.on('toolbar(monitor-operlog-table)', function (obj) {
+      switch (obj.event) {
+        case 'add':
+          admin.popup({
+            title: '添加操作日志信息'
+            ,area: popupWidthHeight
+            ,offset: popupOffsetWidthHeight
+            , id: 'popup-monitor-operlog-add'
+            , success: function (layero, index) {
+              view(this.id).render('monitor/operlog/form').done(function () {
+                form.render(null, 'monitor-operlog-form');
+                //提交
+                form.on('submit(monitor-operlog-form-submit)', function (data) {
+                  var field = data.field; //获取提交的字段 
+                  field.status = field.status ? 0 : 1;
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格
+                  admin.req({
+                    url: prefix
+                    , type: 'post'
+                    , contentType: 'application/json;charset=UTF-8'
+                    , data: JSON.stringify(field)
+                    , done: function (res) {
+                      layer.msg("新增成功");
+                      layui.table.reload('monitor-operlog-table'); //重载表格
+                      layer.close(index); //执行关闭 
+                    }
+                  });
+                });
+              });
+            }
+          });
+          break;
+        case 'delete':
+          layer.msg('删除');
+          break;
+        case 'update':
+          layer.msg('编辑');
+          break;
+        case 'LAYTABLE_TIPS':
+          layer.msg('提示');
+          break;
+        case "refresh":
+            layui.table.reloadData("monitor-operlog-table"); //重载表格
+            layer.msg('刷新成功');
+            break;
+      }
+    });
+
+
+    form.on('switch(monitor-operlog-table-status)', function (data) {
+      var checked = data.elem.checked;
+
+      alert(checked);
+
+      form.render();
+    });
+
+
+  });
+</script>

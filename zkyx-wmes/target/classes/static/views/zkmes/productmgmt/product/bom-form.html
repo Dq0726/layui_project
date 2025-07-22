@@ -1,0 +1,127 @@
+<div class="layui-form" lay-filter="zkmes-productmgmt-product-bom-form" >
+   
+  <input type="text" name="bomProductUuid" placeholder="请输入" autocomplete="off" class="layui-input layui-hide" />
+   
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">关键字</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="productId" 
+          placeholder="输入物料编码进行搜索"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">物料名称</label>
+      <div class="layui-input-inline">
+        <input type="text" id="productName" placeholder="请输入" autocomplete="off" class="layui-input" />
+      </div>
+    </div>
+    <div class="layui-inline zkmes-productmgmt-product-bom-form-search">
+      <div class="layui-input-inline">
+        <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="layui-form-item">
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>物料总览</legend>
+    </fieldset>
+    <table id="zkmes-productmgmt-product-bom-form-table" lay-filter="zkmes-productmgmt-product-bom-form-table"></table>
+    <script type="text/html" id="zkmes-productmgmt-product-bom-form-toolbar-head"></script>
+  </div>
+
+  <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-productmgmt-product-bom-form-submit"
+        lay-submit
+        lay-filter="zkmes-productmgmt-product-bom-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+      reload: function () {
+        var productUuid = $("#productUuid"); 
+        //执行重载
+        table.reloadData("zkmes-productmgmt-product-bom-form-table", {
+          page: {
+            curr: 1, //重新从第 1 页开始
+          },
+          where: {
+            productUuid: productUuid.val(),
+          },
+        });
+      },
+    };
+
+    $(".zkmes-productmgmt-product-bom-form-search .layui-btn").on("click", function () {
+      var type = $(this).data("type");
+      active[type] ? active[type].call(this) : "";
+    });
+
+    var prefix = "zkmes/productmgmt/product";
+
+    table.render({
+      elem: "#zkmes-productmgmt-product-bom-form-table",
+      url: prefix + "/list",
+      toolbar: "#zkmes-productmgmt-product-bom-form-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-350",
+      cols: [
+        [
+          { type: "numbers", title: "序号" }, // 使用layui的numbers类型自动生成序号
+          { field: "productId", title: "物料编码" },
+          { field: "productName", title: "物料名称" },
+          { field: "specName", title: "规格" },
+          { field: "modelName", title: "型号" },
+          { field: "uomName", title: "计量单位" }, 
+          { field: "classifyName", title: "分类" },
+        ],
+      ],
+    });
+
+    //触发行双击事件
+    table.on("rowDouble(zkmes-productmgmt-product-bom-form-table)", function (obj) { 
+      var submit = $("#zkmes-productmgmt-product-bom-form-submit");
+    
+      var j =  {
+      		bomProductUuid:obj.data.productUuid
+      }
+       
+      var data = form.val("zkmes-productmgmt-product-bom-form", j);
+ 
+      submit.trigger("click");
+    });
+  });
+</script>

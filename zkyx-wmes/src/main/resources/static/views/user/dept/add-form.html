@@ -1,0 +1,72 @@
+
+
+<div class="layui-form" lay-filter="user-org-add-form" style="padding: 20px 30px 0 0;">
+  
+   <script type="text/html" template>
+   {{#  
+	if(d.params.id){
+   }}
+   <div class="layui-form-item"  >
+    <label class="layui-form-label">上级组织</label>
+    <div class="layui-input-block"> 
+    
+ 		  <input  type="text" readonly placeholder="请输入" value="{{ d.params.name || '' }}"  autocomplete="off" class="layui-input">
+          <input  type="text" readonly placeholder="请输入" name="pid" value="{{ d.params.id || '' }}"  autocomplete="off" style="display: none" class="layui-input">
+      
+    </div>
+   </div> 
+   {{# }}}
+   </script> 
+  
+   
+   
+   <div class="layui-form-item">
+    <label class="layui-form-label">组织名称</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+ 		  <input type="text" name="name" placeholder="请输入" lay-verify="required"  autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label">标识</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="text" name="code" value="{{ d.params.code || '' }}"  placeholder="标识"  autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  
+    <div class="layui-form-item">
+    <label class="layui-form-label">排序</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="text" name="sort" value="{{ d.params.sort || '' }}"  placeholder="排序"  autocomplete="off" class="layui-input">
+      </script>
+    </div>
+  </div>
+  
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label">具体描述</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea type="text" name="descr" autocomplete="off" class="layui-textarea">{{ d.params.descr || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+    
+      <input type="button" lay-submit lay-filter="user-org-add-form-submit" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['admin', 'form'], function(){
+  var $ = layui.$
+  ,form = layui.form;  
+});
+</script>

@@ -1,0 +1,386 @@
+<div class="layui-form" lay-filter="zkmes-qcmgmt-incomingtest-tests-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">采购产品编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="purchaseorderproductId"
+            placeholder="请输入"
+            value="{{ d.params.purchaseorderproductId || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">产品编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="productId"
+            placeholder="请输入"
+            value="{{ d.params.productId || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">产品名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="productName"
+            placeholder="请输入"
+            value="{{ d.params.productName || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">产品型号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="modelName"
+            placeholder="请输入"
+            value="{{ d.params.modelName || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">产品规格</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="specName"
+            placeholder="请输入"
+            value="{{ d.params.specName || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">单位</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="uomName"
+            placeholder="请输入"
+            value="{{ d.params.uomName || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">采购数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="purchaseQty"
+            placeholder="请输入"
+            value="{{ d.params.purchaseQty || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <fieldset class="layui-elem-field layui-field-title">
+    <legend>检验信息</legend>
+  </fieldset>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">检验单编号<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="testsId"
+            placeholder="请输入"
+            value="{{ d.params.testsId || '' }}" 
+            autocomplete="off"
+            class="layui-input" 
+            lay-verify="required"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">样本数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="sampleQty"
+            placeholder="请输入"
+            value="{{ d.params.sampleQty || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">检验数量<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            id="testsQty"
+            name="testsQty"
+            placeholder="请输入"
+            value="{{ d.params.testsQty || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+            lay-verify="required"
+          />
+        </script>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">不良数量<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            id="defectQty"
+            name="defectQty"
+            placeholder="请输入"
+            value="{{ d.params.defectQty || '' }}" 
+            autocomplete="off"
+            class="layui-input" 
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">不良率<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <div style="display: flex">
+          <script type="text/html" template>
+          <input
+            type="text" 
+            name="defectrate"
+			id="defectrate"
+            placeholder="请输入"
+            value="{{ d.params.defectrate|| '' }} " 
+            autocomplete="off"
+            class="layui-input"
+            lay-verify="required"
+          />
+ 			<button type="button" class="layui-btn layui-btn-primary" lay-on="comp">计算</button>
+        </script>
+        </div>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">质检方式</label>
+      <div class="layui-input-inline">
+        <div id="processrelModelXmselect" class="xm-select-demo"></div>
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="testsWay"
+            placeholder="请输入"
+            value="{{ d.params.testsWay || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">检验员</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text" 
+            name="inspector"
+            placeholder="请输入"
+            value="{{ d.params.inspector || '' }}" 
+            autocomplete="off"
+            class="layui-input" 
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">检验时间</label>
+      <div class="layui-input-inline">
+        <input type="text" id="ID-laydate-testsTime" placeholder="请输入" name="testsTime" autocomplete="off"
+          class="layui-input" />
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">检验结果</label>
+      <div class="layui-input-inline">
+        <input type="radio" name="testsResults" value="0" title="合格" />
+        <input type="radio" name="testsResults" value="1" title="不合格" />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-qcmgmt-incomingtest-tests-form-submit" lay-submit
+        lay-filter="zkmes-qcmgmt-incomingtest-tests-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesQcmgmtIncomingtestTestsFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesQcmgmtIncomingtestTestsFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+
+      laydate.render({
+        elem: "#ID-laydate-testsTime",
+        value: params.testsTime,
+        isInitValue: true,
+        type: "date",
+        fullPanel: true,
+      });
+
+      var supplierIds = params.supplierId + "";
+      if (supplierIds) {
+        supplierIds = supplierIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/suppliermgmt/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          incomingtestSupplierXmselect = xmSelect.render({
+            el: "#incomingtestSupplierXmselect",
+            name: "supplierId",
+            data: res.data,
+            radio: true,
+            initValue: supplierIds,
+            prop: {
+              name: "supplierName",
+              value: "supplierId",
+            },
+          });
+        },
+      });
+
+      var warehouseIds = params.warehouseId + "";
+      if (warehouseIds) {
+        warehouseIds = warehouseIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/warehousemgmt/warehouse/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          incomingtestWarehouseXmselect = xmSelect.render({
+            el: "#incomingtestWarehouseXmselect",
+            name: "warehouseId",
+            data: res.data,
+            radio: true,
+            initValue: warehouseIds,
+            prop: {
+              name: "warehouseName",
+              value: "warehouseId",
+            },
+          });
+        },
+      });
+
+      $("input[name=testsResults][value=0]").attr("checked", params.testsResults == 0 ? true : false);
+      $("input[name=testsResults][value=1]").attr("checked", params.testsResults == 1 ? true : false);
+
+      util.on("lay-on", {
+        // 获取验证码
+        comp: function (othis) {
+          // 获取当前页接口数据
+
+          if ($("#defectQty").val() && $("#testsQty").val() !== "") {
+            var defectrate = ($("#defectQty").val() / $("#testsQty").val()) * 100;
+            $("#defectrate").val(Math.round(defectrate * 100) / 100 + "%");
+          } else if ($("#testsQty").val() === "") {
+            layer.msg('请输入检验数量');
+          } else if ($("#defectQty").val() === "") {
+            layer.msg('请不良数量');;
+          }
+
+        },
+      });
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form", "common"], function () {
+    var $ = layui.$,
+      util = layui.util,
+      admin = layui.admin,
+      common = layui.common,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+  });
+</script>

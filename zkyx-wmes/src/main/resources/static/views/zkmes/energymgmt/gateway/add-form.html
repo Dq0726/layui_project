@@ -1,0 +1,173 @@
+<div class="layui-form" lay-filter="zkmes-energymgmt-gateway-add-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+    <!-- 网关编码 gatewayId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">网关编码<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="gatewayId"
+            name="gatewayId"
+            value="{{ d.params.gatewayId || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            lay-verify="required"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 网关名称 equipmentName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">网关名称<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="gatewayName"
+            value="{{ d.params.gatewayName || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            lay-verify="required"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 网关类型 equipmenttype-->
+    <div class="layui-inline">
+      <label class="layui-form-label">网关类型</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="gatewayType"
+            value="{{ d.params.gatewayType || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <!-- 型号 modelId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">型号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="model"
+            value="{{ d.params.model || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <!-- 使用车间 workshop-->
+    <div class="layui-inline">
+      <label class="layui-form-label">使用车间</label>
+      <div class="layui-input-inline">
+        <div id="workshopXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+
+    <!-- 安装日期 installTime-->
+    <div class="layui-inline">
+      <label class="layui-form-label">安装日期</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="ID-laydate-installtime"
+          placeholder="请输入"
+          name="installTime"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-energymgmt-gateway-add-form-submit"
+        lay-submit
+        lay-filter="zkmes-energymgmt-gateway-add-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesEnergymgmtGatewayAddFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesEnergymgmtGatewayAddFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+
+      /* 安装日期 */
+      laydate.render({
+        elem: "#ID-laydate-installtime",
+        type: "datetime",
+        value: params.installTime,
+        isInitValue: true,
+        fullPanel: true,
+      });
+
+      /* 使用车间 */
+      var workshopIds = params.workshopId;
+      if (workshopIds) {
+        workshopIds = workshopIds.split(",");
+      }
+
+      admin.req({
+        url: "zkmes/workshopmgmt/workshop/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          workshopXmselect = xmSelect.render({
+            el: "#workshopXmselect",
+            name: "workshopId",
+            data: res.data,
+            clickClose: true,
+            radio: true,
+            initValue: workshopIds,
+            prop: {
+              name: "workshopName",
+              value: "workshopId",
+            },
+          });
+        },
+      });
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      laydate = layui.laydate,
+      form = layui.form;
+  });
+</script>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>产品分析</title>
+
+    <style>
+      /* 优化后的CSS */
+      .todo-list {
+        height: 200px;
+        spacing: 15px;
+      }
+.layui-row,.h100 {
+        height: 100%;
+}
+      .todo-list .layui-col-xs3 {
+        height: 100%;
+      }
+
+      .todo-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        background: #f9f9f9;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .todo-card:hover {
+        background: #eee;
+        transform: translateY(-3px);
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .todo-card h3 {
+        font-size: 16px;
+        color: #333;
+        margin: 0 0 15px;
+        font-weight: 500;
+      }
+
+      .todo-card cite {
+        font-size: 28px;
+        font-style: normal;
+        color: #2f4056;
+        font-weight: 600;
+      }
+
+      .chart-container {
+        height: 300px;
+        padding: 15px;
+      }
+    </style>
+  </head>
+  
+  <body>
+  
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>产品设计管理</cite></a>
+    <a><cite>产品分析</cite></a>
+  </div>
+</div>
+    <div class="layui-fluid">
+      <div class="layui-row layui-col-space15">
+        <!-- 待办事项 -->
+        <div class="layui-col-md12">
+          <div class="layui-card">
+            <div class="layui-card-header">数据概览</div>
+            <div class="layui-card-body todo-list">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-xs4 h100">
+                  <a class="todo-card">
+                    <h3>产品总数量</h3>
+                    <p><cite>66</cite></p>
+                  </a>
+                </div>
+                <div class="layui-col-xs4 h100">
+                  <a class="todo-card">
+                    <h3>半成品数量</h3>
+                    <p><cite>12</cite></p>
+                  </a>
+                </div>
+                <div class="layui-col-xs4 h100">
+                  <a class="todo-card">
+                    <h3>成品数量</h3>
+                    <p><cite>23</cite></p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="layui-col-md12">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+              <div class="layui-card">
+                <div class="layui-card-header">产品增长趋势</div>
+                <div class="layui-card-body">
+                  <div class="chart-container" id="userChart"></div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-col-md6">
+              <div class="layui-card">
+                <div class="layui-card-header">产品分类概览</div>
+                <div class="layui-card-body">
+                  <div class="chart-container" id="salesChart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+         <!-- 图表区域 -->
+        <div class="layui-col-md12">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+              <div class="layui-card">
+                <div class="layui-card-header">产品分析</div>
+                <div class="layui-card-body">
+                  <div class="chart-container" id="userChart2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      layui.use(["admin", "echarts"], function () {
+        const $ = layui.$;
+        const echarts = layui.echarts;
+
+        // 初始化用户增长图表
+        const initUserChart = () => {
+          const chart1 = echarts.init(document.getElementById("userChart"));
+          const option1 = {
+            title: {
+              text: "最近一周新增产品量",
+              left: "center",
+              textStyle: {
+                fontSize: 14,
+                color: "#666",
+              },
+            },
+            tooltip: {
+              trigger: "axis",
+              formatter: "{b}<br/>新增产品：{c}",
+            },
+            xAxis: {
+              type: "category",
+              data: [
+                "11-07",
+                "11-08",
+                "11-09",
+                "11-10",
+                "11-11",
+                "11-12",
+                "11-13",
+              ],
+              axisLabel: {
+                color: "#666",
+              },
+            },
+            yAxis: {
+              type: "value",
+              axisLabel: {
+                color: "#666",
+              },
+            },
+            series: [
+              {
+                type: "line",
+                data: [20, 30, 40, 61, 15, 27, 38],
+                smooth: true,
+                lineStyle: {
+                  color: "#5B8FF9",
+                  width: 3,
+                },
+                areaStyle: {
+                  color: "rgba(91, 143, 249, 0.1)",
+                },
+              },
+            ],
+          };
+          chart1.setOption(option1);
+
+          // 响应式调整
+          window.addEventListener("resize", () => chart1.resize());
+        };
+
+        // 初始化销售图表（示例结构）
+        const initSalesChart = () => {
+          const chart2 = echarts.init(document.getElementById("salesChart"));
+          const option2 = {
+        		  tooltip: {
+        			    trigger: 'item'
+        			  },
+        			  legend: {
+        			    top: '5%',
+        			    left: 'center'
+        			  },
+        			  series: [
+        			    {
+        			      name: 'Access From',
+        			      type: 'pie',
+        			      radius: ['40%', '70%'],
+        			      avoidLabelOverlap: false,
+        			      itemStyle: {
+        			        borderRadius: 10,
+        			        borderColor: '#fff',
+        			        borderWidth: 2
+        			      },
+        			      label: {
+        			        show: false,
+        			        position: 'center'
+        			      },
+        			      emphasis: {
+        			        label: {
+        			          show: true,
+        			          fontSize: 40,
+        			          fontWeight: 'bold'
+        			        }
+        			      },
+        			      labelLine: {
+        			        show: false
+        			      },
+        			      data: [
+        			        { value: 48, name: '成品' },
+        			        { value: 35, name: '半成品' },
+        			      ]
+        			    }
+        			  ]
+                };
+          chart2.setOption(option2);
+        };
+        
+        const initUserChart2 = () => {
+            const chart2 = echarts.init(document.getElementById("userChart2"));
+            const option2 = {
+            		title: {
+            		    text: '近一月产品数量分析',
+            		  },
+            		  tooltip: {
+            		    trigger: 'axis'
+            		  },
+            		  legend: {
+            		    data: ['成品', '半成品']
+            		  },
+            		  toolbox: {
+            		    show: true,
+            		    feature: {
+            		      dataView: { show: true, readOnly: false },
+            		      magicType: { show: true, type: ['line', 'bar'] },
+            		      restore: { show: true },
+            		      saveAsImage: { show: true }
+            		    }
+            		  },
+            		  calculable: true,
+            		  xAxis: [
+            		    {
+            		      type: 'category',
+            		      // prettier-ignore
+            		      data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+            		    }
+            		  ],
+            		  yAxis: [
+            		    {
+            		      type: 'value'
+            		    }
+            		  ],
+            		  series: [
+            		    {
+            		      name: '成品',
+            		      type: 'bar',
+            		      data: [
+            		        21, 41, 27, 23, 25, 76, 13, 16, 32, 20, 61, 31, 41, 27, 23, 16, 32, 20, 61,45, 30, 24, 17, 16, 36, 41, 17, 34, 28, 39,40
+            		      ],
+            		      markPoint: {
+            		        data: [
+            		          { type: 'max', name: 'Max' },
+            		          { type: 'min', name: 'Min' }
+            		        ]
+            		      },
+            		      markLine: {
+            		        data: [{ type: 'average', name: 'Avg' }]
+            		      }
+            		    },
+            		    {
+            		      name: '半成品',
+            		      type: 'bar',
+            		      data: [
+            		    	  27, 23, 16, 32, 20, 61,45, 30, 24, 17, 21, 41, 27, 23, 25, 76, 13, 16, 32, 20, 61, 31, 41, 27, 23, 25, 76, 13, 16, 32
+            		      ],
+            		      markPoint: {
+            		        data: [
+            		          { name: '最大值', value: 61.2, xAxis: 7, yAxis: 33 },
+            		          { name: '最小数', value:76, xAxis: 11, yAxis: 35 }
+            		        ]
+            		      },
+            		      markLine: {
+            		        data: [{ type: 'average', name: 'Avg' }]
+            		      }
+            		    }
+            		  ]
+            };
+            chart2.setOption(option2);
+
+            // 响应式调整
+            window.addEventListener("resize", () => chart2.resize());
+          };
+
+        // 执行初始化
+        initUserChart();
+        initSalesChart();
+        initUserChart2();
+      });
+    </script>
+  </body>
+</html>

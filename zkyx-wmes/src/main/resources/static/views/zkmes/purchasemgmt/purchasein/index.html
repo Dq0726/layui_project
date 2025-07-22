@@ -1,0 +1,207 @@
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>库存管理</cite></a>
+    <a><cite>采购入库</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <!--    search start -->
+      <div class="keySearch-cont" style="margin-bottom: 10px;">
+        <div class="layui-inline">
+          <input class="layui-input" name="keySearch-input" id="keySearch-input" autocomplete="off"
+            placeholder="请输入关键字">
+        </div>
+        <button class="layui-btn" data-type="keySearch" lay-on="keySearch">搜索</button>
+      </div>
+      <!--    search end -->
+      <table id="zkmes-purchasemgmt-purchasein-table" lay-filter="zkmes-purchasemgmt-purchasein-table"></table>
+      <script type="text/html" id="zkmes-purchasemgmt-purchasein-toolbar-head">
+        <div class="layui-btn-container"> 
+          <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+        </div>
+      </script>
+
+      <script type="text/html" id="zkmes-purchasemgmt-purchasein-toolbar-row">
+  		{{# if(d.incomingtestId == null){ }} 
+    	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="tests">
+			<i class="layui-icon layui-icon-edit"></i>生成检验单</a> 
+			{{# }else{ }}
+			  <a class="layui-btn layui-btn-xs layui-bg-green">已生成检验单</a>
+			{{# } }} 
+     	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">
+			<i class="layui-icon layui-icon-edit"></i>编辑</a> 
+   		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">
+			<i class="layui-icon layui-icon-delete"></i>删除</a>
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "table", 'common', 'util'], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      common = layui.common,
+      util = layui.util,
+      form = layui.form;
+
+    var prefix = "zkmes/purchasemgmt/purchasein";
+    // 调用 common.js 模块 getPopupSize 函数，用 ES6 解构赋值获取返回的两个参数
+    const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+
+    table.render({
+      elem: "#zkmes-purchasemgmt-purchasein-table",
+      url: prefix + "/list",
+      toolbar: "#zkmes-purchasemgmt-purchasein-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-200",
+      cols: [
+        [
+          { field: "inboundorderId", title: "入库单号" },
+          { field: "supplierName", title: "供应商名称" },
+          {
+            field: "reviewTime", title: "审核时间", templet: function (res) {
+              var html = "-";
+              if (res.reviewTime != null) {
+                html = '<span class="layui-badge layui-bg-blue">' + res.reviewTime + '</span>';
+              }
+              return html;
+            }
+          },
+          {
+            field: "status",
+            title: "状态",
+            templet: function (res) {
+              var html = "-";
+              if (res.status == 0) {
+                html = '<span class="layui-badge layui-bg-blue">未知</span>';
+              } else if (res.status == 1) {
+                html = '<span class="layui-badge layui-bg-green">待审核</span>';
+              } else if (res.status == 2) {
+                html = '<span class="layui-badge layui-bg-green">已确认仓库，待入库</span>';
+              } else if (res.status == 3) {
+                html = '<span class="layui-badge layui-bg-green">已完成</span>';
+              }
+              return html;
+            },
+          },
+
+          { field: "createTime", title: "创建时间" },
+          {
+            title: "操作",
+            width: 255,
+            align: "center",
+            fixed: "right",
+            toolbar: "#zkmes-purchasemgmt-purchasein-toolbar-row",
+          },
+        ],
+      ],
+    });
+
+    //工具条
+    table.on("tool(zkmes-purchasemgmt-purchasein-table)", function (obj) {
+      var data = obj.data;
+      if (obj.event === "del") {
+        layer.confirm("确定删除？", function (index) {
+          admin.req({
+            url: prefix + "/" + data.inboundorderId,
+            type: "delete",
+            contentType: "application/json;charset=UTF-8",
+            done: function (res) {
+              layer.msg("删除成功");
+              layui.table.reload("zkmes-purchasemgmt-purchasein-table"); //重载表格
+              layer.close(index); //执行关闭
+            },
+          });
+        });
+      } else if (obj.event === "tests") {
+        layer.confirm("确定生产来料检验单？", function (index) {
+          admin.req({
+            url: prefix + "/tests/" + data.inboundorderId,
+            type: "post",
+            contentType: "application/json;charset=UTF-8",
+            done: function (res) {
+              layer.msg("生产成功");
+              layui.table.reload("zkmes-purchasemgmt-purchasein-table"); //重载表格
+              layer.close(index); //执行关闭
+            },
+          });
+        });
+      } else if (obj.event === "edit") {
+        admin.popup({
+          title: "采购入库信息",
+          area: popupWidthHeight,
+          offset: popupOffsetWidthHeight,
+          id: "popup-zkmes-purchasemgmt-purchasein-edit",
+          success: function (layero, index) {
+            view(this.id)
+              .render("zkmes/purchasemgmt/purchasein/form", data)
+              .done(function () {
+                form.render(null, "zkmes-purchasemgmt-purchasein-form");
+
+                //提交
+                form.on("submit(zkmes-purchasemgmt-purchasein-form-submit)", function (data) {
+                  var field = data.field; //获取提交的字段 
+                  console.log(field);
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格
+                  layui.table.reload("zkmes-purchasemgmt-purchasein-table"); //重载表格
+                  layer.close(index); //执行关闭
+                });
+              });
+          },
+        });
+      }
+    });
+
+    // 头部工具栏点击事件
+    table.on("toolbar(zkmes-purchasemgmt-purchasein-table)", function (obj) {
+      switch (obj.event) {
+        case "delete":
+          layer.msg("删除");
+          break;
+        case "update":
+          layer.msg("编辑");
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+        case "refresh":
+          layui.table.reloadData("zkmes-purchasemgmt-purchasein-table"); //重载表格
+          layer.msg('刷新成功');
+          break;
+      }
+    });
+    util.on("lay-on", {
+      // 关键字搜索功能
+      keySearch: function () {
+        var keySearchValue = $('#keySearch-input').val();
+        // 重载表格，传递搜索参数
+        table.reload('zkmes-purchasemgmt-purchasein-table', {
+          page: {
+            curr: 1 // 从第一页开始
+          },
+          where: {
+            searchValue: keySearchValue // 传递关键字参数到后端
+          }
+        });
+      },
+    });
+
+  });
+</script>

@@ -1,0 +1,242 @@
+<div class="layui-form" lay-filter="zkmes-planschedulingmgmt-productionscheduling-materialpreparation-form" style="padding: 10px 30px 0 0">
+   <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">任务编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="productiontaskId"
+            name="productiontaskId"
+            placeholder="请输入"
+            value="{{ d.params.productiontaskId || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">任务名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productiontaskName"
+            placeholder="请输入"
+            value="{{ d.params.productiontaskName || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+ 
+  </div>
+  
+  <div class="layui-form-item">
+   
+    <div class="layui-inline">
+      <label class="layui-form-label">工作站类型</label>
+      <div class="layui-input-inline">
+        <input type="radio" name="source" value="0" title="工作站" checked/> 
+      </div>
+    </div> 
+    
+    <div class="layui-inline">
+      <label class="layui-form-label">工作站</label>
+      <div class="layui-input-inline">
+         <div id="workstationXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+
+		<div class="layui-inline">
+      <label class="layui-form-label">排产数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="qty"
+            placeholder="请输入"
+            value="{{ d.params.qty || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">开始时间</label>
+      <div class="layui-input-inline">
+        <input
+            type="text"
+			id="ID-laydate-begintime" 
+            name="begintime"
+            placeholder="yyyy-MM-dd HH:mm:ss" 
+            lay-verify="required" 
+            autocomplete="off"
+            class="layui-input"
+          /> 
+      </div>
+    </div>
+
+   <div class="layui-inline">
+      <label class="layui-form-label">生产时长</label>
+      <div class="layui-input-inline">
+       <script type="text/html" template>
+          <input
+            type="text"
+            name="ptime"
+            placeholder="请输入"
+            value="{{ d.params.ptime || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script> 
+      </div>
+    </div>
+    
+    <div class="layui-inline">
+      <label class="layui-form-label">完成时间</label>
+      <div class="layui-input-inline">
+        <input type="text" name="endtime" placeholder="请输入" autocomplete="off" class="layui-input" />
+      </div>
+    </div>  
+  </div>
+  
+  
+  
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">班组编号</label>
+      <div class="layui-input-inline">
+         <div id="teamXmselect" class="xm-select-demo"></div>
+      </div>
+    </div> 
+  </div> 
+  
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-planschedulingmgmt-productionscheduling-materialpreparation-form-submit"
+        lay-submit
+        lay-filter="zkmes-planschedulingmgmt-productionscheduling-materialpreparation-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendPlanschedulingmgmtProductionschedulingMaterialpreparationFromParams(d.params)"></script>
+
+<script>
+  layui.data.sendPlanschedulingmgmtProductionschedulingMaterialpreparationFromParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        form = layui.form,
+        laydate = layui.laydate,
+        xmSelect = layui.xmSelect;
+
+      //workstation////////////////////////////////////////////////////
+      var workstationIds = params.workstationId + "";
+      if (workstationIds) {
+    	  workstationIds = workstationIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/workshopmgmt/workstation/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          console.log(res);
+
+          workstationXmselect = xmSelect.render({
+            el: "#workstationXmselect",
+            name: "workstationId",
+            data: res.data,
+            radio: true,
+            initValue: workstationIds,
+            prop: {
+              name: "workstationName",
+              value: "workstationId",
+            },
+          });
+        },
+      });
+      
+      
+      //team////////////////////////////////////////////////////
+      var teamIds = params.teamId + "";
+      if (teamIds) {
+    	  teamIds = teamIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/schedulingmgmt/team/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          console.log(res);
+
+          teamXmselect = xmSelect.render({
+            el: "#teamXmselect",
+            name: "teamId",
+            data: res.data,
+            radio: true,
+            initValue: teamIds,
+            prop: {
+              name: "teamName",
+              value: "teamId",
+            },
+          });
+        },
+      });
+ 
+      
+      laydate.render({
+  	    elem: '#ID-laydate-begintime',
+  	    value: params.begintime,
+  	    isInitValue: true,
+  	    type: 'datetime',
+  	    fullPanel: true,
+  	    done: function(value, date, endDate){
+  	    	 //console.log(value); // 日期字符，如： 2017-08-18
+  	    	 // console.log(date); // 包含年月日时分秒各项值的对象
+  	    	 // console.log(endDate); // 结束日期时间对象，当设置 range 时才会返回。对象成员同上。
+  	    	 
+  	    	// var rshours = $("#rshours").val();
+  	    	// var currentDate = new Date(value);
+  	    	// currentDate.setHours(currentDate.getHours() + parseInt(rshours));
+  	    	// var result = util.toDateString(currentDate);
+  	    	// $("#endtime").val(result);
+  				 
+  	    	}
+  	  });
+      
+      
+      
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+  });
+</script>

@@ -1,0 +1,186 @@
+<div
+  class="layui-form"
+  lay-filter="zkmes-planschedulingmgmt-productionplan-customer-form"
+  style="padding: 10px 30px 0 0"
+>
+  <!--    传值给父start -->
+  <div class="layui-form-item layui-hide">
+    <div class="layui-inline">
+      <label class="layui-form-label">客户编号</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          name="customerId"
+          placeholder="请输入"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">客户名称</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          name="customerName"
+          placeholder="请输入"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!--    传值给父end -->
+
+  <!--    search start -->
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">客户编号</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="customerId"
+          placeholder="请输入"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">客户名称</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="customerName"
+          placeholder="请输入"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+    <div
+      class="layui-inline zkmes-planschedulingmgmt-productionplan-customer-form-search"
+    >
+      <div class="layui-input-inline">
+        <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+    </div>
+  </div>
+
+  <!--    search end -->
+  <div class="layui-hide">
+    <input type="text" name="customerName" class="layui-input" />
+  </div>
+
+  <div class="layui-form-item">
+    <table
+      id="zkmes-planschedulingmgmt-productionplan-customer-form-table"
+      lay-filter="zkmes-planschedulingmgmt-productionplan-customer-form-table"
+    ></table>
+    <script
+      type="text/html"
+      id="zkmes-planschedulingmgmt-productionplan-customer-form-toolbar-row"
+    ></script>
+  </div>
+
+  <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-planschedulingmgmt-productionplan-customer-form-submit"
+        lay-submit
+        lay-filter="zkmes-planschedulingmgmt-productionplan-customer-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+      reload: function () {
+        var customerId = $("#customerId");
+        //执行重载
+        table.reloadData(
+          "zkmes-planschedulingmgmt-productionplan-customer-form-table",
+          {
+            page: {
+              curr: 1, //重新从第 1 页开始
+            },
+            where: {
+              customerId: customerId.val(),
+            },
+          }
+        );
+      },
+    };
+
+    $(
+      ".zkmes-planschedulingmgmt-productionplan-customer-form-search .layui-btn"
+    ).on("click", function () {
+      var type = $(this).data("type");
+      active[type] ? active[type].call(this) : "";
+    });
+
+    var prefix = "zkmes/customermgmt";
+
+    table.render({
+      elem: "#zkmes-planschedulingmgmt-productionplan-customer-form-table",
+      url: prefix + "/list",
+      page: true,
+      height: "full-350",
+      cols: [
+        [
+          { field: "customerId", title: "ID" },
+          { field: "customerName", title: "客户名称" },
+          { field: "abbreviation", title: "客户简称" },
+          { field: "type", title: "客户类型" },
+          { field: "telephone", title: "客户电话" },
+          { field: "contactsName", title: "联系人" },
+          { field: "contactsTelephone", title: "联系人电话" },
+          {
+            field: "status",
+            title: "启用状态",
+            templet: function (res) {
+              var html =
+                res.status == 0
+                  ? '<span class="layui-badge layui-bg-blue">启用</span>'
+                  : '<span class="layui-badge layui-bg-orange">停用</span>';
+              return html;
+            },
+          },
+        ],
+      ],
+    });
+
+    //触发行双击事件
+    table.on(
+      "rowDouble(zkmes-planschedulingmgmt-productionplan-customer-form-table)",
+      function (obj) {
+        // console.log(obj.tr) //得到当前行元素对象
+        // console.log(obj.data) //得到当前行数据
+        var submit = $(
+          "#zkmes-planschedulingmgmt-productionplan-customer-form-submit"
+        );
+        var data = form.val(
+          "zkmes-planschedulingmgmt-productionplan-customer-form",
+          JSON.parse(JSON.stringify(obj.data))
+        );
+
+        form.render();
+
+        submit.trigger("click");
+      }
+    );
+  });
+</script>

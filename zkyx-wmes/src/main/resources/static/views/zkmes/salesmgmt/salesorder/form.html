@@ -1,0 +1,375 @@
+<div class="layui-form" lay-filter="zkmes-salesmgmt-salesorder-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+    <!-- 销售订单编号  salesOrderId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">订单编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="salesorderId"
+            name="salesorderId"
+            value="{{ d.params.salesorderId || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 销售订单名称 salesOrderName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">订单名称<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="salesorderName"
+            value="{{ d.params.salesorderName || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+            lay-verify="required"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <!-- 客户名称 customerName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户名称</label>
+      <div class="layui-input-inline">
+        <div style="display: flex">
+          <script type="text/html" template>
+            <input
+              type="text"
+              name="customerName"
+              value="{{ d.params.customerName || '' }}"
+              placeholder="请输入"
+              autocomplete="off"
+              class="layui-input"
+              disabled
+            /> 
+          </script>
+        </div>
+      </div>
+    </div>
+    <!-- 客户编码 customerId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户编码</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="customerId"
+            value="{{ d.params.customerId || '' }}"
+            placeholder="请输入"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 客户联系人姓名 contactsName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户联系人姓名</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="contactsName"
+            placeholder="请输入"
+            value="{{ d.params.contactsName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 客户联系人电话 contactsTelephone-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户联系人电话</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="contactsTelephone"
+            placeholder="请输入"
+            value="{{ d.params.contactsTelephone || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+   <!-- 签订日期 signingDate-->
+    <div class="layui-inline">
+      <label class="layui-form-label">签订日期<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="ID-laydate-signingDate"
+          placeholder="请输入"
+          name="signingDate"
+          autocomplete="off"
+          class="layui-input"
+          lay-verify="required"
+        />
+      </div>
+    </div>
+    
+    <!-- 交货日期 deliveryDate-->
+    <div class="layui-inline">
+      <label class="layui-form-label">交货日期<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="ID-laydate-deliveryDate"
+          placeholder="请输入"
+          name="deliveryDate"
+          autocomplete="off"
+          class="layui-input"
+          lay-verify="required"
+        />
+      </div>
+    </div>
+    <!-- 销售负责人 headOfSales-->
+    <div class="layui-inline">
+      <label class="layui-form-label">销售人</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="salesman"
+            placeholder="请输入"
+            value="{{ d.params.salesman || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 备注 remark-->
+    <div class="layui-inline">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="remark"
+            placeholder="请输入"
+            value="{{ d.params.remark || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+  
+   <div class="layui-form-item">
+    <label class="layui-form-label">交货地址</label>
+    <div class="layui-input-block">
+       <script type="text/html" template>
+          <input
+            type="text"
+            name="deliveryAddress"
+            placeholder="请输入"
+            value="{{ d.params.deliveryAddress || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+    </div>
+  </div>
+  
+  
+  <div class="layui-form-item">
+    <div class="layui-tab layui-tab-brief">
+      <ul class="layui-tab-title">
+        <li class="layui-this">订单明细</li>
+        <li>销售出库</li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+          <table id="zkmes-salesmgmt-salesorder-form-table" lay-filter="zkmes-salesmgmt-salesorder-form-table"></table> 
+        </div>
+        <div class="layui-tab-item">
+          <table
+            id="zkmes-salesmgmt-salesoutbound-form-table"
+            lay-filter="zkmes-salesmgmt-salesoutbound-form-table"
+          ></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-salesmgmt-salesorder-form-submit"
+        lay-submit
+        lay-filter="zkmes-salesmgmt-salesorder-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesInvmgmtPurchaseorderEditFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesInvmgmtPurchaseorderEditFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+
+      
+      laydate.render({
+          elem: "#ID-laydate-signingDate",
+          type: "datetime",
+          fullPanel: true,
+          value: params.signingDate,
+          isInitValue: true,
+        });
+      
+      
+      laydate.render({
+        elem: "#ID-laydate-deliveryDate",
+        type: "datetime",
+        fullPanel: true,
+        value: params.deliveryDate,
+        isInitValue: true,
+      });
+
+      var prefix = "zkmes/salesmgmt/orderproduct";
+      //订单明细列表
+      table.render({
+        elem: "#zkmes-salesmgmt-salesorder-form-table",
+        url: prefix + "/list", 
+        where: {
+        	orderId: params.salesorderId,
+        },
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-600",
+        cols: [
+          [ 
+        	  { type: 'numbers', title: '序号'},
+              /*  { field: "quotationorderId", title: "报价单编号", width: 120, fixed: "left" },   */
+                { field: "productId", title: "产品编码", width: 100 }, 
+                { field: "productName", title: "产品名称"  }, 
+                { field: "modelName", title: "型号" }, 
+                { field: "remainingQty", title: "库存"},
+                { field: "quotationQty", title: "数量",
+                  edit: function (d) {
+                  	return "text"; // 编辑模式
+                  }
+                },
+                { field: "uomName", title: "单位" },
+                { field: "taxrate", title: "税率",    
+                  templet: function (res) {
+                  	var html = "";
+                  	
+                  	html = '<span id="taxrate" >' + res.taxrate + '%</span>'
+                  	 
+                   	return html;
+                  } 
+                },
+                { field: "unitPrice", title: "单价(不含税)",
+                	 edit: function (d) {
+                   	return "text"; // 编辑模式
+                   }
+                }, 
+                { field: "amount", title: "合计(不含税/" },
+                { field: "taxAmount", title: "合计(含税)" }
+          ],
+        ],
+      });
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      //销售出库列表
+      table.render({
+        elem: "#zkmes-salesmgmt-salesoutbound-form-table",
+        url:  "zkmes/invmgmt/outboundorder/product/list",
+        totalRow: true, // 开启合计行
+        where: {
+        	outboundorderId: params.salesorderId,
+        },
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-600",
+        cols: [
+          [
+            { align: "center", title: "", colspan: 8 },
+            { align: "left", title: "出库产品明细", colspan: 7 },
+          ],
+          [
+            { field: "salesOrderName", title: "销售订单名称", width: 140 },
+            { field: "outboundWarehouse", title: "出库仓库", totalRow: "合计：", width: 100 },
+            { field: "salesOutBoundOrderNumber", title: "销售出库单编号", width: 140 },
+            { field: "deliveryTime", title: "出库时间", width: 80 },
+            { field: "expectedDeliveryTime", title: "预计出库时间", width: 140 },
+            { field: "outBoundPersonnel", title: "出库员", width: 100 },
+            { field: "customerReceiptConfirm", title: "客户收货确认", width: 140 },
+            { field: "productName", title: "产品名称", width: 100 },
+            { field: "productId", title: "产品编码", width: 100 },
+            { field: "modelName", title: "型号规格", width: 100 },
+            { field: "productBatchNumber", title: "产品批次号", width: 140 },
+            { field: "quantityThisOutboundShipment", title: "本次出库数量", width: 140 },
+            { field: "actualSellingPrice", title: "实际售价/元", width: 140 },
+            { field: "totalSellPriceIncluding", title: "产品售价合计/元", width: 190 },
+          ],
+        ],
+      });
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      laydate = layui.laydate,
+      form = layui.form;
+  });
+</script>

@@ -1,0 +1,309 @@
+<div class="layui-form" lay-filter="zkmes-productionmgmt-productionmatpre-form" style="padding: 20px 30px 0 0">
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">任务编号</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="productiontaskId"
+            name="productiontaskId"
+            placeholder="请输入"
+            value="{{ d.params.productiontaskId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">任务名称</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productionorderId"
+            placeholder="请输入"
+            value="{{ d.params.productionorderId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">订单编号</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productionorderId"
+            placeholder="请输入"
+            value="{{ d.params.productionorderId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">订单名称</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productionorderName"
+            placeholder="请输入"
+            value="{{ d.params.productionorderName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">产品编号</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productId"
+            placeholder="请输入"
+            value="{{ d.params.productId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">产品名称</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productName"
+            placeholder="请输入"
+            value="{{ d.params.productName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">产品数量</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="number"
+            id="qty"
+            name="qty"
+            placeholder="请输入"
+            value="{{ d.params.qty || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">领料单号</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="materialreqId"
+            placeholder="请输入"
+            lay-verify="required"
+            value="{{ d.params.materialreqId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">领料日期</label>
+      <div class="layui-input-block">
+        <input
+          type="text"
+          id="ID-laydate-collectionDate"
+          name="collectionDate"
+          placeholder="yyyy-MM-dd HH:mm:ss"
+          lay-verify="required"
+          autocomplete="off"
+          class="layui-input"
+          lay-verify="required"
+        />
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">仓库</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="warehouseId"
+            name="warehouseId"
+            placeholder="请输入"
+            lay-verify="required"
+            value="{{ d.params.warehouseId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">备注</label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="remark"
+            placeholder="请输入"
+            value="{{ d.params.remark || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <table
+      id="zkmes-productionmgmt-productionmatpre-form-table"
+      lay-filter="zkmes-productionmgmt-productionmatpre-form-table"
+    ></table>
+    <script type="text/html" id="zkmes-productionmgmt-productionmatpre-form-toolbar-head">
+      <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+      </div>
+    </script>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-productionmgmt-productionmatpre-form-submit"
+        lay-submit
+        lay-filter="zkmes-productionmgmt-productionmatpre-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendProductionmgmtProductionmatpreFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendProductionmgmtProductionmatpreFormParams = function (params) {
+    layui.use(["admin", "form"], function () {
+      var $ = layui.$,
+        table = layui.table,
+        laydate = layui.laydate,
+        form = layui.form;
+   
+      laydate.render({
+        elem: "#ID-laydate-collectionDate",
+        value: params.collectionDate,
+        isInitValue: true,
+        type: "datetime",
+        fullPanel: true,
+      });
+
+      //执行重载
+      table.reloadData("zkmes-productionmgmt-productionmatpre-form-table", {
+        url: "zkmes/productmgmt/bom/list",
+        page: {
+          curr: 1, //重新从第 1 页开始
+        },
+        where: {
+          superId: params.productId,
+        },
+      });
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    var prefix = "zkmes/productionmgmt/productionmatpre";
+
+    table.render({
+      elem: "#zkmes-productionmgmt-productionmatpre-form-table",
+      data: [],
+      toolbar: "#zkmes-productionmgmt-productionmatpre-form-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-550",
+      cols: [
+        [
+          { field: "productId", title: "物料编号" },
+          { field: "productName", title: "名称" },
+          { field: "modelName", title: "型号" },
+          { field: "specName", title: "规格" },
+          { field: "uomName", title: "单位" },
+          {
+            field: "number",
+            title: "数量",
+            edit: function (d) {
+              if (d.invStatus == 0) {
+                return "text"; // 编辑模式
+              }
+            },
+            templet: function (res) {
+              var qty = res.number * $("#qty").val();
+              return qty;
+            },
+          },
+          { field: "createTime", title: "创建时间" },
+        ],
+      ],
+    });
+
+    // 头部工具栏点击事件
+    table.on("toolbar(zkmes-productionmgmt-productionmatpre-form-table)", function (obj) {
+      switch (obj.event) {
+        case "delete":
+          layer.msg("删除");
+          break;
+        case "update":
+          layer.msg("编辑");
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+      }
+    });
+  });
+</script>

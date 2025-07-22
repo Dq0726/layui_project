@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>首页</title>
+
+  <style>
+    .nav {
+      height: 243px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav300 {
+      height: 300px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navUl {
+      height: 100%;
+      width: 100%;
+      margin: 0px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navLi {
+      background: #f8f8f8;
+      padding: 15px 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 1px 2px #efefef;
+    }
+
+    .navA {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .navA .layui-icon {
+
+      font-size: 50px;
+      color: #5470c6;
+    }
+
+    .navA city {
+      padding-bottom: 30px;
+      font-size: 50px;
+    }
+
+    .chart-container {
+      height: 300px;
+    }
+
+    .tittip {
+      text-align: center;
+      display: block;
+      padding: 13px 15px;
+      background-color: #f8f8f8;
+      color: #666;
+      border-radius: 2px;
+    }
+
+    .tittip h3 {
+      padding-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .tittip cite {
+      font-style: normal;
+      font-size: 30px;
+      font-weight: 300;
+      color: #508cff;
+    }
+
+    .selectDev {
+      float: right;
+    }
+
+    .selectDev span {
+      padding: 7px 5px;
+      color: #828282;
+      cursor: pointer;
+      box-shadow: 0px 0px 1px 1px #efefef;
+    }
+    }
+
+    .time-btn::last-child {}
+
+    .time-btn {
+      flex: 1;
+      padding: 10px 0;
+      border: 1px solid #d9d9d9;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #333;
+      transition: all 0.3s;
+      text-align: center;
+    }
+
+    .time-btn::first-child {}
+
+    /* 选中状态 */
+    .time-btn.selected {
+      background: red;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.3);
+    }
+
+    /* 点击时的变暗效果 */
+    .time-btn:active {
+      background: #e7e7e7;
+    }
+
+    .active {
+      background: #e7e7e7;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">主页</a>
+    </div>
+  </div>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space10">
+      <div class="layui-col-md12">
+        <div class="layui-row layui-col-space12">
+          <div class="layui-col-md4">
+            <div class="layui-card">
+              <div class="layui-card-header">常用导航</div>
+              <div class="layui-card-body nav">
+                <ul class="layui-row layui-col-space10 navUl">
+                  <li class="navLi">
+                    <a class="navA" lay-href="zkmes/productmgmt/product/index">
+                      <i class="layui-icon layui-icon-console"></i>
+                      <cite>产品设计</cite>
+                    </a>
+                  </li>
+                  <li class="navLi">
+                    <a class="navA" lay-href="zkmes/techniquemgmt/technique/index">
+                      <i class="layui-icon layui-icon-chart"></i>
+                      <cite>工艺设计</cite>
+                    </a>
+                  </li>
+                  <li class="navLi">
+                    <a class="navA" lay-href="zkmes/qcmgmt/incomingtest/index">
+                      <i class="layui-icon layui-icon-template-1"></i>
+                      <cite>质量管理</cite>
+                    </a>
+                  </li>
+                  <li class="navLi">
+                    <a class="navA" lay-href="zkmes/equipmentmgmt/equipmentarchives/index">
+                      <i class="layui-icon layui-icon-chat"></i>
+                      <cite>设备管理</cite>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md8">
+            <div class="layui-card">
+              <div class="layui-card-header">常用数据</div>
+              <div class="layui-card-body">
+                <ul class="layui-row layui-col-space10">
+                  <li class="layui-col-xs4">
+                    <div class="tittip">
+                      <h3>产品总数量</h3>
+                      <p><cite id="product_total">0</cite></p>
+                    </div>
+                  </li>
+                  <li class="layui-col-xs4">
+                    <div class="tittip">
+                      <h3>设备总数量</h3>
+                      <p><cite id="device_total">0</cite></p>
+                    </div>
+                  </li>
+                  <li class="layui-col-xs4">
+                    <div class="tittip">
+                      <h3>销售订单数量</h3>
+                      <p><cite id="saleorder_total">0</cite></p>
+                    </div>
+                  </li>
+                  <li class="layui-col-xs4">
+                    <div class="tittip">
+                      <h3>采购订单数量</h3>
+                      <p><cite id="purchaseorder_total">0</cite></p>
+                    </div>
+                  </li>
+                  <li class="layui-col-xs4">
+                    <div class="tittip">
+                      <h3>质检总数量</h3>
+                      <p><cite id="purchasein_total">0</cite></p>
+                    </div>
+                  </li>
+                  <li class="layui-col-xs4">
+                    <div class="tittip">
+                      <h3>工艺总数量</h3>
+                      <p><cite id="technique_total">0</cite></p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md12">
+        <div class="layui-row layui-col-space10">
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">采购分析</div>
+              <div class="layui-card-body nav300">
+                <div class="chart-container" id="chart1"></div>
+              </div>
+            </div>
+          </div>
+          <div class="layui-col-md6">
+            <div class="layui-card">
+              <div class="layui-card-header">营销分析</div>
+              <div class="layui-card-body nav300">
+                <div class="chart-container" id="chart2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-header">能耗分析
+            <div class="selectDev">
+              <span class="time-btn active" id="weekly">周</span>
+              <span class="time-btn" id="month">月</span>
+              <span class="time-btn" id="year">年</span>
+            </div>
+          </div>
+          <div class="layui-card-body nav300">
+            <div class="chart-container" id="chart3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hide-table" id="product_table_hide"></div>
+  <div class="hide-table" id="device_table_hide"></div>
+  <div class="hide-table" id="saleorder_total_hide"></div>
+  <div class="hide-table" id="purchaseorder_total_hide"></div>
+  <div class="hide-table" id="purchasein_total_hide"></div>
+  <div class="hide-table" id="technique_total_hide"></div>
+  <script>
+  
+
+ 
+    //数据概览1
+    layui.use(["admin", "carousel", "echarts", "table", "util"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        table = layui.table,
+        carousel = layui.carousel,
+        util = layui.util,
+        echarts = layui.echarts;
+
+      // 确保echarts.graphic存在
+      if (!echarts.graphic) {
+        echarts.graphic = {};
+      }
+
+      // 如果LinearGradient未定义，提供一个替代实现
+      if (!echarts.graphic.LinearGradient) {
+        console.warn('echarts.graphic.LinearGradient未定义，使用替代方案');
+        echarts.graphic.LinearGradient = function (x0, y0, x1, y1, colorStops, globalCoord) {
+          return {
+            type: 'linear',
+            x: x0,
+            y: y0,
+            x2: x1,
+            y2: y1,
+            colorStops: colorStops,
+            global: globalCoord
+          };
+        };
+      }
+
+
+      // 定义数字动画方法
+      util.numberAnimate = function (options) {
+        var elem = options.elem;
+        var from = options.from || 0;
+        var to = options.to;
+        var duration = options.duration || 1000;
+        var format = options.format || function (n) { return n; };
+
+        var start = null;
+        var step = function (timestamp) {
+          if (!start) start = timestamp;
+          var progress = timestamp - start;
+          var percentage = Math.min(progress / duration, 1);
+          var current = Math.floor(from + percentage * (to - from));
+
+          elem.innerHTML = format(current);
+
+          if (progress < duration) {
+            window.requestAnimationFrame(step);
+          }
+        };
+
+        window.requestAnimationFrame(step);
+      };
+
+
+
+
+      var product_prefix = "zkmes/productmgmt/product";
+      var device_prefix = "zkmes/equipmentmgmt/equipmentarchives";
+      var saleorder_prefix = "zkmes/salesmgmt/salesorder";
+      var purchaseorder_prefix = "zkmes/purchasemgmt/purchaseorder";
+      var purchasein_prefix = "zkmes/purchasemgmt/purchasein";
+      var technique_prefix = "zkmes/techniquemgmt/technique";
+      // 获取销售订单总数量发送的请求
+      table.render({
+        elem: "#saleorder_total_hide",
+        url: saleorder_prefix + "/list",
+        height: "0",
+        done: function (res, curr, count) {
+          // 表格渲染完成后回调
+          saleorder_runAnimations(count);
+
+        }
+      });
+      // 获取采购订单总数量发送的请求
+      table.render({
+        elem: "#purchaseorder_total_hide",
+        url: purchaseorder_prefix + "/list",
+        height: "0",
+        done: function (res, curr, count) {
+          // 表格渲染完成后回调
+          purchaseorder_runAnimations(count);
+        }
+      });
+      // 获取入库订单总数量发送的请求
+      table.render({
+        elem: "#purchasein_total_hide",
+        url: purchasein_prefix + "/list",
+        height: "0",
+        done: function (res, curr, count) {
+          // 表格渲染完成后回调
+          purchasein_runAnimations(count);
+        }
+      });
+      // 获取工艺总数量发送的请求
+      table.render({
+        elem: "#technique_total_hide",
+        url: technique_prefix + "/list",
+        height: "0",
+        done: function (res, curr, count) {
+          // 表格渲染完成后回调
+          technique_runAnimations(count);
+        }
+      });
+      table.render({
+        elem: "#product_table_hide",
+        url: product_prefix + "/list",
+        height: "0",
+        done: function (res, curr, count) {
+          // 表格渲染完成后回调
+
+          product_runAnimations(count);
+        }
+      });
+      table.render({
+        elem: "#device_table_hide",
+        url: device_prefix + "/list",
+        height: "0",
+        done: function (res, curr, count) {
+          // 表格渲染完成后回调
+          device_runAnimations(count);
+        }
+      });
+      /*采购订单 */
+
+
+
+
+      const initChart1 = () => {
+        const chart1 = echarts.init(document.getElementById("chart1"));
+        const option1 = {
+          //   backgroundColor:"#0F285C",
+          grid: {
+            containLabel: true,
+            top: 30,
+            right: 15,
+            bottom: 20,
+            left: 15
+          },
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: 'shadow'
+            },
+            formatter: params => {
+              console.log(params)
+              const {
+                name,
+                data,
+              } = params[0];
+              return `
+        		            <span style="font-size: 14px;font-family: Source Han Sans CN-Medium;font-weight: 500;color: #FFFFFF;margin-bottom:12px;">${name}</span>
+        		            <sapn style="font-size: 14px;font-family: Source Han Sans CN-Medium;font-weight: 500;color: #FFFFFF;margin-bottom:4px;">：${data} 单</span>
+        		         `
+            },
+            extraCssText: 'opacity: 0.8;background-color:#050F1B;padding:16px;box-shadow: 1px 6px 15px 1px rgba(0,0,0,0.13);border-radius: 4px;filter: blur(undefinedpx);border:none;'
+          },
+          xAxis: {
+            // 类目轴
+            type: "category",
+            data: [],
+
+            axisTick: {
+              show: false //隐藏X轴刻度
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#CCCCCC"
+              }
+            },
+            axisLabel: {
+              rotate: 0, // 标签旋转
+              show: true,
+              textStyle: {
+                color: 'rgba(0,0,0,0.65)',
+                fontSize: 14,
+              }
+            },
+          },
+          yAxis: {
+            type: 'value',
+            name: "",
+            nameTextStyle: {
+              color: 'rgba(0,0,0,0.65)',
+              fontSize: 14,
+              fontFamily: 'Source Han Sans CN-Regular',
+              align: "left",
+              verticalAlign: "center",
+            },
+            axisLabel: {
+              color: 'rgba(0,0,0,0.65)',
+              textStyle: {
+                fontSize: 14
+              },
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: 'rgba(223, 223, 223, 1)',
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              lineStyle: {
+                color: 'rgba(223, 223, 223, 1)',
+                type: "dashed",
+              }
+            }
+          },
+          series: [
+            {
+              type: "bar",
+              barWidth: "50%",
+              showBackground: true,
+              backgroundStyle: {
+                color: "transparent"
+              },
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#4B87FFFF" },
+                  { offset: 1, color: "#82BCFFFF" }
+                ])
+              },
+              data: []
+            }
+          ]
+        };
+        chart1.setOption(option1);
+        window.addEventListener("resize", () => chart1.resize());
+
+
+        var j = { "begintime": "2025-6-17", "endtime": "2025-6-17" };
+        //提交 Ajax 成功后，关闭当前弹层并重载表格
+        admin.req({
+          url: "/zkmes/dashboard/index/sales"
+          , type: 'get'
+          , contentType: 'application/json;charset=UTF-8'
+          , data: j
+          , done: function (res) {
+            //需要判断
+            option1.xAxis.data = res.data?.x;
+            option1.series[0].data = res.data?.y;
+            chart1.setOption(option1);
+          }
+        });
+
+
+
+      };
+      const initChart2 = () => {
+        const chart2 = echarts.init(document.getElementById("chart2"));
+        const option2 = {
+          //   backgroundColor:"#0F285C",
+          grid: {
+            containLabel: true,
+            top: 30,
+            right: 15,
+            bottom: 20,
+            left: 15
+          },
+          tooltip: {
+            trigger: "axis",
+            axisPointer: {
+              type: 'shadow'
+            },
+            formatter: params => {
+              console.log(params)
+              const {
+                name,
+                data,
+              } = params[0];
+              return `
+       		            <span style="font-size: 14px;font-family: Source Han Sans CN-Medium;font-weight: 500;color: #FFFFFF;margin-bottom:12px;">${name}</span>
+       		            <sapn style="font-size: 14px;font-family: Source Han Sans CN-Medium;font-weight: 500;color: #FFFFFF;margin-bottom:4px;">：${data} 单</span>
+       		         `
+            },
+            extraCssText: 'opacity: 0.8;background-color:#050F1B;padding:16px;box-shadow: 1px 6px 15px 1px rgba(0,0,0,0.13);border-radius: 4px;filter: blur(undefinedpx);border:none;'
+          },
+          xAxis: {
+            // 类目轴
+            type: "category",
+            data: ['2025-01-03', '2025-01-04', '2025-01-05', '2025-01-06', '2025-01-07', '2025-01-08', '2025-01-09'],
+
+            axisTick: {
+              show: false //隐藏X轴刻度
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#CCCCCC"
+              }
+            },
+            axisLabel: {
+              rotate: 0, // 标签旋转
+              show: true,
+              textStyle: {
+                color: 'rgba(0,0,0,0.65)',
+                fontSize: 14,
+              }
+            },
+          },
+          yAxis: {
+            type: 'value',
+            name: "",
+            nameTextStyle: {
+              color: 'rgba(0,0,0,0.65)',
+              fontSize: 14,
+              fontFamily: 'Source Han Sans CN-Regular',
+              align: "left",
+              verticalAlign: "center",
+            },
+            axisLabel: {
+              color: 'rgba(0,0,0,0.65)',
+              textStyle: {
+                fontSize: 14
+              },
+            },
+            axisLine: {
+              show: false,
+              lineStyle: {
+                color: 'rgba(223, 223, 223, 1)',
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              lineStyle: {
+                color: 'rgba(223, 223, 223, 1)',
+                type: "dashed",
+              }
+            }
+          },
+          series: [
+            {
+              type: "bar",
+              barWidth: "50%",
+              showBackground: true,
+              backgroundStyle: {
+                color: "transparent"
+              },
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#4B87FFFF" },
+                  { offset: 1, color: "#82BCFFFF" }
+                ])
+              },
+              data: []
+            }
+          ]
+        };
+        chart2.setOption(option2);
+        window.addEventListener("resize", () => chart2.resize());
+        var j = { "begintime": "2025-6-17", "endtime": "2025-6-17" };
+
+        admin.req({
+          url: "/zkmes/dashboard/index/salesout"
+          , type: 'get'
+          , contentType: 'application/json;charset=UTF-8'
+          , data: j
+          , done: function (res) {
+            console.log(res);
+            //需要判断
+            option2.xAxis.data = res.data?.x;
+            option2.series[0].data = res.data?.y;
+            chart2.setOption(option2);
+          }
+        });
+      };
+      const initChart3 = () => {
+        const chart3 = echarts.init(document.getElementById("chart3"));
+        const option3 = {
+          backgroundColor: '#fff',
+          title: {
+            text: "",
+            textStyle: {
+              fontSize: 12,
+              fontWeight: 400
+            },
+            left: 'center',
+            top: '5%'
+          },
+          legend: {
+            top: '5%',
+            right: '5%',
+            itemWidth: 6,
+            itemGap: 20,
+            textStyle: {
+              color: '#556677'
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              label: {
+                show: true,
+                backgroundColor: '#fff',
+                color: '#556677',
+                borderColor: 'rgba(0,0,0,0)',
+                shadowColor: 'rgba(0,0,0,0)',
+                shadowOffsetY: 0
+              },
+              lineStyle: {
+                width: 0
+              }
+            },
+            backgroundColor: '#fff',
+            textStyle: {
+              color: '#5c6c7c'
+            },
+            padding: [10, 10],
+            extraCssText: 'box-shadow: 1px 0 2px 0 rgba(163,163,163,0.5)'
+          },
+          grid: {
+            containLabel: true,
+            top: 30,
+            right: 55,
+            bottom: 20,
+            left: 35
+          },
+          xAxis: [{
+            type: 'category',
+            data: [],
+            axisLine: {
+              lineStyle: {
+                color: 'rgba(107,107,107,0.37)', //x轴颜色
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              interval: 0,
+              textStyle: {
+                color: 'rgba(0,0,0,0.65)',
+                fontSize: 14,
+              },
+              margin: 15
+            },
+            axisPointer: {
+              label: {
+                padding: [11, 5, 7],
+                backgroundColor: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: '#fff' // 0% 处的颜色
+                  }, {
+                    offset: 0.9,
+                    color: '#fff' // 0% 处的颜色
+                  }, {
+                    offset: 0.9,
+                    color: '#33c0cd' // 0% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: '#33c0cd' // 100% 处的颜色
+                  }],
+                  global: false // 缺省为 false
+                }
+              }
+            },
+            boundaryGap: false
+          }],
+          yAxis: [{
+            type: 'value',
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: 'rgba(107,107,107,0.37)', //y轴颜色
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: 'rgba(0,0,0,0.65)',
+                fontSize: 14,
+              }
+            },
+            splitLine: {
+              show: false
+            }
+          }],
+          series: [{
+            name: '能耗(KWh)',
+            type: 'line',
+            data: [],
+            symbolSize: 1,
+            symbol: 'circle',
+            smooth: true, //是否平滑
+            yAxisIndex: 0,
+            showSymbol: false,
+            areaStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: '#4B87FFFF'
+                },
+                {
+                  offset: 1,
+                  color: '#bbd8fd'
+                }
+                ], false),
+
+              }
+            },
+
+          }]
+        };
+
+        chart3.setOption(option3);
+        window.addEventListener("resize", () => chart3.resize());
+
+        //提交 Ajax 成功后，关闭当前弹层并重载表格
+        admin.req({
+          url: "/zkmes/dashboard/index/ess"
+          , type: 'get'
+          , contentType: 'application/json;charset=UTF-8'
+          , data: { "val": "weekly" }
+          , done: function (res) {
+            //需要判断
+            console.log(res.data.x, '666');
+            option3.xAxis[0].data = res.data?.x;
+            option3.series[0].data = res.data?.y;
+            chart3.setOption(option3);
+          }
+        });
+
+
+
+        /* 能耗周月年 */
+        $('.selectDev').on('click', '.time-btn', function () {
+          const timeType = $(this).attr("id");
+          $('.time-btn').removeClass('active');
+          $(this).addClass('active');
+
+          //提交 Ajax 成功后，关闭当前弹层并重载表格
+          admin.req({
+            url: "/zkmes/dashboard/index/ess"
+            , type: 'get'
+            , contentType: 'application/json;charset=UTF-8'
+            , data: { "val": timeType }
+            , done: function (res) {
+              //需要判断
+              console.log(res.data.x, '666');
+              option3.xAxis[0].data = res.data?.x;
+              option3.series[0].data = res.data?.y;
+              chart3.setOption(option3);
+            }
+          });
+        });
+      };
+      initChart1();
+      initChart2();
+      initChart3();
+
+      // 产品总数量
+      function product_runAnimations(count) {
+        util.numberAnimate({
+          elem: document.getElementById('product_total'),
+          from: 0,
+          to: count,
+          duration: 500
+        });
+      }
+      // 设备总数量
+      function device_runAnimations(count) {
+        util.numberAnimate({
+          elem: document.getElementById('device_total'),
+          from: 0,
+          to: count,
+          duration: 500
+        });
+      }
+      // 销售订单总数量
+      function saleorder_runAnimations(count) {
+        util.numberAnimate({
+          elem: document.getElementById('saleorder_total'),
+          from: 0,
+          to: count,
+          duration: 500
+        });
+      }
+      // 采购订单总数量
+      function purchaseorder_runAnimations(count) {
+        util.numberAnimate({
+          elem: document.getElementById('purchaseorder_total'),
+          from: 0,
+          to: count,
+          duration: 500
+        });
+
+        $('#purchaseorder_total_hide').hide();
+      }
+      // 采购入库总数量
+      function purchasein_runAnimations(count) {
+        util.numberAnimate({
+          elem: document.getElementById('purchasein_total'),
+          from: 0,
+          to: count,
+          duration: 500
+        });
+      }
+      // 工艺总数量
+      function technique_runAnimations(count) {
+        util.numberAnimate({
+          elem: document.getElementById('technique_total'),
+          from: 0,
+          to: count,
+          duration: 500
+        });
+      }
+
+    });
+
+
+  </script>
+</body>
+
+</html>

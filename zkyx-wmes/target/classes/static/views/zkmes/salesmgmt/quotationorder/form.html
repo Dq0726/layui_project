@@ -1,0 +1,854 @@
+<div class="layui-form" lay-filter="zkmes-salesmgmt-quotationorder-form">
+  <div class="layui-form-item">
+    <!-- 报价单编号 quotationorderId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">报价单编号<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <div style="display: flex">
+          <script type="text/html" template>
+          <input
+            type="text"
+            id="quotationorderId"
+            name="quotationorderId"
+            placeholder="请输入"
+            value="{{ d.params.quotationorderId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+				  {{# if( d.params.quotationorderId == null || d.params.quotationorderId == ''){ }} 
+			    <button type="button" class="layui-btn" lay-on="generate">生成</button>
+					{{# } }}   
+        </script>
+        </div>
+      </div>
+    </div>
+
+    <!-- 报价单名称 quotationorderName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">报价单名称<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="quotationorderName"
+            name="quotationorderName"
+            placeholder="请输入"
+            value="{{ d.params.quotationorderName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            lay-verify="required"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">报价人<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder=""
+            name="quotationman"
+            value="{{ d.params.quotationman || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            lay-verify="required"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">联系号码<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder=""
+            name="telephone"
+            value="{{ d.params.telephone || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            lay-verify="required"
+          />
+        </script>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="layui-form-item">
+    <!-- 客户编码 customerId-->
+    <div class="layui-inline layui-hide">
+      <label class="layui-form-label"> 客户编码</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="customerId"
+            name="customerId"
+            placeholder="请输入"
+            value="{{ d.params.customerId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 客户名称 customerName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户名称<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <div style="display: flex">
+          <script type="text/html" template>
+            <input
+              type="text"
+              lay-affix="search"
+              lay-filter="searchCustomer"
+              lay-verify="required"
+              readonly
+              placeholder="请选择"
+              value="{{ d.params.customerName || '' }}"
+              name="customerName"
+              lay-options="{split: true}"
+              class="layui-input"
+            />
+          </script>
+        </div>
+      </div>
+    </div>
+    <!-- 客户联系人姓名 contactsName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户联系人姓名</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="contactsName"
+            placeholder=""
+            value="{{ d.params.contactsName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 客户联系人电话 contactsTelephone-->
+    <div class="layui-inline">
+      <label class="layui-form-label">客户联系人电话</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="contactsTelephone"
+            placeholder=""
+            value="{{ d.params.contactsTelephone || '' }}"
+            autocomplete="off"
+            class="layui-input"
+            disabled
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">报价有效期</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            placeholder=""
+            name="createTime"
+            value="{{ d.params.createTime || '' }}"
+            autocomplete="off"
+            class="layui-input" 
+          />
+        </script>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">是否含税<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <input type="checkbox" id="tax" name="tax" lay-skin="switch" lay-filter="tax-checkbox-filter" title="含税|不含税">
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <table id="zkmes-salesmgmt-quotationorder-form-table" lay-filter="zkmes-salesmgmt-quotationorder-form-table">
+    </table>
+    <script type="text/html" id="zkmes-salesmgmt-quotationorder-form-toolbar-head">
+      <div> 
+        	<button class="layui-btn layui-btn-sm" lay-event="add">选择产品</button>
+        	<button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>   
+      </div> 
+    </script>
+
+    <script type="text/html" id="zkmes-salesmgmt-quotationorder-form-toolbar-rot-row">
+      <span id="rot"></span>
+      <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="select">选择</a>
+    </script>
+    <script type="text/html" id="zkmes-salesmgmt-quotationorder-form-toolbar-row">
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"
+        ><i class="layui-icon layui-icon-delete"></i>删除</a
+      >
+    </script>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-salesmgmt-quotationorder-form-submit" lay-submit
+        lay-filter="zkmes-salesmgmt-quotationorder-form-submit" value="确认" class="layui-btn" />
+
+      <input type="button" lay-on="printInfor" value="打印报价单" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+
+<script type="text/html" template lay-done="zkmesSalesmgmtquotationorderFormParamsDone(d.params)"></script>
+
+<script>
+
+  var title1 = [
+
+    { type: 'numbers', title: '序号' },
+    { field: "productId", title: "产品编码", width: 100 },
+    { field: "productName", title: "产品名称" },
+    { field: "modelName", title: "型号" }, 
+    {
+      field: "quotationQty", title: "数量",
+      edit: function (d) {
+        if (d.rot != null && d.rot != '') {
+          return "text"; // 编辑模式
+        }
+      }
+    },
+    { field: "uomName", title: "单位" },
+    {
+      field: "rot", title: "税率",
+      templet: function (res) {
+        var html = "-";
+
+        if (res.rot == null) {
+          html = '<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="select">选择</a> ';
+        } else {
+          html = '<span id="rot" >' + res.rot + '%</span> '  +
+            '<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="select">选择</a> ';  
+        }
+        return html;
+      }
+    },
+    {
+      field: "unitPrice", title: "单价(不含税)",
+      templet: function (res) {
+        return parseFloat(res.unitPrice).toFixed(2)
+      },
+      edit: function (d) {
+        if (d.rot != null && d.rot != '') {
+          return "text"; // 编辑模式
+        }
+      }
+    },
+    {
+      field: "amount", width: 255, title: "价格(不含税)", align: "center",
+      totalRow: '合计(不含税)：{{= Number(d.TOTAL_NUMS).toFixed(2) }}'
+    },
+    {
+      field: "taxAmount", width: 255, title: "税额", align: "center",
+      totalRow: '税额：{{=  Number(d.TOTAL_NUMS).toFixed(2) }}'
+    },
+    {
+      title: "操作",
+      width: 255,
+      align: "center",
+      fixed: "right",
+      toolbar: "#zkmes-salesmgmt-quotationorder-form-toolbar-row", 
+      totalRow: '价税合计：{{=  d.TOTAL_ROW.total }}'
+    },
+  ];
+
+  var title2 = [
+
+    { type: 'numbers', title: '序号' },
+    { field: "productId", title: "产品编码", width: 100 },
+    { field: "productName", title: "产品名称" },
+    { field: "modelName", title: "型号" }, 
+    {
+      field: "quotationQty", title: "数量",
+      edit: function (d) {
+        if (d.rot != null && d.rot != '') {
+          return "text"; // 编辑模式
+        }
+      }
+    },
+    { field: "uomName", title: "单位" },
+    {
+      field: "rot", title: "税率",
+      templet: function (res) {
+        var html = "-";
+
+        if (res.rot == null) {
+          html = '<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="select">选择</a> ';
+        } else {
+          html = '<span id="rot" >' + res.rot + '%</span> ';
+        }
+        return html;
+      }
+    },
+    {
+      field: "unitPrice", title: "单价(含税)",
+      edit: function (d) {
+        if (d.rot != null && d.rot != '') {
+          return "text"; // 编辑模式
+        }
+      }
+    },
+    {
+      field: "amount", width: 255, title: "价格(含税)", align: "center",
+      totalRow: '合计(含税)：{{= Number(d.TOTAL_NUMS).toFixed(2) }}'
+    },
+    {
+      field: "taxAmount", width: 255, title: "税额", align: "center",
+      totalRow: '税额：{{=  Number(d.TOTAL_NUMS).toFixed(2) }}'
+    },
+    {
+      title: "操作",
+      width: 255,
+      align: "center",
+      fixed: "right",
+      toolbar: "#zkmes-salesmgmt-quotationorder-form-toolbar-row",
+      totalRow: '价税合计：{{=  d.TOTAL_ROW.total }}'
+    },
+  ];
+
+  zkmesSalesmgmtquotationorderFormParamsDone = function (params) {
+    layui.use(["admin", "form", "util", 'common'], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        common = layui.common,
+        util = layui.util;
+
+      // 调用 common.js 模块 getPopupSize 函数，用 ES6 解构赋值获取返回的两个参数
+      const { popupWidthHeight, popupOffsetWidthHeight } = common.getPopupSize();
+
+      if (params.tax == null) {
+        params.tax = 1;
+      }
+
+      form.val('zkmes-salesmgmt-quotationorder-form', {
+        "tax": params.tax == 0 ? true : false,
+      });
+
+      var title = params.tax == 0 ? title2 : title1;
+
+      var prefix = "zkmes/salesmgmt/orderproduct";
+
+      table.render({
+        elem: "#zkmes-salesmgmt-quotationorder-form-table",
+        url: prefix + "/list1",
+        totalRow: true, // 开启合计行
+        toolbar: "#zkmes-salesmgmt-quotationorder-form-toolbar-head",
+        where: {
+          orderId: $("#quotationorderId").val() || ''
+        },
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-400",
+        cols: [title],
+        parseData: function (res) { // res 即为原始返回的数据 
+
+          res["totalRow"] = {};
+          res["totalRow"]['total'] = 0.00;
+          var total = 0.00;
+          
+          
+         
+
+          if ($("#tax").is(':checked')) {
+            //未含税转含税
+            res.data.forEach(function (item) {
+              var tmpTaxrate = Number(item.rot);
+              var tmpUnitPrice = Number(item.unitPrice);
+              var tmpPurchaseQty = Number(item.quotationQty);
+              var tmpAmount = Number(item.amount);
+              var tmpTaxAmount = Number(item.taxAmount);
+
+              total += tmpAmount;
+              total += tmpTaxAmount;
+
+              var unitPrice = tmpUnitPrice * (100 + tmpTaxrate);
+              var amount = unitPrice * item.quotationQty
+              var taxAmount = tmpUnitPrice * tmpTaxrate * item.quotationQty
+
+              item.unitPrice = Number(unitPrice / 10000.00).toFixed(2);
+              item.amount = Number(amount / 10000.00).toFixed(2);
+              item.taxAmount = Number(taxAmount / 10000.00).toFixed(2); 
+            });
+            res["totalRow"]['total'] = Number(total / 100.0).toFixed(2);
+          } else {
+            //未含税 无需转换
+            res.data.forEach(function (item) {
+              var tmpTaxrate = Number(item.rot);
+              var tmpUnitPrice = Number(item.unitPrice);
+              var tmpPurchaseQty = Number(item.quotationQty);
+              var tmpAmount = Number(item.amount);
+              var tmpTaxAmount = Number(item.taxAmount);
+
+              total += tmpAmount;
+              total += tmpTaxAmount;
+
+              item.unitPrice = Number(tmpUnitPrice / 100.00).toFixed(2);
+              item.amount = Number(tmpAmount / 100.00).toFixed(2);
+              item.taxAmount = Number(tmpTaxAmount / 100.00).toFixed(2); 
+            });
+            res["totalRow"]['total'] = Number(total / 100.0).toFixed(2);
+          } 
+     
+          return {
+            "code": res.code, // 解析接口状态
+            "msg": res.message, // 解析提示文本
+            "count": res.data.length, // 解析数据长度
+            "data": res.data, // 解析数据列表
+            "totalRow": res.totalRow // 解析数据列表
+          };
+        }
+      });
+ 
+      // 单元格编辑后的事件
+      table.on("edit(zkmes-salesmgmt-quotationorder-form-table)", function (obj) { 
+        var data = obj.data; // 得到所在行所有键值 
+ 
+        var unitPrice = 0; //需要处理成未含税单价 单位分
+        var amount = 0;  //需要处理成未含税价格 单位分
+        var taxAmount = 0; //需要计算出税额 单位分
+ 
+      //需要统一处理成未含税价 存入数据库
+        if ($("#tax").is(':checked')) {
+          //当含税 作以下处理	
+          //转换成分
+          var tmpUnitPrice = data.unitPrice * 100;
+          //转成未税单价
+          unitPrice = tmpUnitPrice / (1 + data.rot / 100.0);
+          amount = unitPrice * Number(data.quotationQty);
+          taxAmount = amount * ((data.rot) / 100.0);
+        } else {
+          //当不含税 作以下处理
+          unitPrice = data.unitPrice * 100;
+          amount = unitPrice * Number(data.quotationQty);
+          taxAmount = amount * ((data.rot) / 100.0);
+        }
+
+        var j = {
+          orderproductId: data.orderproductId,
+          quotationQty: data.quotationQty,
+          unitPrice: unitPrice,
+          amount: amount,
+          taxAmount: taxAmount
+        };
+       
+ 
+        //提交 Ajax 成功后，关闭当前弹层并重载表格
+        admin.req({
+          url: prefix,
+          type: "put",
+          contentType: "application/json;charset=UTF-8",
+          data: JSON.stringify(j),
+          done: function (res) { 
+            layui.table.reloadData("zkmes-salesmgmt-quotationorder-form-table"); //重载表格
+          },
+        }); 
+      });
+
+      //选择税率工具条
+      table.on("tool(zkmes-salesmgmt-quotationorder-form-table)", function (obj) {
+        var data = obj.data;
+        switch (obj.event) {
+          case "select":
+            admin.popup({
+              title: "选择税率信息",
+              area: "1500px",
+              offset: "110px",
+              id: "popup-zkmes-salesmgmt-quotationorder-form-rot",
+              success: function (layero, index) {
+                view(this.id)
+                  .render("zkmes/dialog/rotselect-form")
+                  .done(function () {
+                    form.render(null, "zkmes-dialog-rotselect-form");
+                    //提交
+                    form.on("submit(zkmes-dialog-rotselect-form-submit)", function (d) {
+                      var field = d.field; //获取提交的字段 
+
+                      var j = {}
+                      
+                      if ($("#tax").is(':checked')) {
+                      	  j = {
+                            orderproductId: data.orderproductId,
+                            rotId: field.rotId
+                          }
+                      } else {
+                      	 unitPrice = data.unitPrice * 100;
+                         amount = unitPrice * Number(data.quotationQty);
+                         taxAmount = amount * ((field.rot) / 100.0);
+                         
+                         j = {
+                             orderproductId: data.orderproductId,
+                             rotId: field.rotId,
+                             unitPrice: unitPrice,
+                             amount: amount,
+                             taxAmount: taxAmount 
+                           } 
+                      }
+                        
+                      //提交 Ajax 成功后，关闭当前弹层并重载表格
+                      admin.req({
+                        url: prefix,
+                        type: "put",
+                        contentType: "application/json;charset=UTF-8",
+                        data: JSON.stringify(j),
+                        done: function (res) {
+                          layer.msg("选择成功");
+                          layui.table.reload("zkmes-salesmgmt-quotationorder-form-table"); //重载表格
+                          layer.close(index); //执行关闭
+                        },
+                      });
+                    });
+                  });
+              },
+            });
+            break;
+          case "del":
+            layer.confirm("确定删除？", function (index) {
+              admin.req({
+                url: prefix + "/" + data.orderproductId,
+                type: "delete",
+                contentType: "application/json;charset=UTF-8",
+                done: function (res) {
+                  layer.msg("删除成功");
+                  layui.table.reload(
+                    "zkmes-salesmgmt-quotationorder-form-table"
+                  ); //重载表格
+                  layer.close(index); //执行关闭
+                },
+              });
+            });
+        }
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-salesmgmt-quotationorder-form-table)", function (obj) {
+        switch (obj.event) {
+          case "add":
+            admin.popup({
+              title: "选择产品信息",
+              area: popupWidthHeight,
+              offset: popupOffsetWidthHeight,
+              id: "popup-zkmes-salesmgmt-quotationorder-form-add",
+              success: function (layero, index) {
+                view(this.id)
+                   .render("zkmes/dialog/productselect-form")
+                  .done(function () {
+                    form.render(null, "zkmes-dialog-productselect-form");
+                    //提交
+                    form.on("submit(zkmes-dialog-productselect-form-submit)", function (data) {
+                      var field = data.field; //获取提交的字段
+
+                      field.orderId = $("#quotationorderId").val();
+
+
+
+                      //提交 Ajax 成功后，关闭当前弹层并重载表格
+                      admin.req({
+                        url: prefix,
+                        type: "post",
+                        contentType: "application/json;charset=UTF-8",
+                        data: JSON.stringify(field),
+                        done: function (res) {
+                          layer.msg("新增成功");
+                          layui.table.reload("zkmes-salesmgmt-quotationorder-form-table"); //重载表格
+                          layer.close(index); //执行关闭
+                        },
+                      });
+                    });
+                  });
+              },
+            });
+            break;
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+            layui.table.reloadData("zkmes-salesmgmt-quotationorder-form-table"); //重载表格
+            layer.msg('刷新成功');
+            break;
+        }
+      });
+
+      form.on("input-affix(searchCustomer)", function (data) {
+        admin.popup({
+          title: "选择客户",
+          area: popupWidthHeight,
+          offset: popupOffsetWidthHeight,
+          id: "popup-zkmes-salesmgmt-quotationorder-form-customer",
+          success: function (layero, index) {
+            view(this.id)
+              .render("zkmes/salesmgmt/quotationorder/customer-form")
+              .done(function () {
+                form.render(
+                  null,
+                  "zkmes-salesmgmt-quotationorder-customer-form"
+                );
+                //提交
+                form.on(
+                  "submit(zkmes-salesmgmt-quotationorder-customer-form-submit)",
+                  function (data) {
+                    var field = data.field; //获取提交的字段
+                    //提交 Ajax 成功后，关闭当前弹层并重载表格
+                    form.val(
+                      "zkmes-salesmgmt-quotationorder-form",
+                      field
+                    );
+                    layer.close(index); //执行关闭
+                  }
+                );
+              });
+          },
+        });
+      });
+
+
+      form.render(null);
+
+    });
+  };
+
+  layui.use(["admin", "form", "util"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      laydate = layui.laydate,
+      util = layui.util,
+      form = layui.form;
+
+
+    // 普通事件
+    util.on("lay-on", {
+      // 生成订单号
+      generate: function (othis) {
+        //提交 Ajax 成功后，关闭当前弹层并重载表格
+        admin.req({
+          url: "zkmes/salesmgmt/quotationorder",
+          type: "post",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) {
+            form.val('zkmes-purchasemgmt-purchaseorder-form', res.data);
+            table.reloadData("zkmes-salesmgmt-quotationorder-form-table");
+            layer.msg("生成成功");
+          },
+        });
+      },
+    });
+
+
+    form.on('switch(tax-checkbox-filter)', function (data) {
+      //0含税 1不含税
+      var value = data.elem.checked ? 0 : 1;
+
+      var j = {
+        quotationorderId: $("#quotationorderId").val(), 
+        tax: value
+      };
+
+      //提交 Ajax 成功后，关闭当前弹层并重载表格
+      admin.req({
+        url: "zkmes/salesmgmt/quotationorder",
+        type: "put",
+        async: false,
+        contentType: "application/json;charset=UTF-8",
+        data: JSON.stringify(j),
+        done: function (res) {
+
+        },
+      });
+  
+      if (value == 0) { 
+        table.reload("zkmes-salesmgmt-quotationorder-form-table", {
+          cols: [title2]
+        }); //重载表格   
+      } else if (value == 1) { 
+        table.reload("zkmes-salesmgmt-quotationorder-form-table", {
+          cols: [title1]
+        }); //重载表格   
+      }
+    });
+
+ 
+    //打印报价信息
+    util.on("lay-on", {
+      printInfor: function () {
+        //表单
+        var printInfor_form = form.val('zkmes-salesmgmt-quotationorder-form');
+        var v = document.createElement("div");
+        //拼接表单
+        var template_form =
+          "<form class='printForm'>" +
+          "<div class='printFormItem'>" +
+          //报价单编号
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>报价单编号：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.quotationorderId + ">" +
+          "</div>" +
+          "</div>" +
+          //报价单名称
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>报价单名称：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.quotationorderName + ">" +
+          "</div>" +
+          "</div>" +
+          //报价单位
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>报价单位：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.quotationorderName + ">" +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "<div class='printFormItem'>" +
+          //客户名称
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>客户名称：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.customerName + ">" +
+          "</div>" +
+          "</div>" +
+          //客户联系人姓名
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>客户联系人姓名：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.contactsName + ">" +
+          "</div>" +
+          "</div>" +
+          //客户联系人电话
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>客户联系人电话：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.contactsTelephone + ">" +
+          "</div>" +
+          "</div>" +
+          "<div class='printFormItem'>" +
+          //报价联系人
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>报价联系人：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.createTime + ">" +
+          "</div>" +
+          "</div>" +
+          //联系号码
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>联系号码：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.createTime + ">" +
+          "</div>" +
+          "</div>" +
+          //报价日期
+          "<div class='printFormInline'>" +
+          "<label class='printFormLabel'>报价日期：</label>" +
+          "<div class='FormInputInline'>" +
+          "<input class='printFormInput' type='text' name='title' value=" + printInfor_form.createTime + ">" +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "</div>" +
+          "<form>";
+        //表格
+        var printInfor_table = table.getData('zkmes-salesmgmt-quotationorder-form-table');
+        var template_table =
+          "<table class='printTable'>" +
+          "<thead>" +
+          "<tr>" +
+          "<th>产品名称</th>" +
+          "<th>型号</th>" +
+          "<th>数量</th>" +
+          "<th>单位</th>" +
+          "<th>税率</th>" +
+          /* 	"<th>"+titleText1+"</th>"+
+            "<th>"+titleText2+"</th>"+ */
+          "</tr>" +
+          "</thead>" +
+          "<tbody>";
+        for (let i = 0; i < printInfor_table.length; i++) {
+          var data = printInfor_table[i];
+          if (data.rot == null || data.rot == '') {
+            data.rot = 0;
+          }
+          if (data.modelName == null || data.modelName == '') {
+            data.modelName = "-";
+          }
+          console.log(data, '1112');
+          template_table += "</tr>" +
+            "<td>" + data.productName + "</td>" +
+            "<td>" + data.modelName + "</td>" +
+            "<td>" + data.amount + "</td>" +
+            "<td>" + data.uomName + "</td>" +
+            "<td>" + data.rot + "%</td>" +
+            "<td>" + data.unitPrice + "</td>" +
+            "<td>" + data.amount + "</td>" +
+            "</tr>";
+        };
+        template_table += "</tbody></table>";
+        //头部样式
+        var f1 =
+          ["<head>", "<style>",
+            "@media print {@page {size: landscape;}}",
+            ".printForm {padding: 10px 30px 0 0;}",
+            ".printFormItem {position: relative;clear: both;}",
+            ".printFormInline {margin-bottom: 5px;margin-right: 5px;position: relative;display: inline-block;vertical-align: middle;}",
+            ".printFormLabel {position: relative;float: left;display: block;padding: 9px 9px;width: 115px;color:#4c4a4a;font-size:14px;font-weight: bold;line-height: 20px;text-align: left;}",
+            ".FormInputInline {float: left;width: 180px;margin-right: 5px;}",
+            ".printFormInput {display: block;width: 100%;padding-left: 10px;height: 38px;line-height: 1.3;border-width: 0px;background-color: #fff;color: rgba(0, 0, 0, .85)}",
+            ".printTable{width: 100%;margin: 10px 0;background-color: #fff;color: #5f5f5f;position: relative;border-collapse: ‌collapse;border-spacing: 0;}",
+            ".printTable td,.printTable th{padding: 9px 15px;min-height: 20px;border-width: 1px;border-style: solid;border-color: #767676;font-size: 14px}",
+            ".printTable th{text-align: left;font-weight: 600;}",
+            "</style>", "</head>"].join("");
+
+        $(v).append(template_form)
+        $(v).append(template_table)
+        //新建窗口
+        var h = window.open("打印窗口", "_blank");
+        //写入拼凑内容
+        h.document.write(f1 + $(v).prop("outerHTML"));
+        //调用打印
+        h.print();
+        //关闭页面
+        h.close();
+      },
+    });
+  });
+</script>

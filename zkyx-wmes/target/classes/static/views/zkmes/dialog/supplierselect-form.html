@@ -1,0 +1,101 @@
+<div class="layui-form" lay-filter="zkmes-dialog-supplierselect-form" style="padding: 10px 30px 0 0">
+
+
+   <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">供应商编号</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  id="supplierId" name="supplierId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">供应商名称</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  id="supplierName" name="supplierName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>     
+     <div class="layui-inline zkmes-dialog-supplierselect-form-search">
+      <div class="layui-input-inline"> 
+          <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+    </div> 
+  </div>
+ 
+  <div class="layui-form-item">
+    <table id="zkmes-dialog-supplierselect-form-table" lay-filter="zkmes-dialog-supplierselect-form-table"></table>
+    <script type="text/html" id="zkmes-dialog-supplierselect-form-toolbar-row">
+    </script>
+  </div>
+
+ <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-dialog-supplierselect-form-submit" lay-submit lay-filter="zkmes-dialog-supplierselect-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+<script>    
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+ 	    reload: function(){ 
+ 	      var supplierId = $('#supplierId'); 
+ 	     //执行重载
+	      table.reloadData('zkmes-dialog-supplierselect-form-table', {
+	        page: {
+	          curr: 1 //重新从第 1 页开始
+	        }
+	        ,where: { 
+	        	supplierId: supplierId.val() 
+	        }
+	      }); 
+ 	    } 
+ 	  };
+    	  
+    	  
+   	$('.zkmes-dialog-supplierselect-form-search .layui-btn').on('click', function(){
+       var type = $(this).data('type');
+       active[type] ? active[type].call(this) : '';
+    });
+     
+    var prefix = "zkmes/suppliermgmt";
+
+    table.render({
+      elem: "#zkmes-dialog-supplierselect-form-table",
+      url: prefix + "/list",  
+      page: true,
+      height: "full-350",
+      cols: [[
+          { type: 'numbers', title: '序号'},
+    	  { field: 'supplierId', title: 'ID' }  
+          , { field: 'supplierName', title: '供应商名称' } 
+          , { field: 'abbreviation', title: '供应商简称' } 
+          , { field: 'type', title: '供应商类型' } 
+          , { field: 'telephone', title: '供应商电话' } 
+          , { field: 'contactsName', title: '联系人' } 
+          , { field: 'contactsTelephone', title: '联系人电话' } 
+          , { field: 'status', title: '启用状态', templet: function (res) {  
+          	var html = res.status == 0 ? '<span class="layui-badge layui-bg-blue">启用</span>' : '<span class="layui-badge layui-bg-orange">停用</span>'; 
+              return html;
+            }
+          }     	  
+        ],
+      ],
+    });
+     
+  //触发行双击事件
+    table.on('rowDouble(zkmes-dialog-supplierselect-form-table)', function(obj){ 
+    	  var submit  = $("#zkmes-dialog-supplierselect-form-submit")  
+    	  var data = form.val('zkmes-dialog-supplierselect-form', JSON.parse(JSON.stringify(obj.data)));
+    	 
+    	  submit.trigger('click');
+    });
+      
+  });
+</script>

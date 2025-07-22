@@ -1,0 +1,1297 @@
+
+  <script type="text/html" template>
+      <link
+        rel="stylesheet"
+        href="{{ layui.setter.paths.core }}css/dashboard.css?v={{ layui.admin.v }}"
+        media="all"
+      />
+    </script> 
+ 
+ 
+    <div class="layui-fluid">
+        <!-- 导航 -->
+        <div class="layui-row header">
+            <div class="layui-col-xs12 header_img">
+                <div class="header_title">中科轻云数据可视化大屏</div>
+                <div class="link_left">
+                    <a href="/#/zkmes/dashboard/index1">综合看板</a>
+                    <a href="javascript:void(0)" class="lin_color">生产管理</a>
+                    <a href="javascript:void(0)" class="lin_color">采购管理</a>
+                    <a href="javascript:void(0)" class="lin_color">销售管理</a>
+                </div>
+                <div class="link_right">
+                    <div class="link_right_tit">
+                        <a href="javascript:void(0)" class="lin_color">质量管理</a>
+                        <a href="javascript:void(0)" class="lin_color">设备管理</a>
+                        <a href="javascript:void(0)" class="lin_color">能耗管理</a>
+                    </div>
+                    <div class="link_right_time">
+                        <div class="time_det">
+                            <span class="time_infor">
+                                <span class="time_top">
+                            
+                                    <span id="time_total"></span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="logout layui-icon layui-icon-logout" lay-on="logout">
+                    	
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="index1">
+        
+        
+        <!-- 数据统计部分- -->
+        <div class="layui-col-xs12 nav">
+            <!-- 数据统计部分-生产计划 -->
+            <div class="layui-col-xs3 nav_infor pro_plan">
+                <div class="nav_infor_tit pro_plan_left"> 生产计划</div>
+                <div class="nav_infor_tit pro_plan_center">
+                    <span class="pro_num">1</span>
+                    <span class="pro_num">0</span>
+                    <span class="pro_num">6</span>
+                    <span class="pro_num">6</span>
+                </div>
+                <div class="nav_infor_tit pro_plan_rignt">条</div>
+            </div>
+            <!-- 数据统计部分-销售订单金额 -->
+            <div class="layui-col-xs4 nav_infor sales_amount">
+                <div class="nav_infor_tit sales_amount_left"> 销售订单金额</div>
+                <div class="nav_infor_tit sales_amount_center">
+                    <span class="pro_num">0</span>
+                    <span class="pro_num">1</span>
+                    <span class="pro_num">4</span>
+                    <span class="pro_num">2</span>
+                    <span class="pro_num">0</span>
+                    <span class="pro_num">6</span>
+                    <span class="pro_num">6</span>
+                </div>
+                <div class="nav_infor_tit sales_amount_rignt">元</div>
+            </div>
+            <!-- 数据统计部分-销售出库数量 -->
+            <div class="layui-col-xs3 nav_infor outbound_num">
+                <div class="nav_infor_tit outbound_num_left"> 销售出库数量</div>
+                <div class="nav_infor_tit outbound_num_center">
+                    <span class="pro_num">1</span>
+                    <span class="pro_num">9</span>
+                    <span class="pro_num">6</span>
+                </div>
+                <div class="nav_infor_tit outbound_num_rignt">件</div>
+            </div>
+            <!-- 数据统计部分-设备在线率 -->
+            <div class="layui-col-xs2 nav_infor dev_status">
+                <div class="nav_infor_tit dev_status_left"> 设备在线率</div>
+                <div class="nav_infor_tit dev_status_center">
+                    <span class="pro_num">1</span>
+                    <span class="pro_num">0</span>
+                    <span class="pro_num">0</span>
+                </div>
+                <div class="nav_infor_tit dev_status_rignt">%</div>
+            </div>
+        </div>
+        <!-- 数据可视化部分-上部 -->
+        <!-- 数据可视化部分-上部-左 -->
+        <div class=" visual_top">
+            <div class="top_infor top_left">
+                <!-- 产品生产数量 -->
+                <div class="infor_sma">
+                    <div class="infor_title">
+                        <div class="title_img"></div>
+                        <div class="title_pro">产品生产数量</div>
+                    </div>
+                    <div class="infor_cont" id="product_num"></div>
+                </div>
+                <!-- 生产报工状态 -->
+                <div class="infor_sma">
+                    <div class="infor_title">
+                        <div class="title_img"></div>
+                        <div class="title_pro">生产报工状态</div>
+                    </div>
+                    <div class="infor_cont" id="work_status"></div>
+                </div>
+            </div>
+            <!-- 数据可视化部分-上部-中 -->
+            <div class="top_infor top_center">
+                <div class="infor_sma2">
+                    <div class="infor_cont_img">
+                        <div class="cont_img" ></div>
+                    </div>
+                    <div class="cont_label cont_label1">
+                        <div class="cont_label_infor">
+                            <div>今日</div>
+                            <div>出库数</div>
+                            <div>1021</div>
+                        </div>
+                    </div>
+                    <div class="cont_label cont_label2">
+                        <div class="cont_label_infor">
+                            <div>今日</div>
+                            <div>质检合格率</div>
+                            <div>99%</div>
+                        </div>
+                    </div>
+                    <div class="cont_label cont_label3">
+                        <div class="cont_label_infor">
+                            <div>今日生产</div>
+                            <div>报工完成率</div>
+                            <div>100%</div>
+                        </div>
+                    </div>
+                    <div class="cont_label cont_label4">
+                        <div class="cont_label_infor">
+                            <div>今日生产</div>
+                            <div>计划完成率</div>
+                            <div>92%</div>
+                        </div>
+                    </div>
+                    <div class="cont_label cont_label5">
+                        <div class="cont_label_infor">
+                            <div>今日</div>
+                            <div>设备在线率</div>
+                            <div>100%</div>
+                        </div>
+                    </div>
+                    <div class="cont_label cont_label6">
+                        <div class="cont_label_infor">
+                            <div>今日</div>
+                            <div>新增销售订单</div>
+                            <div>101</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 数据可视化部分-上部-右 -->
+            <div class="top_infor top_right">
+                <!-- 订单进度情况 -->
+                <div class="infor_sma">
+                    <div class="infor_title">
+                        <div class="title_img"></div>
+                        <div class="title_pro">订单进度情况</div>
+                    </div>
+                    <div class="infor_cont" id="order_progress"></div>
+                </div>
+                <!-- 来料不良分类 -->
+                <div class="infor_sma">
+                    <div class="infor_title">
+                        <div class="title_img"></div>
+                        <div class="title_pro">来料不良分类</div>
+                    </div>
+                    <div class="infor_cont" id="materials_bad"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 数据可视化部分-下部 -->
+
+        <div class="visual_bottom">
+            <!-- 数据可视化部分-下部-左 -->
+            <div class="bottom_infor bottom_left">
+                <!-- 出货趋势分析 -->
+                <div class="infor_sma">
+                    <div class="infor_title">
+                        <div class="title_img"></div>
+                        <div class="title_pro">出货趋势分析</div>
+                    </div>
+                    <div class="infor_cont" id="sell_trends"></div>
+                </div>
+            </div>
+            <!-- 数据可视化部分-下部-中 -->
+            <div class="bottom_infor bottom_center">
+                <!-- 报价信息 -->
+                <div class="infor_sma2">
+                    <div class="infor_cont_img2">
+                        <div class="layui-tab infor_tab">
+                            <ul class="layui-tab-title infor_tab_ul">
+                                <li class="layui-this tab_title_li">报价单</li>
+                                <li>销售订单</li>
+                                <li>销售出库单</li>
+                            </ul>
+                            <div class="layui-tab-content tab_title_cont">
+                                <div class="layui-tab-item layui-show">
+                                    <div id="table_quotation_order"></div>
+                                </div>
+                                <div class="layui-tab-item" style="padding: 20px;">暂无数据！</div>
+                                <div class="layui-tab-item" style="padding: 20px;">暂无数据！</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 数据可视化部分-下部-右 -->
+            <div class="bottom_infor bottom_right">
+                <!-- 设备运行状态 -->
+                <div class="infor_sma">
+                    <div class="infor_title">
+                        <div class="title_img"></div>
+                        <div class="title_pro">设备运行状态</div>
+                    </div>
+                    <div class="infor_cont" id="device_status"></div>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+<!-- <script src="./js/echarts-liquidfill.min.js"></script> -->
+
+<script>
+  
+    layui.use(["admin", "carousel", "echarts", "table", "util", "echartsliquidfill"], function () {
+        var $ = layui.$,
+        admin = layui.admin,
+        table = layui.table,
+        carousel = layui.carousel,
+        util = layui.util,
+        echarts = layui.echarts,
+        echartsliquidfill = layui.echartsliquidfill; 
+        
+        //window.location.reload();
+        
+        // 确保echarts.graphic存在
+        if (!echarts.graphic) {
+          echarts.graphic = {};
+        }
+        // 如果LinearGradient未定义，提供一个替代实现
+        if (!echarts.graphic.LinearGradient) {
+          console.warn('echarts.graphic.LinearGradient未定义，使用替代方案');
+          echarts.graphic.LinearGradient = function (x0, y0, x1, y1, colorStops, globalCoord) {
+            return {
+              type: 'linear',
+              x: x0,
+              y: y0,
+              x2: x1,
+              y2: y1,
+              colorStops: colorStops,
+              global: globalCoord
+            };
+          };
+        }
+        table.render({
+            elem: "#table_quotation_order",
+            // height: "full-200",
+            cols: [[
+                { field: "quotationorderId", title: "报价单编号" },
+                { field: "quotationorderName", title: "报价单名称" },
+                { field: "customerId", title: "客户编码" },
+                { field: "customerName", title: "客户名称" },
+                { field: "contactsName", title: "客户联系人姓名" },
+                { field: "contactsTelephone", title: "客户联系人电话" },
+                { field: "createTime", title: "报价日期" },
+            ]],
+            data: [{ // 赋值已知数据
+                "quotationorderId": "qo20250115141310416",
+                "quotationorderName": "项目报价单",
+                "customerId": "11907",
+                "customerName": "中科智能",
+                "contactsName": "王军",
+                "contactsTelephone": "13322330827",
+                "createTime": "2025-01-15 14:13:11",
+            },
+            {
+                "quotationorderId": "qo20250116154152035",
+                "quotationorderName": "项目报价单",
+                "customerId": "11032",
+                "customerName": "华力制造",
+                "contactsName": "吴建国",
+                "contactsTelephone": "18635445688",
+                "createTime": "2025-01-16 15:42:31",
+            }, {
+                "quotationorderId": "qo20250116154159601",
+                "quotationorderName": "项目报价单",
+                "customerId": "11032",
+                "customerName": "华力制造",
+                "contactsName": "吴建国",
+                "contactsTelephone": "18635445688",
+                "createTime": "2025-01-16 15:48:12",
+            }, {
+                "quotationorderId": "qo20250116154222239",
+                "quotationorderName": "项目报价单",
+                "customerId": "11052",
+                "customerName": "太清化工",
+                "contactsName": "刘满",
+                "contactsTelephone": "13277191082",
+                "createTime": "2025-01-20 17:02:48",
+            }],
+            done: function (res, curr, count) {
+                $('tr').css({ 'background-color': 'transparent' });
+                $('td').css({ 'background-color': 'transparent' });
+
+                var that = this.elem.next(); res.data.forEach(function (item, index) {
+                    //console.log(item.empName);item表示每列显示的数据
+                    if (index % 2 == 0) {
+                        var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").css({ 'background-color': 'transparent' });
+                    } else {
+                        var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").css({ 'background-color': 'rgba(0,102,255,0.1)' });
+                    }
+                })
+
+            }
+        });
+
+        // 使用 jQuery 进行 DOM 操作
+        $('.kanban').css("color", "red"); // 隐藏 ID 为 myElement 的元素
+
+    // 产品生产数量-图表
+    var product_num = document.getElementById('product_num');
+    var chart_product_num = echarts.init(product_num);
+    var option_product_num;
+    var yData1GradientColor = [
+        {
+            offset: 0,
+            color: '#0360ed'
+        },
+        {
+            offset: 1,
+            color: '#00fbff'
+        }
+    ];
+
+    option_product_num = {
+        legend: {
+            orient: 'horizontal', // 水平排列
+            right: '5 %',
+            top: '5 %',
+            textStyle: {
+                color: '#FFFFFF',
+            },
+            // 明确指定 data 为 series 中的 name
+            data: ['数量']
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            backgroundColor: 'rgba(255,255,255,0.6)', // 背景颜色
+            textStyle: {
+                color: '#000'
+            }
+        },
+        grid: {
+            left: '5%',
+            right: '5%',
+            top: '10%',
+            bottom: '10%',
+            containLabel: true // 这个属性确保标签也能完整显示
+        },
+        xAxis: {
+            type: 'category',
+            data: ['主板', '显卡', '芯片', '内存条', '硬盘', '声卡'],
+            axisLabel: {
+                textStyle: {
+                    color: '#fff'
+                }
+            }
+        },
+        yAxis: {
+            type: 'value',
+            splitLine: {
+                show: false
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#fff'
+                }
+            }
+        },
+        series: [
+            {
+                data: [120, 200, 150, 80, 70, 110, 130],
+                name: '数量',
+                type: 'bar',
+                barWidth: 30,//柱图宽度
+                itemStyle: {
+                    borderRadius: [0, 0, 0, 0], //四个方向的圆角【上,右,下,左】
+                    // 使用echarts自带的渐变函数去设置颜色      【右,下,左,上,渐变颜色数组】
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, yData1GradientColor),
+                }
+            },
+        ]
+    };
+    // 生产报工状态
+    var work_status = document.getElementById('work_status');
+    var chart_work_status = echarts.init(work_status);
+    var option_work_status;
+    option_work_status = {
+        series: [{
+            type: 'liquidFill',
+            center: ['20%', '55%'],
+            // 水球颜色
+            color: ['#0B5E8B', '#227DB3', '#3F91CC'],
+            data: [0.6, 0.5, 0.4],
+            radius: '60%',
+            label: {
+                normal: {
+                    fontSize: 20
+                }
+            },
+            // outline  外边
+            outline: {
+                borderDistance: 5,
+                itemStyle: {
+                    borderWidth: 5,
+                    borderColor: '#00C0FF',
+                },
+            },
+            // 内图 背景色 边
+            backgroundStyle: {
+                color: 'rgba(0,37,83,0.8)',
+            }
+        },
+        {
+            type: 'liquidFill',
+            // 水球颜色
+            color: ['#49d088', '#38b470', '#2aaf66'],
+            center: ['50%', '55%'],
+            data: [0.3, 0.2, 0.1],
+            radius: '60%',
+            label: {
+                normal: {
+                    fontSize: 20
+                }
+            },
+            // outline  外边
+            outline: {
+                borderDistance: 5,
+                itemStyle: {
+                    borderWidth: 5,
+                    borderColor: '#00FFB0',
+                },
+            },
+            // 内图 背景色 边
+            backgroundStyle: {
+                color: 'rgba(0,37,83,0.8)',
+            }
+        },
+        {
+            type: 'liquidFill',
+            // 水球颜色
+            color: ['#E3B340', '#F4B30E', '#EACE36'],
+            center: ['80%', '55%'],
+            data: [0.1, 0.05, 0.02],
+            radius: '60%',
+            label: {
+                normal: {
+                    fontSize: 20
+                }
+            },
+            // outline  外边
+            outline: {
+                borderDistance: 5,
+                itemStyle: {
+                    borderWidth: 5,
+                    borderColor: '#FFBF11',
+                },
+            },
+            // 内图 背景色 边
+            backgroundStyle: {
+                color: 'rgba(0,37,83,0.8)',
+            }
+        }
+        ],
+    };
+    // 出货趋势分析
+    var sell_trends = document.getElementById('sell_trends');
+    var chart_sell_trends = echarts.init(sell_trends);
+    var option_sell_trends;
+    option_sell_trends = {
+        legend: {
+            orient: 'horizontal', // 水平排列
+            right: '5 %',
+            top: '5 %',
+            textStyle: {
+                color: '#FFFFFF',
+            },
+            // 明确指定 data 为 series 中的 name
+            data: ['数量']
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            backgroundColor: 'rgba(255,255,255,0.6)', // 背景颜色
+            textStyle: {
+                color: '#000'
+            }
+        },
+        grid: {
+            left: '5%',
+            right: '5%',
+            top: '15%',
+            bottom: '10%',
+            containLabel: true // 这个属性确保标签也能完整显示
+        },
+        xAxis: [{
+            type: 'category',
+            axisLine: {
+                show: false
+            },
+            splitArea: {
+                show: false,
+
+            },
+            axisLabel: {
+                color: '#fff'
+            },
+            splitLine: {
+                show: false
+            },
+            boundaryGap: false,
+            data: ['8月', '9月', '10月', '11月', '12月', '1月'],
+
+        }],
+        yAxis: [{
+            type: 'value',
+            min: 0,
+            // max: 140,
+            splitNumber: 4,
+
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#fff'
+                }
+            }
+        }],
+        series: [{
+            name: '产品出库数量',
+            type: 'line',
+            smooth: true, //是否平滑
+            showAllSymbol: true,
+            // symbol: 'image://./static/images/guang-circle.png',
+            symbol: 'circle',
+            symbolSize: 10,
+            label: {
+                show: false,
+                position: 'top',
+                textStyle: {
+                    color: '#00b3f4',
+                }
+            },
+            itemStyle: {
+                color: "#00b3f4",
+                borderColor: "#fff",
+                borderWidth: 3,
+                shadowColor: 'rgba(0, 0, 0, .3)',
+                shadowBlur: 0,
+                shadowOffsetY: 2,
+                shadowOffsetX: 2,
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(7,89,197,0.1)'
+                    },
+                    {
+                        offset: 1,
+                        color: 'rgba(1,198,249,0.4)'
+                    }
+                    ], false),
+
+                }
+            },
+            data: [502, 205, 332, 281, 398, 214]
+        }
+
+        ]
+    };
+    // 订单进度状况
+    var order_progress = document.getElementById('order_progress');
+    var chart_order_progress = echarts.init(order_progress);
+    var option_order_progress;
+    option_order_progress = {
+        legend: {
+            orient: 'horizontal', // 水平排列
+            right: '5 %',
+            top: '5 %',
+            textStyle: {
+                color: '#FFFFFF',
+            },
+            data: ['报价订单数量']
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+
+            textStyle: {
+                color: '#000'
+            }
+        },
+        grid: {
+            left: '5%',
+            right: '5%',
+            top: '15%',
+            bottom: '10%',
+            containLabel: true // 这个属性确保标签也能完整显示
+        },
+        xAxis: [{
+            type: 'category',
+            axisLine: {
+                show: false
+            },
+            splitArea: {
+                show: false,
+
+            },
+            axisLabel: {
+                color: '#fff'
+            },
+            splitLine: {
+                show: false
+            },
+            boundaryGap: false,
+            data: ['8月', '9月', '10月', '11月', '12月', '1月'],
+
+        }],
+        yAxis: [{
+            type: 'value',
+            min: 0,
+            // max: 140,
+            splitNumber: 4,
+
+            splitLine: {
+                show: false,
+                lineStyle: {
+                    color: 'rgba(255,255,255,0.1)'
+                }
+            },
+            axisLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#fff'
+                }
+            }
+        }],
+        series: [{
+            name: '报价订单数量',
+            type: 'line',
+            smooth: true, //是否平滑
+            showAllSymbol: true,
+            symbol: 'circle',
+            symbolSize: 0,
+
+            label: {
+                show: false,
+                position: 'top',
+                textStyle: {
+                    color: '#00b3f4',
+                }
+            },
+            itemStyle: {
+                color: "#00b3f4",
+                borderColor: "#fff",
+                borderWidth: 0,
+                shadowColor: 'rgba(0, 0, 0, .3)',
+                shadowBlur: 0,
+                shadowOffsetY: 2,
+                shadowOffsetX: 2,
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(7,89,197,0.1)'
+                    },
+                    {
+                        offset: 1,
+                        color: 'rgba(1,198,249,0.4)'
+                    }
+                    ], false),
+
+                }
+            },
+            data: [502, 205, 332, 281, 398, 214]
+        },
+        {
+            name: '销售订单数量',
+            type: 'line',
+            smooth: true, //是否平滑
+            showAllSymbol: true,
+            symbol: 'circle',
+            symbolSize: 0,
+            lineStyle: {
+                normal: {
+                    color: "#f3e1b0",
+                    shadowColor: 'rgba(0, 0, 0, .3)',
+                    shadowBlur: 0,
+                    shadowOffsetY: 5,
+                    shadowOffsetX: 5,
+                },
+            },
+            label: {
+                position: 'top',
+                textStyle: {
+                    color: '#f3e1b0',
+                }
+            },
+
+            itemStyle: {
+                color: "#f3e1b0",
+                borderColor: "#fff",
+                borderWidth: 0,
+                shadowColor: 'rgba(0, 0, 0, .3)',
+                shadowBlur: 0,
+                shadowOffsetY: 2,
+                shadowOffsetX: 2,
+            },
+            tooltip: {
+                show: true
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(255,192,20,0.2)'
+                    },
+                    {
+                        offset: 1,
+                        color: 'rgba(255,191,0,0.1)'
+                    }
+                    ], false),
+
+                }
+            },
+            data: [281, 398, 214, 179, 289, 356],
+        },
+        {
+            name: '出库订单数量',
+            type: 'line',
+            smooth: true, //是否平滑
+            showAllSymbol: true,
+            symbol: 'circle',
+            symbolSize: 0,
+            lineStyle: {
+                normal: {
+                    color: "#00ca95",
+                    shadowColor: 'rgba(0, 0, 0, .3)',
+                    shadowBlur: 0,
+                    shadowOffsetY: 5,
+                    shadowOffsetX: 5,
+                },
+            },
+            label: {
+                position: 'top',
+                textStyle: {
+                    color: '#00ca95',
+                }
+            },
+
+            itemStyle: {
+                color: "#00ca95",
+                borderColor: "#fff",
+                borderWidth: 0,
+                shadowColor: 'rgba(0, 0, 0, .3)',
+                shadowBlur: 0,
+                shadowOffsetY: 2,
+                shadowOffsetX: 2,
+            },
+            tooltip: {
+                show: true
+            },
+            areaStyle: {
+                normal: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        offset: 0,
+                        color: 'rgba(255,192,20,0.2)'
+                    },
+                    {
+                        offset: 1,
+                        color: 'rgba(255,191,0,0.1)'
+                    }
+                    ], false),
+
+                    shadowBlur: 20
+                }
+            },
+            data: [366, 498, 289, 441, 179, 90],
+        },
+        ]
+    };
+    // 来料不良分析
+    var materials_bad = document.getElementById('materials_bad');
+    var chart_materials_bad = echarts.init(materials_bad);
+    var option_materials_bad;
+    var Data = ["主板", "显卡", "芯片", "内存条", "硬盘", "声卡"];
+    var xzData = [200, 250, 370, 150, 350, 110, 110, 260, 100];
+    var tclData = [150, 140, 300, 110, 260, 100, 150, 350, 110];
+    var tbData = [80, 70, 80, 70, 80, 70, 80, 70, 90, 70];
+    option_materials_bad = {
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: 'rgba(13,5,30,.6)',
+            borderWidth: 1,
+            borderColor: '#32A1FF',
+            padding: 5,
+            textStyle: {
+                color: '#fff'
+            }
+        },
+        legend: {
+            itemWidth: 10,
+            itemHeight: 10,
+            top: 5,
+            right: 30,
+            icon: 'rect',
+            textStyle: {
+                color: '#c7d3e5'
+            },
+            data:['检验数量'],
+        
+        },
+        grid: {
+            top: '14%',
+            left: '5%',
+            right: '5%',
+            bottom: '5%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: Data,
+                axisLabel: {
+                    color: 'rgba(255, 255, 255, 0.8)',
+                    fontSize: 14,
+                    interval: 0,
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: '#2D4377'
+                    }
+                },
+                axisTick: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#2D4377',
+                        type: "dotted",
+                    }
+                },
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                min: 0,
+                position: 'left',
+                nameTextStyle: {
+                    color: "#fff",
+                    fontSize: 14,
+                },
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#2D4377'
+                    }
+                },
+                axisTick: {
+                    show: false,
+                },
+                splitLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#2D4377',
+                        type: "dotted",
+                    }
+                },
+                axisLabel: {
+                    formatter: '{value}',
+                    textStyle: {
+                        color: "#FFFFFF",
+                    }
+                },
+            }
+        ],
+        series: [
+            {
+                name: '检验数量',
+                type: 'bar',
+                barWidth: 10,
+                data: xzData,
+                barGap: '30%', // 设置柱子之间的间隔为类目宽度的50%
+                barCategoryGap: '10%', // 设置同一类目下的柱子间隔为类目宽度的40%
+                itemStyle: {
+                    barBorderRadius: 4,
+                    barCategoryGap: '40%',
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: "rgba(54, 220, 255, 0.8)",
+                        },
+                        {
+                            offset: 1,
+                            color: "rgba(41, 104, 233, 0.1)",
+                        },
+                    ]),
+                }
+            },
+            {
+                name: '良品数量',
+                type: 'bar',
+                barWidth: 10,
+                barGap: '30%', // 设置柱子之间的间隔为类目宽度的50%
+                barCategoryGap: '10%', // 设置同一类目下的柱子间隔为类目宽度的40%
+                itemStyle: {
+                    barBorderRadius: 4,
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: "rgba(54, 255, 182, 0.8)",
+                        },
+                        {
+                            offset: 1,
+                            color: "rgba(6, 187, 61, 0.1)",
+                        },
+                    ]),
+                },
+                data: tclData
+            },
+            {
+                name: '不良数量',
+                type: 'bar',
+                barWidth: 10,
+                barGap: '30%', // 设置柱子之间的间隔为类目宽度的50%
+                barCategoryGap: '10%', // 设置同一类目下的柱子间隔为类目宽度的40%
+                itemStyle: {
+                    barBorderRadius: 4,
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: "rgba(234, 161, 84, 0.8)",
+                        },
+                        {
+                            offset: 1,
+                            color: "rgba(219, 162, 62, 0.1)",
+                        },
+                    ]),
+                },
+                data: tbData
+            },
+        ]
+    };
+    // 设备运行状态
+    var device_status = document.getElementById('device_status');
+    var chart_device_status = echarts.init(device_status);
+    var option_device_status;
+    var res = [
+
+        { "name": "01-23", "value": 58, "value2": 0, "value3": 2 },
+        { "name": "01-24", "value": 60, "value2": 0, "value3": 0 },
+        { "name": "01-25", "value": 57, "value2": 3, "value3": 0 },
+        { "name": "01-26", "value": 57, "value2": 3, "value3": 0 },
+        { "name": "01-27", "value": 57, "value2": 3, "value3": 0 }
+    ];
+    option_device_status = {
+        grid: {
+            left: '15%',
+            top: '10%',
+            right: '5%',
+            bottom: '15%',
+        },
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: '#05050F', // 提示框背景色
+            borderColor: '#05050F', // 提示框边框色
+            textStyle: {
+                color: '#fff', // 提示框文本颜色
+            },
+            axisPointer: {
+                type: 'none',
+            },
+        },
+        legend: {
+            orient: 'horizontal', // 水平排列
+            // data: ['运行数', '维修数', '停机数'],
+            right: '5 %',
+            top: '0 %',
+            textStyle: {
+                //文字样式
+                color: '#fff',
+                fontSize: '12',
+            },
+            data:['运行数'],
+        },
+        xAxis: {
+            type: 'value',
+            position: "bottom",
+            splitLine: {
+                show: true,
+                lineStyle: {
+                    color: 'rgba(98, 162, 205, 0.4)',
+                },
+            },
+            axisTick: {
+                show: false,
+            },
+            axisLabel: {
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 12,
+                },
+            },
+            axisLine: {
+                show: false,
+            },
+        },
+        yAxis: {
+            type: 'category',
+            splitLine: {
+                show: false,
+            },
+            axisTick: {
+                show: false,
+            },
+            data: res.map(function (item) {
+                return item.name;
+            }),
+            axisLabel: {
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 12,
+                },
+            },
+            axisLine: {
+                lineStyle: {
+                    color: 'rgba(98, 162, 205, 0.4)',
+                },
+            },
+        },
+        series: [
+            {
+                name: '运行数',
+                type: 'bar',
+                data: res.map(function (item) {
+                    return item.value;
+                }),
+                itemStyle: {
+                    emphasis: {
+                        barBorderRadius: [0, 20, 20, 0],
+                    },
+                    normal: {
+                        barBorderRadius: [0, 20, 20, 0],
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            1,
+                            0,
+                            [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(2, 22, 80, 0.5)', // 0% 处的颜色
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(0, 255, 255, 0.7)', // 100% 处的颜色
+                                },
+                            ],
+                            false
+                        ),
+                    },
+                },
+                label: {
+                    normal: {
+                        show: false,
+                        formatter: '{c}',
+                        position: 'insideRight',
+                        offset: [-2, 1.5],
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 10,
+                        },
+                    },
+                },
+            },
+            {
+                name: '维修数',
+                textStyle: {
+                    // 提示框浮层的文本样式。
+                    color: '#fff',
+                    fontStyle: 'normal',
+                    fontWeight: 'normal',
+                    fontFamily: 'sans-serif',
+                    fontSize: 14,
+                },
+                type: 'bar',
+                z: -10,
+                data: res.map(function (item) {
+                    return item.value2;
+                }),
+                barGap: '-100%',
+                itemStyle: {
+                    color: 'rgba(0,0,0,0)',
+                    borderColor: '#fff',
+                    padding: 0,
+                    emphasis: {
+                        barBorderRadius: [0, 20, 20, 0],
+                    },
+                    normal: {
+                        barBorderRadius: [0, 20, 20, 0],
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            1,
+                            0,
+                            [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(255, 235, 59, 0.5)', // 0% 处的颜色
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(255, 235, 59, 0.7)', // 100% 处的颜色
+                                },
+                            ],
+                            false
+                        ),
+                    },
+                },
+                label: {
+                    normal: {
+                        show: false,
+                        lineHeight: 12,
+                        formatter: '{c}',
+                        position: 'right',
+                        right: 0,
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 12,
+                        },
+                    },
+                },
+            },
+            {
+                name: '停机数',
+                type: 'bar',
+                data: res.map(function (item) {
+                    return item.value3;
+                }),
+                itemStyle: {
+                    emphasis: {
+                        barBorderRadius: [0, 20, 20, 0],
+                    },
+                    normal: {
+                        barBorderRadius: [0, 20, 20, 0],
+                        color: new echarts.graphic.LinearGradient(
+                            0,
+                            0,
+                            1,
+                            0,
+                            [
+                                {
+                                    offset: 0,
+                                    color: 'rgba(145, 145, 145, 0.5)', // 0% 处的颜色
+                                },
+                                {
+                                    offset: 1,
+                                    color: 'rgba(185, 185, 185, 0.7)', // 100% 处的颜色
+                                },
+                            ],
+                            false
+                        ),
+                    },
+                },
+                label: {
+                    normal: {
+                        show: false,
+                        formatter: '{c}',
+                        position: 'insideRight',
+                        offset: [-2, 1.5],
+                        textStyle: {
+                            color: '#fff',
+                            fontSize: 10,
+                        },
+                    },
+                },
+            },
+        ],
+        barCategoryGap: '60%',
+    };
+ 
+    chart_product_num.setOption(option_product_num);
+    chart_work_status.setOption(option_work_status);
+    chart_sell_trends.setOption(option_sell_trends);
+    chart_order_progress.setOption(option_order_progress);
+    chart_materials_bad.setOption(option_materials_bad);
+    chart_device_status.setOption(option_device_status);
+     
+    window.onresize =  chart_product_num.resize();
+ 
+
+    /* // 窗口大小变化时调用 resize 方法
+    window.addEventListener('resize', function () {
+        chart_product_num.resize();
+        chart_work_status.resize();
+        chart_sell_trends.resize();
+        chart_order_progress.resize();
+        chart_materials_bad.resize();
+        chart_device_status.resize();
+    }); */
+    // 定义更新日期和时间的函数
+    function updateDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+ 
+
+        // 更新页面上的日期和时间
+        $('.time_top span:last-child').text(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`);
+
+    }
+    // 首次加载时更新日期和时间
+    updateDateTime();
+    // 每秒更新一次日期和时间
+    setInterval(updateDateTime, 1000);
+    
+ 
+/* function clearHistory(){
+	let hl = window.history.lenth;
+	for(let i = 0; i < hl; i++)
+		window.history.pushState(null, null, window.location.href());
+	
+	window.history.go(-1);
+	
+} */
+    
+    //返回上一级页面
+    util.on("lay-on", {
+        logout: function () {
+        	 
+        //	window.history.go(-1);
+        //	window.location.reload();
+        	
+        	window.top.location = "/";
+        
+        },
+      });
+    });
+</script>
+
+</html>

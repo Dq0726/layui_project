@@ -1,0 +1,360 @@
+<div class="layui-form" lay-filter="zkmes-equipmentmgmt-patrolinspection-form" style="padding: 10px 30px 0 0">
+  <div class="layui-form-item">
+    <!-- 设备编码 equipmentId-->
+    <div class="layui-inline">
+      <label class="layui-form-label">设备编码</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="equipmentId"
+            name="equipmentId"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <!-- 设备名称 equipmentName-->
+    <div class="layui-inline">
+      <label class="layui-form-label">设备名称</label>
+     <div class="layui-input-inline">
+          <script type="text/html" template>
+            <input
+              type="text"
+              id="equipmentName"
+              name="equipmentName"
+              placeholder="请输入"
+              value=""
+              autocomplete="off"
+              class="layui-input"
+            />
+          </script>
+      </div>
+    </div>
+	<!-- 使用车间 workshop-->
+	<div class="layui-inline">
+	  <label class="layui-form-label">使用车间</label>
+	  <div class="layui-input-inline">
+	    <div id="workshopXmselect" class="xm-select-demo"></div>
+	  </div>
+	</div>			  
+	<!-- 安装地点 location-->
+	<div class="layui-inline">
+	  <label class="layui-form-label">安装地点</label>
+	  <div class="layui-input-inline">
+	    <div id="locationXmselect" class="xm-select-demo"></div>
+	  </div>
+	</div>
+  </div> 
+  <div class="layui-form-item">
+	<!-- 巡检方案名称 inspectionPlanName 例变压器、灭火器、清洗机等月巡检方案-->
+	 <div class="layui-inline">
+	  <label class="layui-form-label">巡检方案名称</label>
+	  <div class="layui-input-inline">
+	    <div id="patrolinspectionNameXmselect" class="xm-select-demo"></div>
+	  </div>
+	</div>
+    <!--巡检频率 frequency-->
+    <div class="layui-inline">
+      <label class="layui-form-label">巡检频率</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="frequency"
+            name="frequency"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+	<!-- 最近巡检日期 patrolInspectionDate-->
+	<div class="layui-inline">
+	  	<label class="layui-form-label">最近巡检日期</label>
+		 <div class="layui-input-inline">
+		   <input type="text" id="ID-laydate-patrolInspectionDate" placeholder="请输入"
+		     name="patrolInspectionDate" autocomplete="off" class="layui-input" />
+		 </div>
+	</div>
+    <!--巡检结果 patrolResult-->
+    <div class="layui-inline">
+      <label class="layui-form-label">巡检结果</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            id="patrolResult"
+            name="patrolResult"
+            placeholder="请输入"
+            value=""
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div> 
+  <div class="layui-form-item">
+
+    <!-- 设备状态 equipmentStatus-->
+    <div class="layui-inline">
+      <label class="layui-form-label">设备状态</label>
+      <div class="layui-input-inline">
+        <div id="equipmentStatusXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>  
+  </div> 
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-equipmentmgmt-patrolinspection-form-submit"
+        lay-submit
+        lay-filter="zkmes-equipmentmgmt-patrolinspection-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesInvmgmtpatrolinspectionEditFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesInvmgmtpatrolinspectionEditFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+ 
+      
+      var prefix = "zkmes/equipmentmgmt/patrolinspection/product";
+
+     
+      //工具条
+      table.on("tool(zkmes-equipmentmgmt-patrolinspection-form-table)", function (obj) {
+        var data = obj.data;
+        if (obj.event === "del") {
+          layer.confirm("确定删除？", function (index) {
+            admin.req({
+              url: prefix + "/" + data.patrolinspectionproductId,
+              type: "delete",
+              contentType: "application/json;charset=UTF-8",
+              done: function (res) {
+                layer.msg("删除成功");
+                layui.table.reload("zkmes-equipmentmgmt-patrolinspection-form-table"); //重载表格
+                layer.close(index); //执行关闭
+              },
+            });
+          }); 
+        }
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-equipmentmgmt-patrolinspection-form-table)", function (obj) {
+        switch (obj.event) { 
+        case "add":
+            admin.popup({
+              title: "选择产品信息",
+              area: "1500px",
+              offset: "110px",
+              id: "popup-zkmes-equipmentmgmt-patrolinspection-edit-form-add",
+              success: function (layero, index) {
+                view(this.id)
+                  .render("zkmes/equipmentmgmt/patrolinspection/product-form")
+                  .done(function () {
+                    form.render(null, "zkmes-equipmentmgmt-patrolinspection-product-form");
+                    //提交
+                    form.on("submit(zkmes-equipmentmgmt-patrolinspection-product-form-submit)", function (data) {
+                      var field = data.field; //获取提交的字段
+
+                      field.patrolinspectionId = $("#patrolinspectionId").val();
+
+                      //提交 Ajax 成功后，关闭当前弹层并重载表格
+                      admin.req({
+                        url: prefix,
+                        type: "post",
+                        contentType: "application/json;charset=UTF-8",
+                        data: JSON.stringify(field),
+                        done: function (res) {
+                          layer.msg("新增成功");
+                          layui.table.reload("zkmes-equipmentmgmt-patrolinspection-edit-form-table"); //重载表格
+                          layer.close(index); //执行关闭
+                        },
+                      });
+                    });
+                  });
+              },
+            });
+            break;
+          case "delete":
+            layer.msg("删除");
+            break;
+          case "update":
+            layer.msg("编辑");
+            break;
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+          case "refresh":
+            layui.table.reloadData("zkmes-equipmentmgmt-patrolinspection-form-table"); //重载表格
+            break;
+        }
+      });
+       
+      laydate.render({
+        elem: "#ID-laydate-inbounddate",
+        value: params.inbounddate,
+        isInitValue: true,
+        type: "date",
+        fullPanel: true,
+        done: function (value, date, endDate) { 
+        },
+      });
+
+
+      /* 设备状态 */
+      var supplierIds = params.supplierId + "";
+      if (supplierIds) {
+        supplierIds = supplierIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	   equipmentStatusXmselect = xmSelect.render({
+              el: "#equipmentStatusXmselect",
+              name: "supplierId",
+              data: res.data,
+              radio: true,
+              initValue: supplierIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+      /* 使用车间 */
+      var workshopIds = params.workshopId + "";
+      if (workshopIds) {
+    	  workshopIds = workshopIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	  workshopXmselect = xmSelect.render({
+              el: "#workshopXmselect",
+              name: "workshopId",
+              data: res.data,
+              radio: true,
+              initValue: workshopIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+      /* 安装地点 */
+      var locationIds = params.locationId + "";
+      if (locationIds) {
+    	  locationIds = locationIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	  locationXmselect = xmSelect.render({
+              el: "#locationXmselect",
+              name: "locationId",
+              data: res.data,
+              radio: true,
+              initValue: locationIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+
+      /* 巡检方案名称 */
+      var patrolinspectionIds = params.patrolinspectionId + "";
+      if (patrolinspectionIds) {
+    	  patrolinspectionIds = patrolinspectionIds.split(",");
+      }
+      admin.req({
+          url: "/zkmes/suppliermgmt/list1",
+          type: "get",
+          contentType: "application/json;charset=UTF-8",
+          done: function (res) { 
+        	  patrolinspectionNameXmselect = xmSelect.render({
+              el: "#patrolinspectionNameXmselect",
+              name: "patrolinspectionId",
+              data: res.data,
+              radio: true,
+              initValue: patrolinspectionIds,
+              prop: {
+                name: "supplierName",
+                value: "supplierId", 
+              },
+            });
+          },
+        });
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form", "common"], function () {
+    var $ = layui.$,
+      util = layui.util,
+      admin = layui.admin,
+      common = layui.common,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+   
+  });
+
+  layui.use(["admin", "form"], function () {
+	    var $ = layui.$,
+	      admin = layui.admin,
+	      view = layui.view,
+	      table = layui.table,
+	      laydate = layui.laydate,
+	      form = layui.form;
+	    
+
+	    /* 最近巡检日期 */
+	    laydate.render({
+	      elem: "#ID-laydate-patrolInspectionDate",
+	      type: "date",
+	      fullPanel: true,
+	    });
+
+
+	  });
+  
+</script>

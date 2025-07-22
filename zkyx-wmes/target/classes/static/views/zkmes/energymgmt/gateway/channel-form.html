@@ -1,0 +1,150 @@
+<div class="layui-form" lay-filter="zkmes-energymgmt-gateway-channel-form" style="padding: 10px 30px 0 0">
+ 
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">通道编号<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+			{{# if(d.params.channelId == null){ }}
+          <input
+            type="text"
+            name="channelId"
+            placeholder="请输入"
+            value="{{ d.params.channelId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+			{{# }else{ }}
+          <input
+            type="text"
+            name="channelId"
+            placeholder="请输入"
+            value="{{ d.params.channelId || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+			disabled
+          />
+			{{# } }} 
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">通道名称<span class="required">*</span></label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="channelName"
+            placeholder="请输入"
+            value="{{ d.params.channelName || '' }}"
+            lay-verify="required"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">通讯编码</label>
+      <div class="layui-input-inline">
+          <script type="text/html" template>
+          <input
+            type="text"
+            name="commcode"
+            placeholder="请输入"
+            value="{{ d.params.commcode || '' }}" 
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+ 
+ 
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">绑定设备</label>
+      <div class="layui-input-inline">
+        <div id="equipmentarchivesXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+  </div>
+ 
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-energymgmt-gateway-channel-form-submit"
+        lay-submit
+        lay-filter="zkmes-energymgmt-gateway-channel-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script type="text/html" template lay-done="layui.data.sendZkmesEnergymgmtGatewayChannelFormParams(d.params)"></script>
+
+<script>
+  layui.data.sendZkmesEnergymgmtGatewayChannelFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        util = layui.util,
+        xmSelect = layui.xmSelect;
+ 
+      /* 使用车间 */
+      var equipmentarchivesIds = params.equipmentarchivesId;
+      if (equipmentarchivesIds) {
+        equipmentarchivesIds = equipmentarchivesIds.split(",");
+      }
+
+      admin.req({
+        url: "zkmes/equipmentmgmt/equipmentarchives/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          equipmentarchivesXmselect = xmSelect.render({
+            el: "#equipmentarchivesXmselect",
+            name: "equipmentarchivesId",
+            data: res.data,
+            clickClose: true,
+            radio: true,
+            initValue: equipmentarchivesIds,
+            prop: {
+              name: "equipmentarchivesName",
+              value: "equipmentarchivesId",
+            },
+          });
+        },
+      });
+
+      form.render(null);
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      laydate = layui.laydate,
+      form = layui.form;
+  });
+</script>

@@ -1,0 +1,141 @@
+<title>网站设置</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>设置</cite></a>
+    <a><cite>网站设置</cite></a>
+  </div>
+</div>
+  
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-header">网站设置</div>
+        <div class="layui-card-body" pad15>
+          
+          <div class="layui-form" wid100 lay-filter="web_site_form">
+            <div class="layui-form-item">
+              <label class="layui-form-label">网站名称</label>
+              <div class="layui-input-block">
+                <input type="text" name="site_name" value="layuiAdmin" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">网站域名</label>
+              <div class="layui-input-block">
+                <input type="text" name="site_domain" lay-verify="url" value="http://www.baidu.com#" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">缓存时间</label>
+              <div class="layui-input-inline" style="width: 80px;">
+                <input type="text" name="cache_time" lay-verify="number" value="0" class="layui-input">
+              </div>
+              <div class="layui-input-inline layui-input-company">分钟</div>
+              <div class="layui-form-mid layui-word-aux">本地开发一般推荐设置为 0，线上环境建议设置为 10。</div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">最大文件上传</label>
+              <div class="layui-input-inline" style="width: 80px;">
+                <input type="text" name="upload_file_size" lay-verify="number" value="2048" class="layui-input">
+              </div>
+              <div class="layui-input-inline layui-input-company">KB</div>
+              <div class="layui-form-mid layui-word-aux">提示：1 M = 1024 KB</div>
+            </div> 
+            
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">首页标题</label>
+              <div class="layui-input-block">
+                <textarea name="site_title" class="layui-textarea">layuiAdmin 通用后台管理模板系统</textarea>
+              </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">META关键词</label>
+              <div class="layui-input-block">
+                <textarea name="meta_keywords" class="layui-textarea" placeholder="多个关键词用英文状态 , 号分割"></textarea>
+              </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">META描述</label>
+              <div class="layui-input-block">
+                <textarea name="meta_descript" class="layui-textarea">layuiAdmin 是 layui 官方出品的通用型后台模板解决方案，提供了单页版和 iframe 版两种开发模式。layuiAdmin 是目前非常流行的后台模板框架，广泛用于各类管理平台。</textarea>
+              </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+              <label class="layui-form-label">版权信息</label>
+              <div class="layui-input-block">
+                <textarea name="site_copyright" class="layui-textarea">© MIT license</textarea>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="set_website">确认保存</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['form', 'upload'  ], function () {
+	    var $ = layui.$
+	      , layer = layui.layer
+	      , laytpl = layui.laytpl
+	      , setter = layui.setter
+	      , view = layui.view
+	      , admin = layui.admin
+	      , form = layui.form
+	      , upload = layui.upload;
+
+	    var $body = $('body');
+
+	    form.render();
+	    
+	    //网站设置
+	    form.on('submit(set_website)', function(obj){
+	      layer.msg(JSON.stringify(obj.field));
+	      
+	      //提交修改 
+	      admin.req({
+    	  	url: '/inet/services/system/site/config' //实际使用请改成服务端真实接口
+  	        ,type: 'put'
+ 	        , contentType: 'application/json;charset=UTF-8' 
+ 	        , data: JSON.stringify(obj.field)
+	        ,success: function(){
+	        	 layer.msg("修改成功");
+	        }
+	      });
+	     
+	      return false;
+	    });
+	    
+	    
+	    admin.req({
+	        url: '/inet/services/system/web/config' //实际使用请改成服务端真实接口
+	        , type: 'get'
+	        , contentType: 'application/json;charset=UTF-8' 
+	        , done: function (res) {
+	          console.log(res);
+	          
+	          form.val("web_site_form",
+              {
+	        	  site_name: res.data.site_name.value,
+	        	  site_domain: res.data.site_domain.value, 
+	        	  cache_time: res.data.cache_time.value,     
+	        	  upload_file_size: res.data.upload_file_size.value,     
+	        	  site_title: res.data.site_title.value,   
+	        	  meta_keywords: res.data.meta_keywords.value,   
+	        	  meta_descript: res.data.meta_descript.value,   
+	        	  site_copyright: res.data.site_copyright.value,   
+              });  
+	      }
+	    });
+	    
+})
+</script>

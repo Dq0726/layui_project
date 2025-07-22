@@ -1,0 +1,45 @@
+<div class="layui-form" lay-filter="zkmes-equipmentmgmt-equipmenttype-form" style="padding: 20px 30px 0 0">
+  <div class="layui-form-item layui-hide">
+    <label class="layui-form-label">ID</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <input type="text" name="equipmenttypeId" placeholder="请输入" value="{{ d.params.equipmenttypeId || '' }}" autocomplete="off" class="layui-input" />
+      </script>
+    </div>
+  </div>
+ 
+  <div class="layui-form-item">
+
+       <label class="layui-form-label">设备类型<span class="required">*</span></label>
+      <div class="layui-input-block">
+        <script type="text/html" template>
+          <input type="text" name="equipmenttypeName" placeholder="请输入"  value="{{ d.params.equipmenttypeName || '' }}"   lay-verify="required" autocomplete="off" class="layui-input" />
+        </script>
+      </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">备注</label>
+    <div class="layui-input-block">
+      <script type="text/html" template>
+        <textarea type="text" name="remark" autocomplete="off" class="layui-textarea">{{ d.params.remark || '' }}</textarea>
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-equipmentmgmt-equipmenttype-form-submit" lay-submit lay-filter="zkmes-equipmentmgmt-equipmenttype-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      form = layui.form;
+  });
+</script>

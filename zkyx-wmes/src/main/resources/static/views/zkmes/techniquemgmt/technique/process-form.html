@@ -1,0 +1,189 @@
+<div
+  class="layui-form"
+  lay-filter="zkmes-techniquemgmt-technique-process-form"
+  style="padding: 10px 30px 0 0"
+>
+  <input
+    type="text" 
+    name="processVersionId"
+    placeholder="请输入"
+    autocomplete="off"
+    class="layui-input layui-hide"
+  />
+  
+  <input
+    type="text" 
+    name="processVersion"
+    placeholder="请输入"
+    autocomplete="off"
+    class="layui-input layui-hide"
+  />
+
+  <input
+    type="text" 
+    name="processName"
+    placeholder="请输入"
+    autocomplete="off"
+    class="layui-input layui-hide"
+  />
+     
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">工序编号</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="processId" 
+          placeholder="请输入"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">工序名称</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="processName" 
+          placeholder="请输入"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+    <div
+      class="layui-inline zkmes-techniquemgmt-technique-process-form-search"
+    >
+      <div class="layui-input-inline">
+        <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="layui-form-item">
+    <table
+      id="zkmes-techniquemgmt-technique-process-form-table"
+      lay-filter="zkmes-techniquemgmt-technique-process-form-table"
+    ></table>
+    <script
+      type="text/html"
+      id="zkmes-techniquemgmt-technique-process-form-toolbar-head"
+    >
+    </script>
+  </div>
+
+  <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input
+        type="button"
+        id="zkmes-techniquemgmt-technique-process-form-submit"
+        lay-submit
+        lay-filter="zkmes-techniquemgmt-technique-process-form-submit"
+        value="确认"
+        class="layui-btn"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+      reload: function () {
+        var processId = $("#processId");
+        //执行重载
+        table.reloadData(
+          "zkmes-techniquemgmt-technique-process-form-table",
+          {
+            page: {
+              curr: 1, //重新从第 1 页开始
+            },
+            where: {
+              processId: processId.val(),
+            },
+          }
+        );
+      },
+    };
+
+    $(".zkmes-techniquemgmt-technique-process-form-search .layui-btn").on(
+      "click",
+      function () {
+        var type = $(this).data("type");
+        active[type] ? active[type].call(this) : "";
+      }
+    );
+
+    var prefix = "zkmes/techniquemgmt/process/version";
+
+    table.render({
+      elem: "#zkmes-techniquemgmt-technique-process-form-table",
+      url: prefix + "/list",
+      toolbar: "#zkmes-techniquemgmt-technique-process-form-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-350",
+      cols: [
+        [ 
+          { field: 'processId', title: '工序编号' } 
+        , { field: 'processName', title: '工序名称' } 
+        ,{ field: 'versionId', title: '工序版本ID' } 
+    	  , { field: 'version', title: '工序版本号' } 
+    	  , { field: 'tag', title: '标签' } 
+        , { field: 'describe', title: '说明' }  
+        , { field: 'status', title: '启用状态', templet: function (res) {  
+          	var html = res.status == 0 ? '<span class="layui-badge layui-bg-blue">启用</span>' : '<span class="layui-badge layui-bg-orange">停用</span>'; 
+              return html;
+            }
+          }
+        , { field: 'remark', title: '备注' }  
+        , { field: 'createTime', title: '创建时间' }
+        ],
+      ],
+    });
+
+    //触发行双击事件
+    table.on(
+      "rowDouble(zkmes-techniquemgmt-technique-process-form-table)",
+      function (obj) {
+        // console.log(obj.tr) //得到当前行元素对象
+        //console.log(obj.data) //得到当前行数据
+
+        var submit = $(
+          "#zkmes-techniquemgmt-technique-process-form-submit"
+        );
+        
+        var j = {
+        		processVersionId: obj.data.versionId,
+        		processVersion: obj.data.version,
+        		processName:  obj.data.processName
+        }
+        
+        var data = form.val(
+          "zkmes-techniquemgmt-technique-process-form", j
+        );
+        
+        submit.trigger("click");
+      }
+    );
+  });
+</script>

@@ -1,0 +1,166 @@
+<title>生产领料</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>中科MES</cite></a>
+    <a><cite>库存管理</cite></a>
+    <a><cite>生产领料</cite></a>
+  </div>
+</div>
+
+<div class="layui-fluid">
+  <div class="layui-card">
+    <div class="layui-card-body">
+      <table id="zkmes-productionmgmt-pmr-table" lay-filter="zkmes-productionmgmt-pmr-table"></table>
+
+      <script type="text/html" id="zkmes-productionmgmt-pmr-toolbar-head">
+        <div class="layui-btn-container"> 
+          <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
+        </div>
+      </script>
+
+      <script type="text/html" id="zkmes-productionmgmt-pmr-toolbar-row">
+        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"
+          ><i class="layui-icon layui-icon-edit"></i>编辑</a
+        >
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"
+          ><i class="layui-icon layui-icon-delete"></i>删除</a
+        >
+      </script>
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(["admin", "table"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    var prefix = "zkmes/productionmgmt/pmr";
+
+    table.render({
+      elem: "#zkmes-productionmgmt-pmr-table",
+      url: prefix + "/list",
+      toolbar: "#zkmes-productionmgmt-pmr-toolbar-head",
+      page: true,
+      defaultToolbar: [
+        "filter",
+        "print",
+        "exports",
+        {
+          title: "提示",
+          layEvent: "LAYTABLE_TIPS",
+          icon: "layui-icon-tips",
+        },
+      ],
+      height: "full-200",
+      cols: [
+        [
+          { field: "outboundorderId", title: "生产领料编码" },
+          { field: "begintime", title: "预计领料时间" }, 
+          { field: "warehouseName", title: "领料仓库" },
+          {
+              field: "pmrStatus",
+              title: "状态",
+              templet: function (res) {
+                var html = '-'; 
+                
+                if (res.status == 3) {
+                	html = '<span class="layui-badge layui-bg-green">待审核</span>'; 
+                } else if (res.status == 4) {
+                  html = '<span class="layui-badge layui-bg-blue">通过</span>';
+                } else if (res.status == 5) {
+                  html = '<span class="layui-badge layui-bg-red">拒绝</span>';
+                }
+                return html;
+              },
+            },
+          { field: "remark", title: "备注" },
+          { field: "createTime", title: "创建时间" },
+          { title: "操作", width: 160, align: "center", fixed: "right", toolbar: "#zkmes-productionmgmt-pmr-toolbar-row" },
+        ],
+      ],
+    });
+
+    //工具条
+    table.on("tool(zkmes-productionmgmt-pmr-table)", function (obj) {
+      var data = obj.data;
+      if (obj.event === "del") {
+        layer.confirm("确定删除？", function (index) {
+          admin.req({
+            url: prefix + "/" + data.pmrId,
+            type: "delete",
+            contentType: "application/json;charset=UTF-8",
+            done: function (res) {
+              layer.msg("删除成功");
+              layui.table.reload("zkmes-productionmgmt-pmr-table"); //重载表格
+              layer.close(index); //执行关闭
+            },
+          });
+        });
+      } else if (obj.event === "edit") {
+        admin.popup({
+          title: "生产领料信息",
+          area: "1450px",
+          offset: "100px",
+          id: "popup-zkmes-productionmgmt-pmr-edit",
+          success: function (layero, index) {
+            view(this.id)
+              .render("zkmes/productionmgmt/pmr/form", data)
+              .done(function () {
+                form.render(null, "zkmes-productionmgmt-pmr-form"); 
+                //提交
+                form.on("submit(zkmes-productionmgmt-pmr-form-submit)", function (data) {
+                  var field = data.field; //获取提交的字段 
+                  //提交 Ajax 成功后，关闭当前弹层并重载表格 
+                  var status = field.status;
+                    
+                  if(status == 4 || status == 5){
+                	  admin.req({
+                          url: prefix,
+                          type: "put",
+                          contentType: "application/json;charset=UTF-8",
+                          data: JSON.stringify(field),
+                          done: function (res) {
+                            layer.msg("提交成功");
+                            layui.table.reloadData("zkmes-productionmgmt-pmr-table"); //重载表格
+                            layer.close(index); //执行关闭
+                          },
+                        });
+                  }else{
+                	  layui.table.reloadData("zkmes-productionmgmt-pmr-table"); //重载表格
+                      layer.close(index); //执行关闭
+                  }
+                  
+                  
+                  
+                });
+              });
+          },
+        });
+      }
+    });
+
+    // 头部工具栏点击事件
+    table.on("toolbar(zkmes-productionmgmt-pmr-table)", function (obj) {
+      switch (obj.event) { 
+        case "delete":
+          layer.msg("删除");
+          break;
+        case "update":
+          layer.msg("编辑");
+          break;
+        case "LAYTABLE_TIPS":
+          layer.msg("提示");
+          break;
+        case "refresh":
+          layui.table.reloadData("zkmes-productionmgmt-pmr-table"); //重载表格
+          break;
+      }
+    });
+  });
+</script>

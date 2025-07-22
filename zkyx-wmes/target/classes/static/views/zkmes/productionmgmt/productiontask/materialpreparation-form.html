@@ -1,0 +1,286 @@
+<div
+  class="layui-form"
+  lay-filter="zkmes-productionmgmt-productiontask-materialpreparation-form"
+  style="padding: 10px 30px 0 0"
+>
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">任务编号</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productiontaskId"
+            placeholder="请输入"
+            value="{{ d.params.productiontaskId || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">任务名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productiontaskName"
+            placeholder="请输入"
+            value="{{ d.params.productiontaskName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">工序名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productiontaskName"
+            placeholder="请输入"
+            value="{{ d.params.productiontaskName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">产品名称</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="productName"
+            placeholder="请输入"
+            value="{{ d.params.productName || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">生产数量</label>
+      <div class="layui-input-inline">
+        <script type="text/html" template>
+          <input
+            type="text"
+            name="qty"
+            placeholder="请输入"
+            value="{{ d.params.qty || '' }}"
+            autocomplete="off"
+            class="layui-input"
+          />
+        </script>
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">预计领料日期</label>
+      <div class="layui-input-inline">
+        <input
+          type="text"
+          id="ID-laydate-pmrdate"
+          placeholder="请输入"
+          name="begintime"
+          autocomplete="off"
+          class="layui-input"
+        />
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">领料仓库</label>
+      <div class="layui-input-inline">
+        <div id="ptmpWarehouseXmselect" class="xm-select-demo"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <fieldset class="layui-elem-field layui-field-title">
+      <legend>Bom清单</legend>
+    </fieldset>
+
+    <table
+      id="zkmes-productionmgmt-productiontask-materialpreparation-table"
+      lay-filter="zkmes-productionmgmt-productiontask-materialpreparation-table"
+    ></table>
+    <script type="text/html" id="zkmes-productionmgmt-productiontask-materialpreparation-toolbar-head">
+      <div class="layui-btn-container">
+        <div class="layui-btn-container"></div>
+      </div>
+    </script>
+  </div>
+
+  <div class="layui-form-item" style="text-align: center">
+    <script type="text/html" template>
+      {{# if(d.params.pmrId!= null){ }}
+      <input type="button" value="已生成生产备料单" class="layui-btn" />
+      {{# }else{ }}
+      <input
+        type="button"
+        id="zkmes-productionmgmt-productiontask-materialpreparation-form-submit"
+        lay-submit
+        lay-filter="zkmes-productionmgmt-productiontask-materialpreparation-form-submit"
+        value="生成生产备料单"
+        class="layui-btn"
+      />
+
+      {{# } }}
+    </script>
+  </div>
+</div>
+
+<script
+  type="text/html"
+  template
+  lay-done="layui.data.sendZkmesProductmanageProductiontaskMaterialpreparationFormParams(d.params)"
+></script>
+
+<script>
+  layui.data.sendZkmesProductmanageProductiontaskMaterialpreparationFormParams = function (params) {
+    layui.use(["admin", "form", "xmSelect"], function () {
+      var $ = layui.$,
+        admin = layui.admin,
+        view = layui.view,
+        element = layui.element,
+        table = layui.table,
+        form = layui.form,
+        laydate = layui.laydate,
+        xmSelect = layui.xmSelect;
+
+      laydate.render({
+        elem: "#ID-laydate-pmrdate",
+        value: params.begintime,
+        isInitValue: true,
+        type: "date",
+        fullPanel: true,
+        done: function (value, date, endDate) {
+          //console.log(value); // 日期字符，如： 2017-08-18
+          // console.log(date); // 包含年月日时分秒各项值的对象
+          // console.log(endDate); // 结束日期时间对象，当设置 range 时才会返回。对象成员同上。
+          // var rshours = $("#rshours").val();
+          // var currentDate = new Date(value);
+          // currentDate.setHours(currentDate.getHours() + parseInt(rshours));
+          // var result = util.toDateString(currentDate);
+          // $("#endtime").val(result);
+        },
+      });
+
+      var warehouseIds = params.warehouseId + "";
+      if (warehouseIds) {
+        warehouseIds = warehouseIds.split(",");
+      }
+
+      admin.req({
+        url: "/zkmes/warehousemgmt/warehouse/list1",
+        type: "get",
+        contentType: "application/json;charset=UTF-8",
+        done: function (res) {
+          ptmpWarehouseXmselect = xmSelect.render({
+            el: "#ptmpWarehouseXmselect",
+            name: "warehouseId",
+            data: res.data,
+            radio: true,
+            disabled: true,
+            initValue: warehouseIds,
+            prop: {
+              name: "warehouseName",
+              value: "warehouseId",
+            },
+          });
+        },
+      });
+
+      //通过productId 获取 bom清单
+      var prefix = "zkmes/productionmgmt/productiontask/materialpreparation";
+
+      table.render({
+        elem: "#zkmes-productionmgmt-productiontask-materialpreparation-table",
+        url: prefix + "/list",
+        toolbar: "#zkmes-productionmgmt-productiontask-materialpreparation-toolbar-head",
+        where: {
+          superId: params.productId,
+        },
+        defaultToolbar: [
+          "filter",
+          "print",
+          "exports",
+          {
+            title: "提示",
+            layEvent: "LAYTABLE_TIPS",
+            icon: "layui-icon-tips",
+          },
+        ],
+        height: "full-450",
+        parseData: function (res) {
+          // res 即为原始返回的数据
+
+          var rows = res.rows;
+
+          for (var i = 0; i < rows.length; i++) {
+            rows[i].number = (rows[i].ratio * params.schedulingQty).toFixed(2);
+          }
+
+          return {
+            code: res.code, // 解析接口状态
+            msg: res.msg, // 解析提示文本
+            count: res.total, // 解析数据长度
+            data: res.rows, // 解析数据列表
+          };
+        },
+
+        cols: [
+          [
+            { field: "productId", title: "物料编号" },
+            { field: "productName", title: "名称" },
+            { field: "modelName", title: "型号" },
+            { field: "specName", title: "规格" },
+            { field: "uomName", title: "单位" },
+            { field: "ratio", title: "使用比例" },
+            { field: "number", title: "使用数量" },
+            {
+              field: "unitPrice",
+              title: "单价",
+              edit: function (d) {
+                if (d.status == 0) {
+                  return "text"; // 编辑模式
+                }
+              },
+            },
+            { field: "amount", title: "金额" },
+            { field: "createTime", title: "创建时间" },
+          ],
+        ],
+      });
+
+      // 头部工具栏点击事件
+      table.on("toolbar(zkmes-productionmgmt-productiontask-materialpreparation-table)", function (obj) {
+        switch (obj.event) {
+          case "LAYTABLE_TIPS":
+            layer.msg("提示");
+            break;
+        }
+      });
+    });
+  };
+
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      element = layui.element,
+      form = layui.form;
+  });
+</script>

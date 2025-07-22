@@ -1,0 +1,101 @@
+<div class="layui-form" lay-filter="zkmes-schedulingmgmt-schedulingplan-swway-form" style="padding: 10px 30px 0 0">
+
+
+   <div class="layui-form-item">
+    <div class="layui-inline">
+      <label class="layui-form-label">倒班方式编号</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  id="swwayId" name="swwayId" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">倒班方式名称</label>
+      <div class="layui-input-inline"> 
+          <input type="text"  id="swwayName" name="swwayName" placeholder="请输入"  autocomplete="off" class="layui-input" /> 
+      </div>
+    </div>     
+     <div class="layui-inline zkmes-schedulingmgmt-schedulingplan-swway-form-search">
+      <div class="layui-input-inline"> 
+          <button class="layui-btn" data-type="reload">搜索</button>
+      </div>
+    </div> 
+  </div>
+ 
+  <div class="layui-form-item">
+    <table id="zkmes-schedulingmgmt-schedulingplan-swway-form-table" lay-filter="zkmes-schedulingmgmt-schedulingplan-swway-form-table"></table>
+    <script type="text/html" id="zkmes-schedulingmgmt-schedulingplan-swway-form-toolbar-row">
+    </script>
+  </div>
+
+ <div class="layui-form-item layui-hide">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" id="zkmes-schedulingmgmt-schedulingplan-swway-form-submit" lay-submit lay-filter="zkmes-schedulingmgmt-schedulingplan-swway-form-submit" value="确认" class="layui-btn" />
+    </div>
+  </div>
+</div>
+
+<script>    
+  layui.use(["admin", "form"], function () {
+    var $ = layui.$,
+      admin = layui.admin,
+      view = layui.view,
+      table = layui.table,
+      form = layui.form;
+
+    active = {
+ 	    reload: function(){ 
+ 	      var swwayId = $('#swwayId'); 
+ 	     //执行重载
+	      table.reloadData('zkmes-schedulingmgmt-schedulingplan-swway-form-table', {
+	        page: {
+	          curr: 1 //重新从第 1 页开始
+	        }
+	        ,where: { 
+	        	swwayId: swwayId.val() 
+	        }
+	      }); 
+ 	    } 
+ 	  };
+    	  
+    	  
+   	$('.zkmes-schedulingmgmt-schedulingplan-swway-form-search .layui-btn').on('click', function(){
+       var type = $(this).data('type');
+       active[type] ? active[type].call(this) : '';
+    });
+     
+    var prefix = "zkmes/schedulingmgmt/swway";
+
+    table.render({
+      elem: "#zkmes-schedulingmgmt-schedulingplan-swway-form-table",
+      url: prefix + "/list",  
+      page: true,
+      height: "full-350",
+      cols: [[
+    	  { field: 'swwayId', title: '倒班方式编号' }  
+          , { field: 'swwayName', title: '倒班方式名称' }  
+          , { field: 'status', title: '启用状态', templet: function (res) {  
+          	var html = res.status == 0 ? '<span class="layui-badge layui-bg-blue">启用</span>' : '<span class="layui-badge layui-bg-orange">停用</span>'; 
+              return html;
+            }
+          }
+          , { field: 'remark', title: '备注' }  
+          , { field: 'createTime', title: '创建时间' }
+        ],
+      ],
+    });
+     
+  //触发行双击事件
+    table.on('rowDouble(zkmes-schedulingmgmt-schedulingplan-swway-form-table)', function(obj){
+    	 // console.log(obj.tr) //得到当前行元素对象
+    	 // console.log(obj.data) //得到当前行数据
+    	   
+    	  var submit  = $("#zkmes-schedulingmgmt-schedulingplan-swway-form-submit")  
+    	  var data = form.val('zkmes-schedulingmgmt-schedulingplan-swway-form', JSON.parse(JSON.stringify(obj.data)));
+    	  form.render();
+ 
+    	  submit.trigger('click');
+    });
+      
+  });
+</script>
