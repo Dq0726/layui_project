@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>采购管理</title>
+  <link rel="stylesheet" href="./css/layui.css">
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      background-image: url('./images/242.png');
+      background-size: 100% 100%;
+
+    }
+
+    .layui-fluid {
+      height: 100%;
+      padding: 0;
+      margin: 0;
+
+
+    }
+
+    /* 导航 */
+    .header {
+      height: 96px;
+      /* background: lightcoral; */
+    }
+
+    .header_img {
+      position: relative;
+      height: 96px;
+      background-image: url('./images/108_01.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-clip: border-box;
+      background-position: center;
+    }
+
+    .header_title {
+      color: #fff;
+      font-size: 30px;
+      font-weight: bold;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-60%, -50%);
+      letter-spacing: 1px;
+    }
+
+    .link_left {
+      left: 0;
+      height: 96px;
+      width: 50%;
+      position: absolute;
+      line-height: 90px;
+      /* background: rgba(255, 166, 0, 0.486); */
+      font-size: 20px;
+    }
+
+    .link_left a {
+      color: #fff;
+      position: absolute;
+      font-weight: bold;
+    }
+
+    .link_left a:hover {
+      color: rgb(128 224 253);
+    }
+
+    .link_left a:nth-child(1) {
+      right: 87%;
+    }
+
+    .link_left a:nth-child(2) {
+      right: 72%;
+    }
+
+    .link_left a:nth-child(3) {
+      right: 57%;
+    }
+
+    .link_left a:nth-child(4) {
+      right: 42%;
+    }
+
+    .link_right {
+      right: 0;
+      height: 96px;
+      width: 50%;
+      position: absolute;
+      line-height: 90px;
+      /* background: rgba(0, 255, 76, 0.486); */
+      font-size: 20px;
+    }
+
+    .link_right a:hover {
+      color: rgb(128 224 253);
+    }
+
+    .link_right_tit {
+      height: 96px;
+      width: 79%;
+      position: absolute;
+      /* background: rgba(255, 0, 0, 0.322); */
+    }
+
+    .link_right_tit a {
+      color: #fff;
+      position: absolute;
+      font-weight: bold;
+    }
+
+    .link_right_tit a:nth-child(1) {
+      left: 44%;
+    }
+
+    .link_right_tit a:nth-child(2) {
+      left: 63%;
+    }
+
+    .link_right_tit a:nth-child(3) {
+      left: 82%;
+    }
+
+    .link_right_time {
+      height: 96px;
+      width: 21%;
+      position: absolute;
+      right: 0;
+      /* background: rgba(255, 208, 0, 0.384); */
+    }
+
+    .time_det {
+      height: 100%;
+      line-height: 91px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .time_infor {
+      height: 96px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .time_top {
+      display: flex;
+      height: 50%;
+      align-items: flex-start;
+    }
+
+    .time_bottom {
+      display: flex;
+      height: 50%;
+      align-items: flex-end;
+      padding-top: 20px;
+    }
+
+    .time_det span {
+      font-size: 16px !important;
+      padding-right: 5px;
+    }
+
+    /* 数据统计部分 */
+    .nav {
+      height: 139px;
+      line-height: 139px;
+      padding: 0 20px;
+      /* background: rgba(153, 0, 255, 0.247); */
+    }
+
+    .nav_infor {
+      color: #80e0fd;
+      display: flex;
+      justify-content: start;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      height: 67px;
+      line-height: 67px;
+      top: 50%;
+      transform: translateY(-50%);
+
+    }
+
+    .nav_infor div {
+      display: inline-block;
+    }
+
+    .pro_num {
+      font-size: 40px;
+      font-weight: bold;
+      display: inline-block;
+      text-align: center;
+      height: 100%;
+      width: 50px;
+      background-image: url('./images/114.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-clip: border-box;
+      background-position: center;
+    }
+
+    /* 数据统计部分-生产计划 */
+    .pro_plan {
+      padding-left: 20px;
+    }
+
+    /* 分辨率宽度大于3840px时样式-生产计划 */
+    @media (min-width: 3840px) {
+      .pro_plan {
+        justify-content: center !important;
+      }
+    }
+
+    .left {
+      display: none;
+    }
+
+    .nav_infor_tit {
+      float: left;
+      margin-right: 5px;
+    }
+
+    .pro_plan_left {}
+
+    .pro_plan_center {}
+
+
+
+    .pro_plan_rignt {}
+
+    /* 数据统计部分-销售订单金额 */
+    .sales_amount {}
+
+    /* 数据统计部分-销售出库数量 */
+    .outbound_num {}
+
+    /* 数据统计部分-设备在线率 */
+    .dev_status {}
+
+    /* 数据可视化 */
+    .visual_top {
+      display: flex;
+      justify-content: space-between;
+      height: 788px;
+      padding: 0 30px;
+
+    }
+
+    .top_infor {
+      height: 100%;
+    }
+
+    /* 数据可视化部分-左 */
+    .top_left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30%;
+    }
+
+    .infor_sma {
+      height: 382px;
+      width: 100%;
+      background-image: url('./images/109_01.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-clip: border-box;
+      background-position: center;
+
+    }
+
+    .infor_title {
+      height: 52px;
+      position: relative;
+    }
+
+    .title_img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: url('./images/109_02.png');
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+      background-clip: border-box;
+      background-position: center;
+    }
+
+    @media (min-width: 3840px) {
+      .title_img {
+        background-size: 80% 100%;
+      }
+    }
+
+    .title_pro {
+      position: absolute;
+      width: 100%;
+      height: 52px;
+      line-height: 52px;
+      font-size: 18px;
+      letter-spacing: 1px;
+      text-align: center;
+      font-weight: bold;
+      color: #07d5ec;
+    }
+
+    .infor_cont {
+      height: 330px;
+      /* background: rgba(255, 192, 203, 0.507); */
+    }
+
+    /* 数据可视化部分-中 */
+    .top_center {
+      width: 37%;
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column;
+
+    }
+
+    /* 产品进度分析 */
+    .infor_cont_padding {
+      padding: 10px 20px 0 20px;
+    }
+
+    .infor_tab {
+      margin: 0;
+    }
+
+    .layui-tab-title .layui-this {
+      color: #fff !important;
+      background: linear-gradient(#1f72f1, #040f5e);
+    }
+
+    .layui-tab-title .layui-this:after {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #00a8ff;
+      border-radius: 5px 0 0 0;
+    }
+
+    .tab_title_cont {
+      padding: 0 10px;
+      border: 0;
+    }
+
+
+
+    .layui-show {}
+
+    .layui-table-header {
+      border: 0;
+    }
+
+    .layui-table-header .layui-table {
+      margin-bottom: 0px;
+    }
+
+    .layui-table {
+      color: #ccc;
+    }
+
+    .layui-table thead {
+      color: #fff;
+    }
+
+
+    .hover-color {
+      background-color: orange;
+    }
+
+    .layui-form {
+      border: 0;
+    }
+
+    .layui-table {
+      background: none;
+    }
+
+    .layui-table th {
+      background-image: linear-gradient(0deg, #5080bb 0%, #0655b9 100%);
+    }
+
+    .layui-table th,
+    .layui-table td {
+      border: 0;
+
+    }
+
+    .layui-table tbody th {}
+
+    .layui-table-hover {
+      background-image: url('./images/111_02.png') !important;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-clip: border-box;
+      background-position: center;
+    }
+
+    .layui-table-header {
+      border: 0;
+    }
+
+    /* 数据可视化部分--右 */
+    .top_right {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30%;
+    }
+
+    /* 物料采购数量 */
+    .infor_cont_padding {
+      padding: 10px 20px 0 20px;
+    }
+
+    .infor_tab {
+      margin: 0;
+    }
+
+    .layui-tab-title .layui-this {
+      color: #fff !important;
+      background: linear-gradient(#1f72f1, #040f5e);
+    }
+
+    .layui-tab-title .layui-this:after {
+      border-width: 1px;
+      border-style: solid;
+      border-color: #00a8ff;
+      border-radius: 5px 0 0 0;
+    }
+
+    .tab_title_cont {
+      padding: 0 10px;
+      border: 0;
+    }
+
+    .layui-show {}
+
+    .layui-table-header {
+      border: 0;
+    }
+
+    .layui-table-header .layui-table {
+      margin-bottom: 0px;
+    }
+
+    .layui-table {
+      color: #ccc;
+    }
+
+    .layui-table thead {
+      color: #fff;
+    }
+
+
+    .hover-color {
+      background-color: orange;
+    }
+
+    .layui-form {
+      border: 0;
+    }
+
+    .layui-table {
+      background: none;
+    }
+
+    .layui-table th {
+      background-image: linear-gradient(0deg, #5080bb 0%, #0655b9 100%);
+    }
+
+    .layui-table th,
+    .layui-table td {
+      border: 0;
+
+    }
+
+    .layui-table tbody th {
+      color: red !important;
+
+    }
+
+    .layui-table-hover {
+      background-image: url('./images/111_02.png') !important;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-clip: border-box;
+      background-position: center;
+    }
+
+    .layui-table-header {
+      border: 0;
+    }
+
+    /* 大屏自适应媒体查询部分 */
+    @media (min-width: 3840px) {
+      .top_center {
+        width: 38.6%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-fluid">
+    <!-- 导航 -->
+    <div class="layui-row header">
+      <div class="layui-col-xs12 header_img">
+        <div class="header_title">中科MES数据可视化大屏</div>
+        <div class="link_left">
+          <a href="./kanban.html">综合看板</a>
+          <a href="./kanban1.html">生产管理</a>
+          <a href="./kanban2.html">采购管理</a>
+          <a href="./kanban3.html">销售管理</a>
+        </div>
+        <div class="link_right">
+          <div class="link_right_tit">
+            <a href="./kanban4.html">质量管理</a>
+            <a href="./kanban5.html">设备管理</a>
+            <a href="./kanban6.html">能耗管理</a>
+          </div>
+          <div class="link_right_time">
+            <div class="time_det">
+              <span class="time_infor">
+                <span class="time_top">
+                  <span class="layui-icon layui-icon-time"></span>
+                  <span>2025-02-07 13:53:19</span>
+                </span>
+                <span class="time_bottom">星期五</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 数据统计部分- -->
+    <div class="layui-col-xs12 nav">
+      <!-- 数据统计部分-采购总金额 -->
+      <div class="layui-col-xs4 nav_infor pro_plan">
+        <div class="nav_infor_tit pro_plan_left"> 采购总金额</div>
+        <div class="nav_infor_tit pro_plan_center">
+          <span class="pro_num">0</span>
+          <span class="pro_num">9</span>
+          <span class="pro_num">6</span>
+          <span class="pro_num">7</span>
+          <span class="pro_num">2</span>
+          <span class="pro_num">0</span>
+        </div>
+        <div class="nav_infor_tit pro_plan_rignt">元</div>
+      </div>
+      <!-- 数据统计部分-供应商签订数量 -->
+      <div class="layui-col-xs2 nav_infor sales_amount">
+        <div class="nav_infor_tit sales_amount_left">供应商签订数量</div>
+        <div class="nav_infor_tit sales_amount_center">
+          <span class="pro_num">4</span>
+          <span class="pro_num">2</span>
+        </div>
+        <div class="nav_infor_tit sales_amount_rignt">家</div>
+      </div>
+      <!-- 数据统计部分-采购订单数量 -->
+      <div class="layui-col-xs3 nav_infor outbound_num">
+        <div class="nav_infor_tit outbound_num_left"> 采购订单数量</div>
+        <div class="nav_infor_tit outbound_num_center">
+          <span class="pro_num">0</span>
+          <span class="pro_num">2</span>
+          <span class="pro_num">3</span>
+        </div>
+        <div class="nav_infor_tit outbound_num_rignt">条</div>
+      </div>
+      <!-- 数据统计部分-已入库采购订单数量 -->
+      <div class="layui-col-xs3 nav_infor dev_status">
+        <div class="nav_infor_tit dev_status_left"> 已入库采购订单数量</div>
+        <div class="nav_infor_tit dev_status_center">
+          <span class="pro_num">0</span>
+          <span class="pro_num">1</span>
+          <span class="pro_num">9</span>
+        </div>
+        <div class="nav_infor_tit dev_status_rignt">条</div>
+      </div>
+    </div>
+    <!-- 数据可视化部分 -->
+    <!-- 数据可视化部分-左 -->
+    <div class=" visual_top">
+      <div class="top_infor top_left">
+        <!-- 采购金额趋势 待修改-->
+        <div class="infor_sma">
+          <div class="infor_title">
+            <div class="title_img"></div>
+            <div class="title_pro">采购金额趋势</div>
+          </div>
+          <div class="infor_cont" id="product_num"></div>
+        </div>
+        <!-- 入库金额趋势 待修改-->
+        <div class="infor_sma">
+          <div class="infor_title">
+            <div class="title_img"></div>
+            <div class="title_pro">生产审核状态分析</div>
+          </div>
+          <div class="infor_cont" id="order_source2"></div>
+        </div>
+      </div>
+      <!-- 数据可视化部分-中 -->
+      <div class="top_infor top_center">
+        <!-- 生产进度分析 -->
+        <div class="infor_sma">
+          <div class="infor_title">
+            <div class="title_img"></div>
+            <div class="title_pro">入库金额趋势</div>
+          </div>
+          <div class="infor_cont" id="order_source">
+          </div>
+        </div>
+      </div>
+      <!-- 数据可视化部分-右 -->
+      <div class="top_infor top_right">
+        <!-- 物料采购数据 -->
+        <div class="infor_sma">
+          <div class="infor_title">
+            <div class="title_img"></div>
+            <div class="title_pro">物料采购数据</div>
+          </div>
+          <div class="infor_cont infor_cont_padding">
+            <div class="produ_progress" id="wlcgsj">
+            </div>
+          </div>
+        </div>
+        <!-- 采购入库审核状态 -->
+        <div class="infor_sma">
+          <div class="infor_title">
+            <div class="title_img"></div>
+            <div class="title_pro">物料入库数据</div>
+          </div>
+          <div class="infor_cont infor_cont_padding">
+            <div class="produ_progress" id="wlrksj">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/echarts.min.js"></script>
+<script src="./js/echarts-liquidfill.min.js"></script>
+<script src="./js/layui.js"></script>
+
+<script>
+  layui.use(['element', 'jquery', 'table'], function () {
+    var $ = layui.jquery
+      , element = layui.element
+      , table = layui.table;
+    table.render({
+      elem: "#wlcgsj",
+      cols: [[
+        { field: "productId", title: "采购单号" },
+        { field: "productName", title: "签订日期" },
+        { field: "batchNumber", title: "交货日期" },
+        { field: "processType", title: "供应商名称" },
+
+      ]],
+      data: [{ // 赋值已知数据
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }, {
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }, {
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }, {
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }, {
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }, {
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }, {
+        "productId": "CG501",
+        "productName": "2024-12-10",
+        "batchNumber": "2025-03-10",
+        "processType": "中科云玄",
+      }],
+      done: function (res, curr, count) {
+        $('tr').css({ 'background-color': 'transparent' });
+        $('td').css({ 'background-color': 'transparent' });
+
+        var that = this.elem.next(); res.data.forEach(function (item, index) {
+          //console.log(item.empName);item表示每列显示的数据
+          if (index % 2 == 0) {
+            var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").css({ 'background-color': 'transparent' });
+          } else {
+            var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").css({ 'background-color': 'rgba(0,102,255,0.1)' });
+          }
+        })
+
+      }
+    });
+    table.render({
+      elem: "#wlrksj",
+      cols: [[
+        { field: "productId", title: "入库单号" },
+        { field: "productId2", title: "产品编码" },
+        { field: "productId3", title: "产品名称" },
+        { field: "productId4", title: "产品数量" },
+        { field: "batchNumber", title: "入库状态" },
+
+      ]],
+      data: [{ // 赋值已知数据
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }, {
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }, {
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }, {
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }, {
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }, {
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }, {
+        "productId": "RK202501",
+        "productId2": "G51",
+        "productId3": "FDE510",
+        "productId4": "100",
+        "batchNumber": "已完成",
+      }],
+      done: function (res, curr, count) {
+        $('tr').css({ 'background-color': 'transparent' });
+        $('td').css({ 'background-color': 'transparent' });
+
+        var that = this.elem.next(); res.data.forEach(function (item, index) {
+          //console.log(item.empName);item表示每列显示的数据
+          if (index % 2 == 0) {
+            var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").css({ 'background-color': 'transparent' });
+          } else {
+            var tr = that.find(".layui-table-box tbody tr[data-index='" + index + "']").css({ 'background-color': 'rgba(0,102,255,0.1)' });
+          }
+        })
+
+      }
+    });
+  });
+  // 采购金额趋势
+  var product_num = document.getElementById('product_num');
+  var chart_product_num = echarts.init(product_num);
+  var option_product_num;
+  option_product_num = {
+    legend: {
+      orient: 'horizontal', // 水平排列
+      right: '5 %',
+      top: '5 %',
+      textStyle: {
+        color: '#FFFFFF',
+      },
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+
+      textStyle: {
+        color: '#000'
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '15%',
+      bottom: '10%',
+      containLabel: true // 这个属性确保标签也能完整显示
+    },
+    xAxis: [{
+      type: 'category',
+      axisLine: {
+        show: false
+      },
+      splitArea: {
+        show: false,
+
+      },
+      axisLabel: {
+        color: '#fff'
+      },
+      splitLine: {
+        show: false
+      },
+      boundaryGap: false,
+      data: ['8月', '9月', '10月', '11月', '12月', '1月'],
+
+    }],
+    yAxis: [{
+      type: 'value',
+      min: 0,
+      // max: 140,
+      splitNumber: 4,
+
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: 'rgba(255,255,255,0.1)'
+        }
+      },
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        textStyle: {
+          color: '#fff'
+        }
+      }
+    }],
+    series: [{
+      name: '采购金额',
+      type: 'line',
+      smooth: true, //是否平滑
+      showAllSymbol: true,
+      symbol: 'circle',
+      symbolSize: 0,
+
+      label: {
+        show: false,
+        position: 'top',
+        textStyle: {
+          color: '#00b3f4',
+        }
+      },
+      itemStyle: {
+        color: "#00b3f4",
+        borderColor: "#fff",
+        borderWidth: 0,
+        shadowColor: 'rgba(0, 0, 0, .3)',
+        shadowBlur: 0,
+        shadowOffsetY: 2,
+        shadowOffsetX: 2,
+      },
+      areaStyle: {
+        normal: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(7,89,197,0.1)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1,198,249,0.4)'
+          }
+          ], false),
+
+        }
+      },
+      data: [50202, 20545, 33211, 28165, 39800, 21471]
+    },]
+  };
+  // 入库金额趋势 order_source
+  var order_source = document.getElementById('order_source');
+  var chart_order_source = echarts.init(order_source);
+
+  var option_order_source;
+  option_order_source = {
+    legend: {
+      orient: 'horizontal', // 水平排列
+      right: '5 %',
+      top: '5 %',
+      textStyle: {
+        color: '#FFFFFF',
+      },
+    },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'shadow'
+      },
+
+      textStyle: {
+        color: '#000'
+      }
+    },
+    grid: {
+      left: '5%',
+      right: '5%',
+      top: '15%',
+      bottom: '10%',
+      containLabel: true // 这个属性确保标签也能完整显示
+    },
+    xAxis: [{
+      type: 'category',
+      axisLine: {
+        show: false
+      },
+      splitArea: {
+        show: false,
+
+      },
+      axisLabel: {
+        color: '#fff'
+      },
+      splitLine: {
+        show: false
+      },
+      boundaryGap: false,
+      data: ['8月', '9月', '10月', '11月', '12月', '1月'],
+
+    }],
+    yAxis: [{
+      type: 'value',
+      min: 0,
+      // max: 140,
+      splitNumber: 4,
+
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: 'rgba(255,255,255,0.1)'
+        }
+      },
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        textStyle: {
+          color: '#fff'
+        }
+      }
+    }],
+    series: [{
+      name: '入库金额',
+      type: 'line',
+      smooth: true, //是否平滑
+      showAllSymbol: true,
+      symbol: 'circle',
+      symbolSize: 0,
+
+      label: {
+        show: false,
+        position: 'top',
+        textStyle: {
+          color: '#00b3f4',
+        }
+      },
+      itemStyle: {
+        color: "#00b3f4",
+        borderColor: "#fff",
+        borderWidth: 0,
+        shadowColor: 'rgba(0, 0, 0, .3)',
+        shadowBlur: 0,
+        shadowOffsetY: 2,
+        shadowOffsetX: 2,
+      },
+      areaStyle: {
+        normal: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+            offset: 0,
+            color: 'rgba(7,89,197,0.1)'
+          },
+          {
+            offset: 1,
+            color: 'rgba(1,198,249,0.4)'
+          }
+          ], false),
+
+        }
+      },
+      data: [50202, 20545, 33211, 28165, 39800, 21471]
+    },]
+  };
+
+  // 生产进度分析 
+  var order_source2 = document.getElementById('order_source2');
+  var chart_order_source2 = echarts.init(order_source2);
+  var color1 = [
+    '#1CC335',
+    '#096BC5',
+    '#F39800',
+    '#B4133D',
+  ]
+  var color2 = [
+    '#81EE92',
+    '#4DADDE',
+    '#F5D371',
+    '#EE5959',
+  ]
+  var option_order_source2;
+  option_order_source2 = {
+    title: {
+      text: '审核状态',
+      left: 'center',
+      top: 'center',
+      textStyle: {
+        color: "#A8D3FF",
+        fontSize: 18,
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+    },
+    legend: {
+      orient: 'vertical', // 水平排列
+      right: '5 %',
+      top: 'center',
+      textStyle: {
+        color: '#FFFFFF',
+      },
+    },
+    series: [
+      {
+        type: 'pie',
+        center: ['50%', '50%'], //圆心坐标
+        radius: ['55%', '80%'], //设置内外环半径
+        label: {
+          show: false //不显示指引线
+        },
+
+        itemStyle: {
+          normal: {
+            color: (a) =>
+              new echarts.graphic.LinearGradient(1, 0, 0, 0, [
+                {
+                  offset: 0,
+                  color: color1[a.dataIndex]
+                },
+                {
+                  offset: 1,
+                  color: color2[a.dataIndex]
+                }
+              ]),
+
+            borderRadius: 4,
+            borderColor: "#0F1E4D",
+            borderWidth: 10,
+          },
+
+        },
+        data: [{ name: '已完成', value: 20 },
+        { name: '待审核', value: 3 }
+        ]
+      },
+      // 外圈圆环
+      {
+        type: 'pie',
+        center: ['50%', '50%'], //圆心坐标
+        radius: ['83%', '85%'], //设置内外环半径
+        silent: true,
+        label: {
+          show: false //不显示指引线
+        },
+        itemStyle: {
+          normal: {
+            color: '#213467'
+          }
+        },
+        // emphasis: {
+        //   scale: 2 //鼠标放上去是否放大
+        // },
+        data: [
+          {
+            value: 8
+          }
+        ]
+      },
+      // 内圈圆环
+      {
+        type: 'pie',
+        center: ['50%', '50%'], //圆心坐标
+        radius: ['48%', '52%'], //设置内外环半径
+        silent: true,
+        label: {
+          show: false //不显示指引线
+        },
+        itemStyle: {
+          normal: {
+            color: '#213467'
+          }
+        },
+        emphasis: {
+          scale: !1 //鼠标放上去是否放大
+        },
+        data: [
+          {
+            value: 8
+          }
+        ]
+      },
+
+    ]
+  };
+
+  // 
+
+
+  chart_product_num.setOption(option_product_num);
+  chart_order_source.setOption(option_order_source);
+  chart_order_source2.setOption(option_order_source2);
+
+  // 窗口大小变化时调用 resize 方法
+  window.onresize = function () {
+    chart_product_num.resize();
+    chart_order_source.resize();
+    chart_order_source2.resize();
+  };
+
+</script>
+
+</html>
