@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面 - 科技感大屏优化</title>
+    <link rel="stylesheet" href="./css/layui.css">
+    <link rel="stylesheet" href="./css/cyber.css">
+    <style>
+        .test-container {
+            padding: 20px;
+            background: var(--bg-dark);
+            min-height: 100vh;
+        }
+        
+        .test-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 198, 255, 0.3);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            color: var(--text-white);
+        }
+        
+        .test-chart {
+            width: 100%;
+            height: 300px;
+            margin: 10px 0;
+        }
+        
+        .test-number {
+            font-size: var(--font-size-xl);
+            color: var(--primary-blue);
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .test-button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            border: none;
+            border-radius: var(--radius);
+            color: var(--text-white);
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .test-button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 style="color: #00C6FF; text-align: center; margin-bottom: 30px;">
+            科技感大屏优化测试页面
+        </h1>
+        
+        <div class="test-card cyber-border cyber-hover">
+            <h3>动画测试</h3>
+            <div class="test-number number-flip">1234</div>
+            <button class="test-button" onclick="testAnimations()">测试数字翻牌动画</button>
+            <button class="test-button" onclick="testRipple(this)">测试波纹效果</button>
+        </div>
+        
+        <div class="test-card cyber-border cyber-hover">
+            <h3>图表测试</h3>
+            <div id="testChart" class="test-chart"></div>
+        </div>
+        
+        <div class="test-card cyber-border cyber-hover">
+            <h3>组件测试</h3>
+            <div id="testComponent" class="test-chart"></div>
+        </div>
+        
+        <div class="test-card cyber-border cyber-hover breathe-glow">
+            <h3>呼吸光效测试</h3>
+            <p>这个卡片应该有呼吸光效</p>
+        </div>
+    </div>
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/echarts.min.js"></script>
+    <script src="./js/echarts-gl.min.js"></script>
+    <script src="./js/layui.js"></script>
+    
+    <script>
+        layui.extend({
+            animate: './js/beautify',
+            dashboardComponents: './js/dashboard-components'
+        }).use(['animate', 'dashboardComponents'], function() {
+            const animate = layui.animate;
+            const components = layui.dashboardComponents;
+            
+            // 初始化美化模块
+            animate.init();
+            
+            // 初始化测试图表
+            const testChart = echarts.init(document.getElementById('testChart'), 'cyber');
+            const option = {
+                backgroundColor: 'transparent',
+                title: {
+                    text: '测试图表',
+                    textStyle: { color: '#00C6FF' }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [120, 200, 150, 80, 70, 110, 130],
+                    type: 'bar',
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#00C6FF' },
+                            { offset: 1, color: '#0072FF' }
+                        ])
+                    }
+                }]
+            };
+            testChart.setOption(option);
+            
+            // 初始化测试组件
+            components.components.radarField.init(
+                document.getElementById('testComponent'),
+                {
+                    title: '测试雷达图',
+                    indicators: [
+                        { name: '指标1', max: 100 },
+                        { name: '指标2', max: 100 },
+                        { name: '指标3', max: 100 },
+                        { name: '指标4', max: 100 },
+                        { name: '指标5', max: 100 }
+                    ],
+                    data: [80, 90, 70, 85, 75]
+                }
+            );
+            
+            // 窗口大小调整
+            window.addEventListener('resize', () => {
+                testChart.resize();
+            });
+        });
+        
+        // 测试动画函数
+        function testAnimations() {
+            const numberEl = document.querySelector('.test-number');
+            const newValue = Math.floor(Math.random() * 9999);
+            
+            numberEl.classList.add('number-flip');
+            setTimeout(() => {
+                numberEl.textContent = newValue;
+                numberEl.classList.remove('number-flip');
+            }, 400);
+        }
+        
+        // 测试波纹效果
+        function testRipple(button) {
+            button.classList.add('ripple-effect');
+            
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(0, 198, 255, 0.6);
+                transform: scale(0);
+                animation: ripple 0.4s linear;
+                left: 50%;
+                top: 50%;
+                width: 20px;
+                height: 20px;
+                margin-left: -10px;
+                margin-top: -10px;
+                pointer-events: none;
+            `;
+            
+            button.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 400);
+        }
+    </script>
+</body>
+</html>

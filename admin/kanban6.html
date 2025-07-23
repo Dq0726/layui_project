@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>能耗管理</title>
   <link rel="stylesheet" href="./css/layui.css">
+  <link rel="stylesheet" href="./css/cyber.css">
   <style>
     html,
     body {
@@ -570,11 +571,15 @@
 </body>
 <script src="./js/jquery.min.js"></script>
 <script src="./js/echarts.min.js"></script>
+<script src="./js/echarts-gl.min.js"></script>
 <script src="./js/echarts-liquidfill.min.js"></script>
 <script src="./js/layui.js"></script>
 
 <script>
-  layui.use(['element', 'jquery', 'table'], function () {
+  // 加载 Cyber 样式和美化模块
+  layui.extend({
+    animate: './js/beautify'
+  }).use(['element', 'jquery', 'table', 'animate'], function () {
     var $ = layui.jquery
       , element = layui.element
       , table = layui.table;
@@ -646,10 +651,21 @@
 
       }
     });
+
+    // 初始化美化模块和组件
+    animate.init();
+    
+    // 加载仪表板组件
+    layui.extend({
+      dashboardComponents: './js/dashboard-components'
+    }).use(['dashboardComponents'], function() {
+      const components = layui.dashboardComponents;
+      components.autoInit.init();
+    });
   });
   // 产品生产数量-图表
   var xsslzb = document.getElementById('xsslzb');
-  var chart_xsslzb = echarts.init(xsslzb);
+  var chart_xsslzb = echarts.init(xsslzb, 'cyber');
   var option_xsslzb;
   var color1 = [
     '#1CC335',
@@ -767,7 +783,7 @@
   };
   // 生产报工状态
   var xsjezb = document.getElementById('xsjezb');
-  var chart_xsjezb = echarts.init(xsjezb);
+  var chart_xsjezb = echarts.init(xsjezb, 'cyber');
   var option_xsjezb;
   option_xsjezb = {
     legend: {
@@ -887,7 +903,7 @@
 
   // 订单进度状况
   var khqdslqs = document.getElementById('khqdslqs');
-  var chart_khqdslqs = echarts.init(khqdslqs);
+  var chart_khqdslqs = echarts.init(khqdslqs, 'cyber');
   var option_khqdslqs;
   option_khqdslqs = {
     legend: {
@@ -1001,7 +1017,7 @@
   };
   // 来料不良分析
   var cpxsslqs = document.getElementById('cpxsslqs');
-  var chart_cpxsslqs = echarts.init(cpxsslqs);
+  var chart_cpxsslqs = echarts.init(cpxsslqs, 'cyber');
   var yData = [20, 50, 10, 35, 221, 124];
   var bgData = [];
   for (var i in yData) {
@@ -1150,7 +1166,7 @@
 
   // 来料不良分析
   var khqdslfx = document.getElementById('khqdslfx');
-  var chart_khqdslfx = echarts.init(khqdslfx);
+  var chart_khqdslfx = echarts.init(khqdslfx, 'cyber');
   var option_khqdslfx;
   option_khqdslfx = {
     legend: {
@@ -1265,7 +1281,7 @@
 
   // 订单进度状况
   var khqdslqs = document.getElementById('khqdslqs');
-  var chart_khqdslqs = echarts.init(khqdslqs);
+  var chart_khqdslqs = echarts.init(khqdslqs, 'cyber');
   var option_khqdslqs;
   option_khqdslqs = {
     legend: {

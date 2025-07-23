@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>采购管理</title>
   <link rel="stylesheet" href="./css/layui.css">
+  <link rel="stylesheet" href="./css/cyber.css">
   <style>
     html,
     body {
@@ -650,14 +651,19 @@
 </body>
 <script src="./js/jquery.min.js"></script>
 <script src="./js/echarts.min.js"></script>
+<script src="./js/echarts-gl.min.js"></script>
 <script src="./js/echarts-liquidfill.min.js"></script>
 <script src="./js/layui.js"></script>
 
 <script>
-  layui.use(['element', 'jquery', 'table'], function () {
+  // 加载 Cyber 样式和美化模块
+  layui.extend({
+    animate: './js/beautify'
+  }).use(['element', 'jquery', 'table', 'animate'], function () {
     var $ = layui.jquery
       , element = layui.element
-      , table = layui.table;
+      , table = layui.table
+      , animate = layui.animate;
     table.render({
       elem: "#wlcgsj",
       cols: [[
@@ -786,10 +792,21 @@
 
       }
     });
+
+    // 初始化美化模块和组件
+    animate.init();
+    
+    // 加载仪表板组件
+    layui.extend({
+      dashboardComponents: './js/dashboard-components'
+    }).use(['dashboardComponents'], function() {
+      const components = layui.dashboardComponents;
+      components.autoInit.init();
+    });
   });
   // 采购金额趋势
   var product_num = document.getElementById('product_num');
-  var chart_product_num = echarts.init(product_num);
+  var chart_product_num = echarts.init(product_num, 'cyber');
   var option_product_num;
   option_product_num = {
     legend: {
@@ -903,7 +920,7 @@
   };
   // 入库金额趋势 order_source
   var order_source = document.getElementById('order_source');
-  var chart_order_source = echarts.init(order_source);
+  var chart_order_source = echarts.init(order_source, 'cyber');
 
   var option_order_source;
   option_order_source = {
@@ -1019,7 +1036,7 @@
 
   // 生产进度分析 
   var order_source2 = document.getElementById('order_source2');
-  var chart_order_source2 = echarts.init(order_source2);
+  var chart_order_source2 = echarts.init(order_source2, 'cyber');
   var color1 = [
     '#1CC335',
     '#096BC5',

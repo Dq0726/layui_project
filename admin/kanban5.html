@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>设备管理</title>
   <link rel="stylesheet" href="./css/layui.css">
+  <link rel="stylesheet" href="./css/cyber.css">
   <style>
     html,
     body {
@@ -920,11 +921,15 @@
 </body>
 <script src="./js/jquery.min.js"></script>
 <script src="./js/echarts.min.js"></script>
+<script src="./js/echarts-gl.min.js"></script>
 <script src="./js/echarts-liquidfill.min.js"></script>
 <script src="./js/layui.js"></script>
 
 <script>
-  layui.use(['element', 'jquery', 'table'], function () {
+  // 加载 Cyber 样式和美化模块
+  layui.extend({
+    animate: './js/beautify'
+  }).use(['element', 'jquery', 'table', 'animate'], function () {
     var $ = layui.jquery
       , element = layui.element
       , table = layui.table;
@@ -998,10 +1003,21 @@
 
       }
     });
+
+    // 初始化美化模块和组件
+    animate.init();
+    
+    // 加载仪表板组件
+    layui.extend({
+      dashboardComponents: './js/dashboard-components'
+    }).use(['dashboardComponents'], function() {
+      const components = layui.dashboardComponents;
+      components.autoInit.init();
+    });
   });
   // 产品生产数量-图表
   var product_num = document.getElementById('product_num');
-  var chart_product_num = echarts.init(product_num);
+  var chart_product_num = echarts.init(product_num, 'cyber');
   var option_product_num;
   var Data = ['8月', '9月', '10月', '11月', '12月', '1月'];
   var xzData = [20, 25, 37, 15, 35, 11, 11, 26, 10];
@@ -1166,7 +1182,7 @@
   };
   // 生产报工状态
   var work_status = document.getElementById('work_status');
-  var chart_work_status = echarts.init(work_status);
+  var chart_work_status = echarts.init(work_status, 'cyber');
   var option_work_status;
   var Data1 = ['8月', '9月', '10月', '11月', '12月', '1月'];
   var xzData1 = [0, 2, 3, 1, 0, 0, 0, 1, 3];
@@ -1329,7 +1345,7 @@
   };
   // 订单进度状况
   var sbgztj = document.getElementById('sbgztj');
-  var chart_sbgztj = echarts.init(sbgztj);
+  var chart_sbgztj = echarts.init(sbgztj, 'cyber');
   var option_sbgztj;
   var res = [
 

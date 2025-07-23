@@ -1,0 +1,351 @@
+/* Cyber 主题样式 - 科技感大屏 */
+:root {
+  /* 响应式变量 */
+  --gap: clamp(8px, 0.6vw, 16px);
+  --radius: clamp(4px, 0.3vw, 8px);
+  --shadow: 0 0 clamp(4px, 0.4vw, 12px) rgba(0, 198, 255, 0.2);
+  --font-size-sm: clamp(12px, 0.8vw, 16px);
+  --font-size-md: clamp(16px, 1.2vw, 20px);
+  --font-size-lg: clamp(20px, 1.6vw, 30px);
+  --font-size-xl: clamp(30px, 2.4vw, 40px);
+  
+  /* 科技感色彩 */
+  --primary-blue: #00C6FF;
+  --secondary-blue: #0072FF;
+  --bg-dark: #0B1E38;
+  --text-white: #FFFFFF;
+  --accent-cyan: #00FFFF;
+  --accent-green: #00FFB0;
+  --accent-yellow: #FFBF11;
+}
+
+/* 全局样式重置与优化 */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: 'Microsoft YaHei', Arial, sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-white);
+}
+
+/* 背景径向扫描动画 */
+@keyframes radialScan {
+  0% {
+    background: radial-gradient(circle at 50% 50%, rgba(0, 198, 255, 0.1) 0%, transparent 50%);
+  }
+  50% {
+    background: radial-gradient(circle at 50% 50%, rgba(0, 198, 255, 0.3) 0%, transparent 70%);
+  }
+  100% {
+    background: radial-gradient(circle at 50% 50%, rgba(0, 198, 255, 0.1) 0%, transparent 50%);
+  }
+}
+
+/* 页面入场动画 */
+.page-enter {
+  animation: radialScan 2s ease-in-out;
+}
+
+/* 卡片懒加载淡入上升动画 */
+@keyframes fadeUpIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-animate {
+  animation: fadeUpIn 0.8s ease-out forwards;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+/* 交错动画延迟 */
+.card-animate:nth-child(1) { animation-delay: 0s; }
+.card-animate:nth-child(2) { animation-delay: 0.08s; }
+.card-animate:nth-child(3) { animation-delay: 0.16s; }
+.card-animate:nth-child(4) { animation-delay: 0.24s; }
+.card-animate:nth-child(5) { animation-delay: 0.32s; }
+.card-animate:nth-child(6) { animation-delay: 0.40s; }
+
+/* 响应式容器优化 */
+.layui-fluid {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 科技感边框和阴影 */
+.cyber-border {
+  border: 1px solid rgba(0, 198, 255, 0.3);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 霓虹阴影效果 */
+.cyber-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue), var(--primary-blue));
+  border-radius: var(--radius);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Hover 效果 */
+.cyber-hover {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cyber-hover:hover {
+  transform: scale(1.015);
+  box-shadow: 0 0 clamp(8px, 0.8vw, 20px) rgba(0, 198, 255, 0.4);
+}
+
+.cyber-hover:hover::before {
+  opacity: 0.3;
+}
+
+/* 点击波纹效果 */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 198, 255, 0.6);
+  transform: scale(0);
+  animation: ripple 0.4s linear;
+  pointer-events: none;
+}
+
+/* 数字翻牌动画 */
+@keyframes numberFlip {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(-90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+.number-flip {
+  animation: numberFlip 0.8s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+/* 环形进度条 SVG 动画 */
+@keyframes progressRing {
+  0% { stroke-dashoffset: 283; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.progress-ring-circle {
+  stroke-dasharray: 283;
+  stroke-dashoffset: 283;
+  animation: progressRing 1.2s ease-in-out forwards;
+}
+
+/* 呼吸光效 */
+@keyframes breathe {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.breathe-glow {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+/* HUD 标签样式 */
+.hud-label {
+  position: relative;
+  background: linear-gradient(135deg, rgba(0, 198, 255, 0.1), rgba(0, 114, 255, 0.1));
+  border: 1px solid var(--primary-blue);
+  border-radius: var(--radius);
+  padding: var(--gap);
+  backdrop-filter: blur(10px);
+  font-size: var(--font-size-sm);
+  color: var(--text-white);
+  text-align: center;
+}
+
+.hud-label::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* 数据脉冲动画 */
+@keyframes dataPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.data-pulse {
+  animation: dataPulse 2s ease-in-out infinite;
+}
+
+/* 扫描线动画 */
+@keyframes scanLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.scan-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
+  animation: scanLine 3s linear infinite;
+}
+
+/* 3D 地图容器样式 */
+#centerSphere {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(0, 198, 255, 0.05), transparent);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* 响应式字体和间距 */
+.responsive-text {
+  font-size: var(--font-size-md);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+.responsive-title {
+  font-size: var(--font-size-lg);
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 198, 255, 0.5);
+}
+
+.responsive-number {
+  font-size: var(--font-size-xl);
+  font-weight: bold;
+  color: var(--primary-blue);
+  text-shadow: 0 0 15px rgba(0, 198, 255, 0.8);
+}
+
+/* 联动高亮效果 */
+.link-highlight {
+  transition: all 0.3s ease;
+}
+
+.link-highlight.active {
+  background: rgba(0, 198, 255, 0.1);
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 15px rgba(0, 198, 255, 0.3);
+}
+
+/* 多屏适配 */
+@media (min-width: 3840px) {
+  :root {
+    --gap: clamp(12px, 0.8vw, 24px);
+    --radius: clamp(6px, 0.4vw, 12px);
+    --shadow: 0 0 clamp(8px, 0.6vw, 20px) rgba(0, 198, 255, 0.3);
+  }
+  
+  .ultra-wide-spacing {
+    padding: calc(var(--gap) * 1.5);
+    margin: calc(var(--gap) * 1.2);
+  }
+}
+
+@media (max-width: 1920px) {
+  :root {
+    --gap: clamp(6px, 0.4vw, 12px);
+    --radius: clamp(3px, 0.2vw, 6px);
+    --shadow: 0 0 clamp(3px, 0.3vw, 8px) rgba(0, 198, 255, 0.2);
+  }
+}
+
+/* 性能优化 */
+.gpu-accelerated {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 图表容器优化 */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.chart-container canvas {
+  border-radius: var(--radius);
+}
+
+/* 表格样式优化 */
+.layui-table {
+  background: transparent !important;
+}
+
+.layui-table th {
+  background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue)) !important;
+  color: var(--text-white) !important;
+  border: none !important;
+}
+
+.layui-table td {
+  background: transparent !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.layui-table-hover {
+  background: linear-gradient(135deg, rgba(0, 198, 255, 0.1), rgba(0, 114, 255, 0.1)) !important;
+}
