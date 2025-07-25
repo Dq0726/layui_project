@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D魔方游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .game-area {
+            flex: 1;
+            position: relative;
+        }
+
+        .controls {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .controls h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .timer {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .moves {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .status {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .instructions ul {
+            list-style-position: inside;
+            margin-left: 10px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
+        }
+
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .congratulations {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .congratulations h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+
+        .congratulations p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .difficulty-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .difficulty-btn.active {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="game-area">
+            <canvas id="gameCanvas"></canvas>
+            <div class="congratulations" id="congratulations">
+                <h2>🎉 恭喜完成！</h2>
+                <p>用时: <span id="finalTime"></span></p>
+                <p>步数: <span id="finalMoves"></span></p>
+                <button onclick="startNewGame()">开始新游戏</button>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <h1>🎲 3D魔方</h1>
+            
+            <div class="timer">
+                <div>⏱️ 时间</div>
+                <div id="timer">00:00</div>
+            </div>
+            
+            <div class="moves">
+                <div>🔄 步数</div>
+                <div id="moveCount">0</div>
+            </div>
+            
+            <div class="status" id="status">
+                点击开始新游戏
+            </div>
+
+            <div class="difficulty-selector">
+                <button class="difficulty-btn active" onclick="setDifficulty('easy')" id="easyBtn">简单</button>
+                <button class="difficulty-btn" onclick="setDifficulty('medium')" id="mediumBtn">中等</button>
+                <button class="difficulty-btn" onclick="setDifficulty('hard')" id="hardBtn">困难</button>
+            </div>
+            
+            <div class="button-group">
+                <button onclick="startNewGame()">🎮 开始新游戏</button>
+                <button onclick="scrambleCube()">🔀 打乱魔方</button>
+                <button onclick="solveCube()" id="solveBtn" disabled>🎯 自动还原</button>
+                <button onclick="resetView()">📷 重置视角</button>
+                <button onclick="toggleAnimation()">⚡ 切换动画</button>
+            </div>
+            
+            <div class="instructions">
+                <h3>🎯 操作说明</h3>
+                <ul>
+                    <li>鼠标拖拽旋转视角</li>
+                    <li>点击魔方面进行旋转</li>
+                    <li>滚轮缩放视图</li>
+                    <li>还原所有面完成游戏</li>
+                </ul>
+                
+                <h3>🎮 难度设置</h3>
+                <ul>
+                    <li>简单: 10步打乱</li>
+                    <li>中等: 20步打乱</li>
+                    <li>困难: 30步打乱</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
+    <script src="rubiksCube.js"></script>
+</body>
+</html>
