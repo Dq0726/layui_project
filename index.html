@@ -236,16 +236,135 @@
                 
                 <h3>🎮 难度设置</h3>
                 <ul>
-                    <li>简单: 10步打乱</li>
-                    <li>中等: 20步打乱</li>
-                    <li>困难: 30步打乱</li>
+                    <li>简单: 5步打乱</li>
+                    <li>中等: 10步打乱</li>
+                    <li>困难: 15步打乱</li>
                 </ul>
             </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
+    <!-- 使用更稳定的Three.js CDN -->
+    <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+    <script>
+        // 兼容性处理 - 创建 OrbitControls
+        THREE.OrbitControls = function(camera, domElement) {
+            this.camera = camera;
+            this.domElement = domElement;
+            this.enabled = true;
+            this.enableDamping = false;
+            this.dampingFactor = 0.25;
+            this.enableZoom = true;
+            this.enableRotate = true;
+            this.enablePan = true;
+            this.maxDistance = Infinity;
+            this.minDistance = 0;
+            
+            var scope = this;
+            var rotateStart = new THREE.Vector2();
+            var rotateEnd = new THREE.Vector2();
+            var rotateDelta = new THREE.Vector2();
+            var panStart = new THREE.Vector2();
+            var panEnd = new THREE.Vector2();
+            var panDelta = new THREE.Vector2();
+            var dollyStart = new THREE.Vector2();
+            var dollyEnd = new THREE.Vector2();
+            var dollyDelta = new THREE.Vector2();
+            
+            var spherical = new THREE.Spherical();
+            var sphericalDelta = new THREE.Spherical();
+            var scale = 1;
+            var panOffset = new THREE.Vector3();
+            
+            var STATE = { NONE: -1, ROTATE: 0, DOLLY: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_DOLLY_PAN: 4 };
+            var state = STATE.NONE;
+            
+            this.update = function() {
+                var position = scope.camera.position;
+                var offset = position.clone().sub(new THREE.Vector3());
+                
+                spherical.setFromVector3(offset);
+                spherical.theta += sphericalDelta.theta;
+                spherical.phi += sphericalDelta.phi;
+                spherical.radius *= scale;
+                spherical.radius = Math.max(scope.minDistance, Math.min(scope.maxDistance, spherical.radius));
+                
+                offset.setFromSpherical(spherical);
+                position.copy(offset);
+                scope.camera.lookAt(new THREE.Vector3());
+                
+                if (scope.enableDamping) {
+                    sphericalDelta.theta *= (1 - scope.dampingFactor);
+                    sphericalDelta.phi *= (1 - scope.dampingFactor);
+                } else {
+                    sphericalDelta.set(0, 0, 0);
+                }
+                
+                scale = 1;
+                panOffset.set(0, 0, 0);
+                
+                return false;
+            };
+            
+            this.reset = function() {
+                scope.camera.position.set(8, 8, 8);
+                scope.camera.lookAt(new THREE.Vector3());
+            };
+            
+            // 鼠标事件处理
+            function onMouseDown(event) {
+                if (!scope.enabled) return;
+                event.preventDefault();
+                
+                if (event.button === 0) {
+                    state = STATE.ROTATE;
+                    rotateStart.set(event.clientX, event.clientY);
+                } else if (event.button === 1) {
+                    state = STATE.DOLLY;
+                    dollyStart.set(event.clientX, event.clientY);
+                } else if (event.button === 2) {
+                    state = STATE.PAN;
+                    panStart.set(event.clientX, event.clientY);
+                }
+                
+                document.addEventListener('mousemove', onMouseMove, false);
+                document.addEventListener('mouseup', onMouseUp, false);
+            }
+            
+            function onMouseMove(event) {
+                if (!scope.enabled) return;
+                event.preventDefault();
+                
+                if (state === STATE.ROTATE) {
+                    rotateEnd.set(event.clientX, event.clientY);
+                    rotateDelta.subVectors(rotateEnd, rotateStart).multiplyScalar(0.01);
+                    sphericalDelta.theta -= rotateDelta.x;
+                    sphericalDelta.phi -= rotateDelta.y;
+                    rotateStart.copy(rotateEnd);
+                }
+            }
+            
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove, false);
+                document.removeEventListener('mouseup', onMouseUp, false);
+                state = STATE.NONE;
+            }
+            
+            function onMouseWheel(event) {
+                if (!scope.enabled || !scope.enableZoom) return;
+                event.preventDefault();
+                if (event.deltaY < 0) {
+                    scale /= 0.95;
+                } else if (event.deltaY > 0) {
+                    scale *= 0.95;
+                }
+            }
+            
+            this.domElement.addEventListener('mousedown', onMouseDown, false);
+            this.domElement.addEventListener('wheel', onMouseWheel, false);
+            this.domElement.addEventListener('contextmenu', function(event) { event.preventDefault(); }, false);
+        };
+    </script>
     <script src="rubiksCube.js"></script>
 </body>
 </html>

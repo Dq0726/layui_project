@@ -13,22 +13,9 @@ class RubiksCube {
         this.startTime = null;
         this.timerInterval = null;
         this.isGameActive = false;
-        this.animationSpeed = 0.1;
         this.difficulty = 'easy';
         this.scrambleHistory = [];
         this.enableAnimations = true;
-        
-        // 魔方状态 - 6个面，每面9个小方块
-        this.cubeState = {
-            front: Array(9).fill('white'),   // 前面 - 白色
-            back: Array(9).fill('yellow'),   // 后面 - 黄色
-            left: Array(9).fill('orange'),   // 左面 - 橙色
-            right: Array(9).fill('red'),     // 右面 - 红色
-            top: Array(9).fill('green'),     // 上面 - 绿色
-            bottom: Array(9).fill('blue')    // 下面 - 蓝色
-        };
-        
-        this.solvedState = JSON.parse(JSON.stringify(this.cubeState));
         
         this.init();
         this.animate();
@@ -77,6 +64,8 @@ class RubiksCube {
         
         // 窗口大小调整
         window.addEventListener('resize', () => this.onWindowResize());
+        
+        console.log('魔方游戏初始化完成');
     }
     
     addLights() {
@@ -88,8 +77,6 @@ class RubiksCube {
         const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
         directionalLight.position.set(10, 10, 5);
         directionalLight.castShadow = true;
-        directionalLight.shadow.mapSize.width = 2048;
-        directionalLight.shadow.mapSize.height = 2048;
         this.scene.add(directionalLight);
         
         // 补光
@@ -110,8 +97,7 @@ class RubiksCube {
             orange: 0xff8800,
             red: 0xff0000,
             green: 0x00ff00,
-            blue: 0x0000ff,
-            black: 0x000000
+            blue: 0x0000ff
         };
         
         for (let x = 0; x < 3; x++) {
@@ -150,7 +136,7 @@ class RubiksCube {
                     cube.receiveShadow = true;
                     
                     // 存储立方体的原始位置信息
-                    cube.userData = { x, y, z };
+                    cube.userData = { x, y, z, originalX: x, originalY: y, originalZ: z };
                     
                     this.cubes.push(cube);
                     this.group.add(cube);
@@ -159,6 +145,7 @@ class RubiksCube {
         }
         
         this.scene.add(this.group);
+        console.log('魔方创建完成，共', this.cubes.length, '个小立方体');
     }
     
     addEventListeners() {
@@ -217,14 +204,29 @@ class RubiksCube {
             return cube.userData[axis] === cubeData[axis];
         });
         
+        console.log(`旋转${axis}轴第${cubeData[axis]}层，共${cubesToRotate.length}个立方体`);
+        
         // 创建旋转组
         const rotationGroup = new THREE.Group();
         this.scene.add(rotationGroup);
         
         // 将需要旋转的立方体添加到旋转组
         cubesToRotate.forEach(cube => {
-            cube.parent.remove(cube);
+            // 保存世界坐标
+            const worldPosition = new THREE.Vector3();
+            const worldQuaternion = new THREE.Quaternion();
+            const worldScale = new THREE.Vector3();
+            
+            cube.getWorldPosition(worldPosition);
+            cube.getWorldQuaternion(worldQuaternion);
+            cube.getWorldScale(worldScale);
+            
+            this.group.remove(cube);
             rotationGroup.add(cube);
+            
+            cube.position.copy(worldPosition);
+            cube.quaternion.copy(worldQuaternion);
+            cube.scale.copy(worldScale);
         });
         
         // 执行旋转动画
@@ -243,7 +245,6 @@ class RubiksCube {
     }
     
     animateRotation(group, axis, targetRotation, callback) {
-        const startRotation = 0;
         const duration = 300; // 毫秒
         const startTime = Date.now();
         
@@ -253,7 +254,7 @@ class RubiksCube {
             
             // 使用缓动函数
             const easeProgress = 1 - Math.pow(1 - progress, 3);
-            const currentRotation = startRotation + (targetRotation - startRotation) * easeProgress;
+            const currentRotation = targetRotation * easeProgress;
             
             group.rotation.setFromVector3(axis.clone().multiplyScalar(currentRotation));
             
@@ -292,9 +293,6 @@ class RubiksCube {
         this.scene.remove(rotationGroup);
         this.isAnimating = false;
         
-        // 更新魔方状态
-        this.updateCubeState(axis, direction, cubesToRotate[0].userData[axis]);
-        
         // 检查是否完成
         if (this.checkSolved()) {
             this.onGameComplete();
@@ -331,53 +329,17 @@ class RubiksCube {
             }
         }
         
-        cube.userData = { x: newX, y: newY, z: newZ };
-    }
-    
-    updateCubeState(axis, direction, layer) {
-        // 这里应该更新内部状态表示
-        // 为简化，我们通过检查立方体的实际颜色来判断是否完成
+        cube.userData.x = newX;
+        cube.userData.y = newY;
+        cube.userData.z = newZ;
     }
     
     checkSolved() {
-        // 检查每个面是否都是同一颜色
-        const faces = ['right', 'left', 'top', 'bottom', 'front', 'back'];
-        
-        for (let faceIndex = 0; faceIndex < 6; faceIndex++) {
-            const faceColors = [];
-            
-            // 获取这个面上所有立方体的颜色
-            this.cubes.forEach(cube => {
-                if (this.isOnFace(cube, faceIndex)) {
-                    const material = cube.material[faceIndex];
-                    faceColors.push(material.color.getHex());
-                }
-            });
-            
-            // 检查这个面是否所有颜色都相同
-            if (faceColors.length > 0) {
-                const firstColor = faceColors[0];
-                if (!faceColors.every(color => color === firstColor)) {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
-    }
-    
-    isOnFace(cube, faceIndex) {
-        const { x, y, z } = cube.userData;
-        
-        switch (faceIndex) {
-            case 0: return x === 2; // 右面
-            case 1: return x === 0; // 左面
-            case 2: return y === 2; // 上面
-            case 3: return y === 0; // 下面
-            case 4: return z === 2; // 前面
-            case 5: return z === 0; // 后面
-            default: return false;
-        }
+        // 简化的检查：检查是否所有立方体都回到了原始位置
+        return this.cubes.every(cube => {
+            const { x, y, z, originalX, originalY, originalZ } = cube.userData;
+            return x === originalX && y === originalY && z === originalZ;
+        });
     }
     
     scrambleCube() {
@@ -405,14 +367,18 @@ class RubiksCube {
             const direction = Math.random() > 0.5 ? 1 : -1;
             
             // 记录移动用于自动还原
-            this.scrambleHistory.push({ cube: randomCube.userData, axis, direction: -direction });
+            this.scrambleHistory.push({ 
+                cubeData: { ...randomCube.userData }, 
+                axis, 
+                direction: -direction 
+            });
             
             this.performRotation(randomCube.userData, axis, direction);
             
             setTimeout(() => {
                 moveIndex++;
                 executeMove();
-            }, this.enableAnimations ? 200 : 50);
+            }, this.enableAnimations ? 400 : 100);
         };
         
         this.updateStatus('正在打乱魔方...');
@@ -421,10 +387,10 @@ class RubiksCube {
     
     getDifficultyMoves() {
         switch (this.difficulty) {
-            case 'easy': return 10;
-            case 'medium': return 20;
-            case 'hard': return 30;
-            default: return 15;
+            case 'easy': return 5;
+            case 'medium': return 10;
+            case 'hard': return 15;
+            default: return 8;
         }
     }
     
@@ -444,12 +410,12 @@ class RubiksCube {
             }
             
             const move = moves[moveIndex];
-            this.performRotation(move.cube, move.axis, move.direction);
+            this.performRotation(move.cubeData, move.axis, move.direction);
             
             setTimeout(() => {
                 moveIndex++;
                 executeMove();
-            }, this.enableAnimations ? 200 : 50);
+            }, this.enableAnimations ? 400 : 100);
         };
         
         executeMove();
@@ -468,23 +434,13 @@ class RubiksCube {
     }
     
     resetCube() {
-        // 重置所有立方体到初始位置和旋转
-        this.cubes.forEach((cube, index) => {
-            const x = Math.floor(index / 9);
-            const y = Math.floor((index % 9) / 3);
-            const z = index % 3;
-            
-            cube.position.set(
-                (x - 1) * 1,
-                (y - 1) * 1,
-                (z - 1) * 1
-            );
-            
-            cube.rotation.set(0, 0, 0);
-            cube.userData = { x, y, z };
-        });
+        // 移除现有的魔方
+        if (this.group) {
+            this.scene.remove(this.group);
+        }
         
-        this.cubeState = JSON.parse(JSON.stringify(this.solvedState));
+        // 重新创建魔方
+        this.createCube();
     }
     
     startTimer() {
@@ -577,30 +533,36 @@ let rubiksCube;
 
 // 初始化游戏
 window.addEventListener('DOMContentLoaded', () => {
-    rubiksCube = new RubiksCube();
+    try {
+        rubiksCube = new RubiksCube();
+        console.log('游戏初始化成功');
+    } catch (error) {
+        console.error('游戏初始化失败:', error);
+        document.getElementById('status').textContent = '游戏初始化失败，请刷新页面重试';
+    }
 });
 
 // 全局函数供HTML调用
 function startNewGame() {
-    rubiksCube.startNewGame();
+    if (rubiksCube) rubiksCube.startNewGame();
 }
 
 function scrambleCube() {
-    rubiksCube.scrambleCube();
+    if (rubiksCube) rubiksCube.scrambleCube();
 }
 
 function solveCube() {
-    rubiksCube.solveCube();
+    if (rubiksCube) rubiksCube.solveCube();
 }
 
 function resetView() {
-    rubiksCube.resetView();
+    if (rubiksCube) rubiksCube.resetView();
 }
 
 function toggleAnimation() {
-    rubiksCube.toggleAnimation();
+    if (rubiksCube) rubiksCube.toggleAnimation();
 }
 
 function setDifficulty(level) {
-    rubiksCube.setDifficulty(level);
+    if (rubiksCube) rubiksCube.setDifficulty(level);
 }
